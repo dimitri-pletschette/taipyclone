@@ -83,7 +83,7 @@ const Field = (props: TaipyFieldProps) => {
                     <MathJaxContext config={{
                         tex: {
                             inlineMath: [["$", "$"], ["\\(", "\\)"]],
-                            displayMath: [["$$", "$$"]],
+                            displayMath: [["$$", "$$"], ["\\[", "\\]"]],
                         }
                     }}>
                         <MathJax className={className} id={id}>
