@@ -9,19 +9,30 @@
 # an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-from taipy.config import Config, Section, _inject_section
+from taipy.common.config import Config, Section, _inject_section
 from typing import Optional, Dict, Union, Literal
+from copy import copy
 
 class RestSection(Section):
     name: str = "REST"
 
     def __init__(self):
+        super().__init__("rest")
         self._port: int = 5000
         self._host: str = "127.0.0.1"
         self._use_https: bool = False
         self._ssl_cert: Optional[str] = None
         self._ssl_key: Optional[str] = None
 
+    def __copy__(self):
+        new_instance = RestSection()
+        new_instance._port = self._port
+        new_instance._host = self._host
+        new_instance._use_https = self._use_https
+        new_instance._ssl_cert = self._ssl_cert
+        new_instance._ssl_key = self._ssl_key
+        return new_instance
+    
     @property
     def port(self) -> int:
         return self._port
@@ -62,49 +73,14 @@ class RestSection(Section):
     def ssl_key(self, value: Optional[str]):
         self._ssl_key = value
 
-    def _clean(self):
-        self._port = 5000
-        self._host = "127.0.0.1"
-        self._use_https = False
-        self._ssl_cert = None
-        self._ssl_key = None
-
-    def _to_dict(self) -> Dict[str, Union[int, str, bool, None]]:
-        return {
-            "port": self._port,
-            "host": self._host,
-            "use_https": self._use_https,
-            "ssl_cert": self._ssl_cert,
-            "ssl_key": self._ssl_key
-        }
-
-    @classmethod
-    def _from_dict(cls, config_as_dict: Dict[str, Union[int, str, bool, None]], id=None, config: Optional[Config] = None):
-        section = cls()
-        section._port = config_as_dict.get("port", 5000)
-        section._host = config_as_dict.get("host", "127.0.0.1")
-        section._use_https = config_as_dict.get("use_https", False)
-        section._ssl_cert = config_as_dict.get("ssl_cert")
-        ssl_key = config_as_dict.get("ssl_key")
-        section._ssl_key = ssl_key if ssl_key is None or isinstance(ssl_key, str) else None
-        return section
-
-    def _update(self, as_dict: Dict[str, Union[int, str, bool, None]], default_section=None):
-        self._port = as_dict.get("port", self._port)
-        self._host = as_dict.get("host", self._host)
-        self._use_https = as_dict.get("use_https", self._use_https)
-        self._ssl_cert = as_dict.get("ssl_cert", self._ssl_cert)
-        ssl_key = as_dict.get("ssl_key", self._ssl_key)
-        self._ssl_key = ssl_key if ssl_key is None or isinstance(ssl_key, str) else None
-
-    @classmethod
-    def configure_rest(cls, port: int = 5000, host: str = "127.0.0.1", use_https: bool = False,
+    def configure_rest(self, port: int = 5000, host: str = "127.0.0.1", use_https: bool = False,
                        ssl_cert: Optional[str] = None, ssl_key: Optional[str] = None):
-        config = Config.rest
-        config.port = port
-        config.host = host
-        config.use_https = use_https
-        config.ssl_cert = ssl_cert
-        config.ssl_key = ssl_key
+        self.port = port
+        self.host = host
+        self.use_https = use_https
+        self.ssl_cert = ssl_cert
+        self.ssl_key = ssl_key
 
-_inject_section("rest", "rest", default=RestSection(), configuration_methods=[("configure_rest", RestSection.configure_rest)])
+# At the end of the file
+_inject_section(RestSection, "rest", default=RestSection(), configuration_methods=[("configure_rest", RestSection.configure_rest)])
+
