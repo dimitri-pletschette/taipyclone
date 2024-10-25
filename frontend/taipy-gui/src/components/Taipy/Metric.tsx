@@ -30,7 +30,7 @@ interface MetricProps extends TaipyBaseProps, TaipyHoverProps {
     defaultValue?: number;
     delta?: number;
     defaultDelta?: number;
-    type?: string;
+    type?: string | null;
     min?: number;
     max?: number;
     deltaColor?: string;
