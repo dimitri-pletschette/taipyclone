@@ -1,4 +1,4 @@
-# General contributions
+# General contributions:-
 
 Thanks for your interest in helping improve Taipy! Contributions are welcome, and they are greatly
 appreciated! Every little help and credit will always be given.
@@ -9,12 +9,17 @@ requests, helping other users in our forums, [stack**overflow**](https://stackov
 For questions, please get in touch on [Discord](https://discord.com/invite/SJyz2VJGxV) or on GitHub
 with a discussion or an issue.
 
-## Project organisation
 
-Taipy is organised in two main repositories:
+## Code organisation:-
 
-- [taipy](https://github.com/Avaiga/taipy) is the main repository that contains the code of Taipy
-    packages.
+## Project organisation:-
+
+
+Taipy is organised in two main repositories:-
+
+
+- [taipy](https://github.com/Avaiga/taipy) is the main repository that contains the code of Taipy packages.
+
 - [taipy-doc](https://github.com/Avaiga/taipy-doc) is the documentation repository.
 
 ## Never contributed to an open source project before ?
@@ -22,7 +27,7 @@ Taipy is organised in two main repositories:
 Have a look at this
 [GitHub documentation](https://docs.github.com/en/get-started/quickstart/contributing-to-projects).
 
-## Report bugs
+## Report bugs:-
 
 Reporting bugs is through [GitHub issues](https://github.com/Avaiga/taipy/issues).
 
@@ -33,21 +38,25 @@ The Taipy team will analyze and try to reproduce the bug to provide feedback. If
 we will add a priority to the issue and add it in our backlog. Feel free to propose a pull
 request to fix it.
 
-## Issue reporting, feedback, proposal, design or any other comment
+## Issue reporting, feedback, proposal, design or any other comment:-
 
 Any feedback or proposal is greatly appreciated! Do not hesitate to create an issue with the
 appropriate template on [GitHub](https://github.com/Avaiga/taipy/issues).
 
 The Taipy team will analyse your issue and return to you as soon as possible.
 
-## Improve Documentation
+## Improve Documentation:-
 
 Do not hesitate to create an issue or pull request directly on the
 [taipy-doc repository](https://github.com/Avaiga/taipy-doc).
 
-# Code contributions
 
-## Code organization
+## Implement Features:-
+
+# Code contributions:-
+
+
+## Code organization:-
 
 The Taipy source code is located in the [taipy](https://github.com/Avaiga/taipy)
 repository, in the `taipy` directory.
@@ -60,9 +69,10 @@ Packages sources are organized in subdirectories from there:
 - `taipy-rest`
 - `taipy-templates`
 
-## Process and workflow
+## Process and workflow:-
 
-### Issue assignment
+### Issue assignment:-
+
 The Taipy team manages its backlog in private. Each issue that is or is going to be engaged by the
 Taipy team is attached to the "🔒 Staff only" label or has already been assigned to a Taipy team
 member. Please, do not work on it, the Taipy team is on it.
@@ -75,7 +85,7 @@ value it will bring to Taipy.
 If you want to work on an issue, please add a comment and wait to be assigned to the issue to
 inform the community that you are working on it. Then, follow the steps below:
 
-### Contribution workflow
+### Contribution workflow:-
 
 1. Make your [own fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) of the repository
    targeted by the issue. Clone it on your local machine, then go inside the directory.
@@ -99,16 +109,21 @@ inform the community that you are working on it. Then, follow the steps below:
    guidelines:
      - The code and the branch name follow the
          [Taipy coding style](#coding-style-and-best-practices).
+       
      - Include tests.
+     - 
      - Code is [rebased](http://stackoverflow.com/a/7244456/1110993).
+     - 
      - License is present.
+     - 
      - pre-commit works - without mypy errors.
+     - 
      - Taipy tests are passing.
 
 5. The Taipy team will have a look at your Pull Request and will give feedback. If every
     requirement is valid, your work will be added in the next release, congratulations!
 
-### Issues or Pull requests inactivity
+### Issues or Pull requests inactivity:-
 
 - If your PR is not created or there is no other activity within 14 days of being assigned to
     the issue, a warning message will appear on the issue, and the issue will be marked as
@@ -124,40 +139,71 @@ We do this in order to keep our backlog moving quickly. Please don't take it per
 issue or PR gets closed because of this 14-day inactivity time limit. You can always reopen the
 issue or PR if you're still interested in working on it.
 
-## Coding style and best practices
+## Coding style and best practices:-
 
-### Python
+### Python:-
 
 Taipy's repositories follow the [PEP 8](https://www.python.org/dev/peps/pep-0008/) and
 [PEP 484](https://www.python.org/dev/peps/pep-0484/) coding convention.
 
-### TypeScript
+
+### TypeScript:-
+
 
 Taipy's repositories use the [ESLint](https://eslint.org/) and
 [TypeScript ESLint](https://github.com/typescript-eslint/typescript-eslint) plugin to ensure a common set of rules.
 
-### Git branches
+### Git branches:-
 
 All new development happens in the `develop` branch. All pull requests should target that
 branch. We are following a strict branch naming convention based on the pattern:
 `<type>/#<issueId>[IssueSummary]`.
 
-Where:
+Where:-
 
-- `<type>` would be one of:
+- `<type>` would be one of:-
     - feature: new feature implementation, or improvement of a feature.
+
     - bug: bug fix.
+
     - review: change provoked by review comment not immediately taken care of.
+
     - refactor: refactor of a piece of code.
+
     - doc: doc changes (complement or typo fixes…).
+
     - build: in relation with the build process.
+
+
+- `<issueId>` is the processed issue identifier. The advantage of explicitly indicating the issue number is that in
+
+  GitHub, a pull request page shows a direct link to the issue description.
+
+- `[IssueSummary]` is a short summary of the issue topic, not including spaces, using Camel case or lower-case,
+  dash-separated words. This summary, with its dash (‘-’) symbol prefix, is optional.
+
+## Important Notes:-
+
+- If your PR is not created or there is no other activity within 14 days of being assigned to the issue, a warning message will appear on the issue, and the issue will be marked as "🥶Waiting for contributor".
+
+- If your issue is marked as "🥶Waiting for contributor", you will be unassigned after 14 days of inactivity.
+
+- Similarly, if there is no activity within 14 days of your PR, the PR will be marked as "🥶Waiting for contributor".
+
+- If your PR is marked as "🥶Waiting for contributor", it will be closed after 14 days of inactivity.
+
+We do this in order to keep our backlog moving quickly. Please don't take it personally if your issue or PR gets closed.
+because of this 14-day inactivity time limit. You can always reopen the issue or PR if you're still interested in working
+on it.
+
 - `<issueId>` is the processed issue identifier. The advantage of explicitly indicating the issue
     number is that inGitHub, a pull request page shows a direct link to the issue description.
 - `[IssueSummary]` is a short summary of the issue topic, not including spaces, using Camel case
     or lower-case, dash-separated words. This summary, with its dash (‘-’) symbol prefix, is
     optional.
 
-## Dependency management
+
+## Dependency management:-
 
 Taipy comes with multiple optional packages. You can find the list directly in the product or
 Taipy's packages. The back-end Pipfile does not install optional packages by default due to
@@ -171,16 +217,19 @@ If you need to add a new dependency to Taipy, do not forget to add it in the `Pi
 `setup.py`. Keep in mind that dependency is a vector of attack. The Taipy team limits the usage
 of external dependencies at the minimum.
 
-## Installing the development kit
+## Installing the development kit:-
 
 If you need the source code for Taipy on your system to see how things are done or maybe
 contribute to the improvement of the packages, you can set your environment up by following
 the steps below.
 
-### Prerequisites
+### Prerequisites:-
+
 Before installing the Taipy development kit, ensure you have
 [Python](http://docs.python-guide.org/en/latest/starting/installation/) (**version 3.9 or later**),
+
 [pip](https://pip.pypa.io/en/latest/installation/), and
+
 [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on your system.
 
 ??? note "On Mac OS M1 pro"
@@ -192,7 +241,7 @@ Before installing the Taipy development kit, ensure you have
     pip install python-libmagic
     ```
 
-### Cloning the repository
+### Cloning the repository:-
 
 First, clone the Taipy repository from GitHub using the following command:
 
@@ -202,7 +251,7 @@ git clone https://github.com/Avaiga/taipy.git
 
 This creates the 'taipy' directory holding all the package's source code.
 
-### Building the JavaScript bundles
+### Building the JavaScript bundles:-
 
 Taipy (and Taipy GUI) includes client-side code for web applications, written in
 [TypeScript](https://www.typescriptlang.org/), and uses [React](https://reactjs.org/).
@@ -214,7 +263,7 @@ There are two main JavaScript bundles to build:
 - Taipy: Contains specific visual elements for Taipy back-end functionalities
     (Scenario Management).
 
-**Prerequisites**: To build the JavaScript bundles, ensure you have [Node.js](https://nodejs.org/)
+**Prerequisites:-** To build the JavaScript bundles, ensure you have [Node.js](https://nodejs.org/)
 version 18 or higher installed. Node.js includes the
 [`npm` package manager](https://www.npmjs.com/).
 
@@ -224,7 +273,7 @@ and
 [Taipy front-end](https://github.com/Avaiga/taipy/blob/develop/frontend/taipy/README.md) README
 files. Build the Taipy GUI bundle first, as the Taipy front-end depends on it.
 
-**Build instructions:** Run the following commands from the root directory of the repository:
+**Build instructions:-** Run the following commands from the root directory of the repository:
 
 ```bash
 # Build the Taipy GUI bundle
@@ -244,7 +293,7 @@ npm run build
 These commands will create the `taipy/gui/webapp` and `taipy/gui_core/lib` directories in the root
 folder of the taipy repository.
 
-### Debugging the JavaScript bundles
+### Debugging the JavaScript bundles:-
 
 If you plan to modify the front-end code and need to debug the TypeScript code, you must use the
 following instead of the *standard* build option:
@@ -267,7 +316,7 @@ from your debugger.
     If you set this variable to the location where you build the web app repeatedly, you will no
     longer have to reinstall Taipy GUI before you try your code again.
 
-### Running the tests
+### Running the tests:-
 
 The Taipy package includes a test suite to ensure the package's functionality is correct.
 The tests are written using the [pytest](https://docs.pytest.org/en/latest/) framework.

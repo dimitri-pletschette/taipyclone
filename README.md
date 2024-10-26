@@ -27,11 +27,17 @@ No more compromises on performance, customization, and scalability.
 
 <p align="center"><h4>
     <br />
+
+    <a href="https://docs.taipy.io/en/latest/"><strong>📚     Explore the docs </strong></a>
+    <br />
+    <a href="https://discord.com/invite/SJyz2VJGxV"><strong>   🫱🏼‍🫲🏼 Discord support </strong></a>
+
     <a href="https://docs.taipy.io/en/latest/"><strong>📚 Explore the Docs </strong></a>
     <br />
     <a href="https://discord.com/invite/SJyz2VJGxV"><strong>  🫱🏼‍🫲🏼 Discord Support </strong></a>
+
     <br />
-    <a href="https://docs.taipy.io/en/latest/gallery/"><strong> 👀 Demos & Examples </strong></a>
+    <a href="https://docs.taipy.io/en/latest/gallery/"><strong>  👀 Demos & Examples </strong></a>
 </h4>
   </p>
 
@@ -72,14 +78,14 @@ Taipy is a Two-in-One Tool for UI Generation and Scenario & Data Management
 
 &nbsp;
 
-## ✨ Key Features
+## ✨ Key Features:-
 
 <img src="readme_img/taipy_github_scenario.png" alt="Scenario Banner"  width="49%" />  <img src="readme_img/taipy-github-optimized.png" alt="Front-End Animation"  width="49%"/>
 <img src="readme_img/taipy_github_data_support.png" alt="Back-End Animation"  width="49%" />
 
 &nbsp;
 
-## ⚙️ Quickstart
+## ⚙️ Quickstart:-
 
 To install the stable release of Taipy, run:
 
@@ -101,7 +107,9 @@ is the perfect place to begin your journey and unlock the full potential of Taip
 
 &nbsp;
 
-## 🔌 Scenario & Data Management
+
+## 🔌 Scenario and Data Management:-
+
 
 Let's create a simple scenario in Taipy that allows you to filter movie data based on your chosen genre.<br />
 This scenario is designed as a straightforward pipeline.<br />
@@ -130,7 +138,7 @@ This is the execution graph of the scenario we are implementing:
 <img src="https://github.com/Avaiga/taipy/raw/develop/readme_img/readme_exec_graph.png" width="600" align="center" />
 </p>
 
-### Taipy Studio
+### Taipy Studio:-
 
 You can use the Taipy Studio extension in Visual Studio Code to configure your scenario with no code.<br />
 Your configuration is automatically saved as a TOML file.<br />
@@ -145,7 +153,7 @@ check out the movie genre demo scenario creation with this [Demo](https://docs.t
 
 &nbsp;
 
-## User Interface Generation and Scenario & Data Management
+## User Interface Generation and Scenario & Data Management:-
 
 This simple Taipy application demonstrates how to create a basic film recommendation system using Taipy.<br />
 The application filters a dataset of films based on the user's selected genre and displays the top seven films in that genre by popularity.
@@ -225,15 +233,16 @@ And the final result:
 
 &nbsp;
 
-## ⚒️ Contributing
+## ⚒️ Contributing:-
 
 Want to help build Taipy? Check out our [**Contributing Guide**](https://github.com/Avaiga/taipy/blob/develop/CONTRIBUTING.md).
 
-## 🪄 Code of Conduct
+
+## 🪄 Code of conduct:-
 
 Want to be part of the Taipy community? Check out our [**Code of Conduct**](https://github.com/Avaiga/taipy/blob/develop/CODE_OF_CONDUCT.md)
 
-## 🪪 License
+## 🪪 License:-
 
 Copyright 2021-2024 Avaiga Private Limited
 
