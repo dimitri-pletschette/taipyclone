@@ -56,6 +56,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFnsV3";
 import { format } from "date-fns";
 import deepEqual from "fast-deep-equal/es6";
+import ReactJson from 'react-json-view';
 
 import {
     ColumnDesc,
@@ -756,6 +757,29 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
                                 ) : null}
                             </Stack>
                         </Box>
+                        <div>
+                            { dtType === "json" ? (
+                                <>
+                                <Grid container spacing={2}>
+                                    <Grid xs={12}>
+                                        <Typography variant="subtitle2">JSON Data</Typography>
+                                    </Grid>
+                                    <Grid xs={12}>
+                                        <ReactJson
+                                            // json data as prop
+                                            src={dtValue}
+                                            // it will be collapsed intitially
+                                            collapsed={true}
+                                            // disabling copy to clipboard
+                                            enableClipboard={true}
+                                            // hide data type
+                                            displayDataTypes={false}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                </>
+                            )}
+                        </div>
                         <div
                             role="tabpanel"
                             hidden={tabValue !== TabValues.Properties}
