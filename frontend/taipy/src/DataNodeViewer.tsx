@@ -68,6 +68,7 @@ import {
     createRequestUpdateAction,
     createSendActionNameAction,
     getUpdateVar,
+    useClassNames,
     useDynamicProperty,
     useModule,
     Store,
@@ -89,7 +90,6 @@ import {
     iconLabelSx,
     popoverOrigin,
     tinySelPinIconButtonSx,
-    useClassNames,
 } from "./utils";
 import PropertiesEditor, { DatanodeProperties } from "./PropertiesEditor";
 import { NodeType, Scenarios } from "./utils/types";
@@ -416,7 +416,7 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
             setPropertiesRequested((req) => {
                 if ((req || !showData) && tabValue == TabValues.Properties) {
                     const idVar = getUpdateVar(updateDnVars, "properties_id");
-                    const vars = getUpdateVarNames(updateVars, "properties");
+                    const vars = getUpdateVarNames(updateVars, "dnProperties");
                     Promise.resolve().then(() =>
                         dispatch(
                             createRequestUpdateAction(id, module, vars, true, idVar ? { [idVar]: newDnId } : undefined)
@@ -634,7 +634,7 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
     );
 
     // file action
-    const onfileHandler = useCallback(
+    const onFileHandler = useCallback(
         (e: MouseEvent<HTMLElement>) => {
             e.stopPropagation();
             const { action = "import" } = e.currentTarget.dataset || {};
@@ -736,7 +736,7 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
                                                 <span>
                                                     <Button
                                                         data-action="export"
-                                                        onClick={onfileHandler}
+                                                        onClick={onFileHandler}
                                                         sx={buttonSx}
                                                         disabled={!!dnNotDownloadableReason}
                                                     >
