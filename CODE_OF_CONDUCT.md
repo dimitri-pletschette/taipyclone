@@ -3,8 +3,6 @@
 
 ## Our Pledge:-
 
-# Our Pledge
-
 
 We as members, contributors, and leaders pledge to make participation in our
 community a harassment-free experience for everyone, regardless of age, body
@@ -18,8 +16,6 @@ diverse, inclusive, and healthy community.
 
 
 ## Our Standards:-
-
-# Our Standards
 
 
 Examples of behavior that contributes to a positive environment for our
@@ -55,9 +51,6 @@ Examples of unacceptable behavior include:-
 
 ## Enforcement Responsibilities:-
 
-# Enforcement Responsibilities
-
-
 Community leaders are responsible for clarifying and enforcing our standards of
 acceptable behavior and will take appropriate and fair corrective action in
 response to any behavior that they deem inappropriate, threatening, offensive,
@@ -71,8 +64,6 @@ decisions when appropriate.
 
 ## Scope:-
 
-# Scope
-
 
 This Code of Conduct applies within all community spaces, and also applies when
 an individual is officially representing the community in public spaces.
@@ -82,8 +73,6 @@ representative at an online or offline event.
 
 
 ## Enforcement:-
-
-# Enforcement
 
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
@@ -98,17 +87,12 @@ reporter of any incident.
 
 ## Enforcement Guidelines:-
 
-# Enforcement Guidelines
-
 
 **Community leaders will follow these Community Impact Guidelines in determining**
 **the consequences for any action they deem in violation of this Code of Conduct:-**
 
 
 ### 1. Correction:-
-
-## 1. Correction
-
 
 **Community Impact:-** Use of inappropriate language or other behavior deemed
 unprofessional or unwelcome in the community.
@@ -119,8 +103,6 @@ behavior was inappropriate. A public apology may be requested.
 
 
 ### 2. Warning:-
-
-## 2. Warning
 
 
 **Community Impact:-** A violation through a single incident or series
@@ -136,8 +118,6 @@ permanent ban.
 
 ### 3. Temporary Ban:-
 
-## 3. Temporary Ban
-
 
 **Community Impact:-** A serious violation of community standards, including
 sustained inappropriate behavior.
@@ -151,8 +131,6 @@ Violating these terms may lead to a permanent ban.
 
 ### 4. Permanent Ban:-
 
-## 4. Permanent Ban
-
 
 **Community Impact:-** Demonstrating a pattern of violation of community
 standards, including sustained inappropriate behavior,  harassment of an
@@ -163,8 +141,6 @@ the community.
 
 
 ## Attribution:-
-
-# Attribution
 
 
 This Code of Conduct is adapted from the [Contributor Covenant][homepage],
