@@ -1,4 +1,4 @@
-# General contributions
+# General contributions:-
 
 Thanks for your interest in helping improve Taipy! Contributions are welcome, and they are greatly
 appreciated! Every little help and credit will always be given.
@@ -12,17 +12,13 @@ with a discussion or an issue.
 
 ## Code organisation:-
 
-## Project organisation
+## Project organisation:-
 
 
 Taipy is organised in two main repositories:-
 
 
 - [taipy](https://github.com/Avaiga/taipy) is the main repository that contains the code of Taipy packages.
-
-
-- [taipy](https://github.com/Avaiga/taipy) is the main repository that contains the code of Taipy
-    packages.
 
 - [taipy-doc](https://github.com/Avaiga/taipy-doc) is the documentation repository.
 
@@ -57,10 +53,10 @@ Do not hesitate to create an issue or pull request directly on the
 
 ## Implement Features:-
 
-# Code contributions
+# Code contributions:-
 
 
-## Code organization
+## Code organization:-
 
 The Taipy source code is located in the [taipy](https://github.com/Avaiga/taipy)
 repository, in the `taipy` directory.
@@ -73,9 +69,10 @@ Packages sources are organized in subdirectories from there:
 - `taipy-rest`
 - `taipy-templates`
 
-## Process and workflow
+## Process and workflow:-
 
-### Issue assignment
+### Issue assignment:-
+
 The Taipy team manages its backlog in private. Each issue that is or is going to be engaged by the
 Taipy team is attached to the "🔒 Staff only" label or has already been assigned to a Taipy team
 member. Please, do not work on it, the Taipy team is on it.
@@ -112,16 +109,21 @@ inform the community that you are working on it. Then, follow the steps below:
    guidelines:
      - The code and the branch name follow the
          [Taipy coding style](#coding-style-and-best-practices).
+       
      - Include tests.
+     - 
      - Code is [rebased](http://stackoverflow.com/a/7244456/1110993).
+     - 
      - License is present.
+     - 
      - pre-commit works - without mypy errors.
+     - 
      - Taipy tests are passing.
 
 5. The Taipy team will have a look at your Pull Request and will give feedback. If every
     requirement is valid, your work will be added in the next release, congratulations!
 
-### Issues or Pull requests inactivity
+### Issues or Pull requests inactivity:-
 
 - If your PR is not created or there is no other activity within 14 days of being assigned to
     the issue, a warning message will appear on the issue, and the issue will be marked as
@@ -145,9 +147,7 @@ Taipy's repositories follow the [PEP 8](https://www.python.org/dev/peps/pep-0008
 [PEP 484](https://www.python.org/dev/peps/pep-0484/) coding convention.
 
 
-## TypeScript:-
-
-### TypeScript
+### TypeScript:-
 
 
 Taipy's repositories use the [ESLint](https://eslint.org/) and
@@ -217,16 +217,19 @@ If you need to add a new dependency to Taipy, do not forget to add it in the `Pi
 `setup.py`. Keep in mind that dependency is a vector of attack. The Taipy team limits the usage
 of external dependencies at the minimum.
 
-## Installing the development kit
+## Installing the development kit:-
 
 If you need the source code for Taipy on your system to see how things are done or maybe
 contribute to the improvement of the packages, you can set your environment up by following
 the steps below.
 
-### Prerequisites
+### Prerequisites:-
+
 Before installing the Taipy development kit, ensure you have
 [Python](http://docs.python-guide.org/en/latest/starting/installation/) (**version 3.9 or later**),
+
 [pip](https://pip.pypa.io/en/latest/installation/), and
+
 [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed on your system.
 
 ??? note "On Mac OS M1 pro"
@@ -238,7 +241,7 @@ Before installing the Taipy development kit, ensure you have
     pip install python-libmagic
     ```
 
-### Cloning the repository
+### Cloning the repository:-
 
 First, clone the Taipy repository from GitHub using the following command:
 
@@ -248,7 +251,7 @@ git clone https://github.com/Avaiga/taipy.git
 
 This creates the 'taipy' directory holding all the package's source code.
 
-### Building the JavaScript bundles
+### Building the JavaScript bundles:-
 
 Taipy (and Taipy GUI) includes client-side code for web applications, written in
 [TypeScript](https://www.typescriptlang.org/), and uses [React](https://reactjs.org/).
@@ -260,7 +263,7 @@ There are two main JavaScript bundles to build:
 - Taipy: Contains specific visual elements for Taipy back-end functionalities
     (Scenario Management).
 
-**Prerequisites**: To build the JavaScript bundles, ensure you have [Node.js](https://nodejs.org/)
+**Prerequisites:-** To build the JavaScript bundles, ensure you have [Node.js](https://nodejs.org/)
 version 18 or higher installed. Node.js includes the
 [`npm` package manager](https://www.npmjs.com/).
 
@@ -270,7 +273,7 @@ and
 [Taipy front-end](https://github.com/Avaiga/taipy/blob/develop/frontend/taipy/README.md) README
 files. Build the Taipy GUI bundle first, as the Taipy front-end depends on it.
 
-**Build instructions:** Run the following commands from the root directory of the repository:
+**Build instructions:-** Run the following commands from the root directory of the repository:
 
 ```bash
 # Build the Taipy GUI bundle
@@ -290,7 +293,7 @@ npm run build
 These commands will create the `taipy/gui/webapp` and `taipy/gui_core/lib` directories in the root
 folder of the taipy repository.
 
-### Debugging the JavaScript bundles
+### Debugging the JavaScript bundles:-
 
 If you plan to modify the front-end code and need to debug the TypeScript code, you must use the
 following instead of the *standard* build option:
@@ -313,7 +316,7 @@ from your debugger.
     If you set this variable to the location where you build the web app repeatedly, you will no
     longer have to reinstall Taipy GUI before you try your code again.
 
-### Running the tests
+### Running the tests:-
 
 The Taipy package includes a test suite to ensure the package's functionality is correct.
 The tests are written using the [pytest](https://docs.pytest.org/en/latest/) framework.
