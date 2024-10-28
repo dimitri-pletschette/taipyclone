@@ -34,7 +34,7 @@ interface ButtonProps extends TaipyActiveProps {
 const cardSx = { p: 0 };
 
 const Button = (props: ButtonProps) => {
-    const { id, onAction = "", defaultLabel } = props;
+    const { id, onAction = "", defaultLabel, size="medium",variant="outlined" } = props;
     const [value, setValue] = useState<stringIcon>("");
     const dispatch = useDispatch();
     const module = useModule();
@@ -42,14 +42,12 @@ const Button = (props: ButtonProps) => {
     const className = useClassNames(props.libClassName, props.dynamicClassName, props.className);
     const active = useDynamicProperty(props.active, props.defaultActive, true);
     const hover = useDynamicProperty(props.hoverText, props.defaultHoverText, undefined);
-    const variant = (props.variant ?? "outlined") as "outlined" | "text" | "contained";
-    const size = (props.size ?? "medium") as "small"| "medium" | "large";
     const buttonSx = useMemo(() => (props.width ? { width: getCssSize(props.width) } : undefined), [props.width]);
 
     const handleClick = useCallback(() => {
         dispatch(createSendActionNameAction(id, module, onAction));
     }, [id, onAction, dispatch, module]);
-
+    
     useEffect(() => {
         setValue((val) => {
             if (props.label === undefined && defaultLabel) {
