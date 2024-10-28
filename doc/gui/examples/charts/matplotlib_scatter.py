@@ -33,7 +33,7 @@ legend1 = ax.legend(title="Bubble Size (Efficiency)", loc="upper left", frameon=
 ax.add_artist(legend1)
 
 # Convert the plot to an interactive HTML
-html_str = mpld3.fig_to_html(fig)
+# html_str = mpld3.fig_to_html(fig)
 
 # Define Taipy page content
 page = """
