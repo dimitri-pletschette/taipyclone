@@ -1,8 +1,19 @@
-from taipy.gui import Gui
-import matplotlib.pyplot as plt
-import numpy as np
-import mpld3
-
+# Copyright 2021-2024 Avaiga Private Limited
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+# an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+# -----------------------------------------------------------------------------------------
+# To execute this script, make sure that the taipy-gui package is installed in your
+# Python environment and run:
+#     python <script>
+# -----------------------------------------------------------------------------------------
+# Matplotlib scatter chart example
 from taipy.gui import Gui
 import matplotlib.pyplot as plt
 import numpy as np
@@ -37,9 +48,6 @@ handles = [plt.Line2D([0], [0], marker='o', color='w', markerfacecolor=plt.cm.Gr
 legend1 = ax.legend(handles=handles, title="Efficiency (%)", loc="center left", bbox_to_anchor=(1, 0.5), frameon=True, fontsize=10, labelspacing=2)
 ax.add_artist(legend1)
 
-# Convert the plot to an interactive HTML
-# html_str = mpld3.fig_to_html(fig)
-
 # Define Taipy page content
 page = """
 # Enhanced 2D Scatter Plot
@@ -50,4 +58,4 @@ This page contains an enhanced 2D scatter plot created with Matplotlib:
 """
 
 if __name__ == "__main__":
-    Gui(page, css_file="styles.css").run(title="Chart Scatter Matplotlib")
+    Gui(page, css_file="styles.css").run(title="Chart-Scatter-Matplotlib")
