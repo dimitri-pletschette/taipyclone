@@ -34,7 +34,7 @@ def test_metric_md_linear(gui: Gui, helpers):
 
 def test_metric_html_none(gui: Gui, helpers):
     html_string = '<taipy:metric type="None" value="42" />'
-    expected_list = ["<Metric", 'type="None"', 'value=42']
+    expected_list = ["<Metric", 'type="None"', 'value={42.0}']
     helpers.test_control_html(gui, html_string, expected_list)
 
 def test_metric_html_none_lowercase(gui: Gui, helpers):
