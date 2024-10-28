@@ -16,7 +16,7 @@
 from taipy.gui import Gui
 
 page = """
- "<|Button Label|button|variant=outlined|>"
+ <|Button Label|button|variant=outlined|>
 """
 
 if __name__ == "__main__":

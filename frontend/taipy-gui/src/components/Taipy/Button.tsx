@@ -29,8 +29,6 @@ interface ButtonProps extends TaipyActiveProps {
     width?: string | number;
     size?: "small" | "medium" | "large";
     variant?: "text" | "outlined" | "contained";
-    defaultVariant?: string;
-    defaultSize?:string;
 }
 
 const cardSx = { p: 0 };
@@ -44,8 +42,8 @@ const Button = (props: ButtonProps) => {
     const className = useClassNames(props.libClassName, props.dynamicClassName, props.className);
     const active = useDynamicProperty(props.active, props.defaultActive, true);
     const hover = useDynamicProperty(props.hoverText, props.defaultHoverText, undefined);
-    const variant = useDynamicProperty(props.variant,props.defaultVariant,"outlined") as "outlined"| "text" | "contained";
-    const size = useDynamicProperty(props.size,props.defaultSize,"medium") as "small"| "medium" | "large";
+    const variant = (props.variant ?? "outlined") as "outlined" | "text" | "contained";
+    const size = (props.size ?? "medium") as "small"| "medium" | "large";
     const buttonSx = useMemo(() => (props.width ? { width: getCssSize(props.width) } : undefined), [props.width]);
 
     const handleClick = useCallback(() => {
