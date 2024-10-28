@@ -75,6 +75,8 @@ class _Builder:
         "style",
         "tooltip",
         "lov",
+        "row_class_name",
+        "cell_class_name"
     ]
 
     def __init__(
