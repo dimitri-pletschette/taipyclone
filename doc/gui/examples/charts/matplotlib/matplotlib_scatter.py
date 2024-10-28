@@ -46,7 +46,7 @@ page = """
 
 This page contains an enhanced 2D scatter plot created with Matplotlib:
 
-<|part|content={fig}|height="600px">
+<|part|content={fig}|>
 """
 
 if __name__ == "__main__":
