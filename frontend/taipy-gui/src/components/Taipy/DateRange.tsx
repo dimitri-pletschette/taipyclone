@@ -42,6 +42,7 @@ interface DateRangeProps extends TaipyActiveProps, TaipyChangeProps {
     separator?: string;
     width?: string | number;
     analogic?: boolean;
+    minuteJump?: number;
 }
 
 const textFieldProps = { textField: { margin: "dense" } } as BaseDateTimePickerSlotProps<Date>;
@@ -74,7 +75,7 @@ const analogicRenderers = {
 }
 
 const DateRange = (props: DateRangeProps) => {
-    const { updateVarName, withTime = false, id, propagate = true, separator = "-", analogic = false } = props;
+    const { updateVarName, withTime = false, id, propagate = true, separator = "-", analogic = false, minuteJump = 15 } = props;
     const dispatch = useDispatch();
     const formatConfig = useFormatConfig();
     const tz = formatConfig.timeZone;
@@ -166,6 +167,7 @@ const DateRange = (props: DateRangeProps) => {
                                     format={props.format}
                                     sx={dateSx}
                                     viewRenderers={ analogic ? analogicRenderers : undefined }
+                                    timeSteps={{minutes:minuteJump}}
                                 />
                                 <Typography>{separator}</Typography>
                                 <DateTimePicker
@@ -183,6 +185,7 @@ const DateRange = (props: DateRangeProps) => {
                                     format={props.format}
                                     sx={dateSx}
                                     viewRenderers={ analogic ? analogicRenderers : undefined }
+                                    timeSteps={{minutes:minuteJump}}
                                 />
                             </>
                         ) : (
