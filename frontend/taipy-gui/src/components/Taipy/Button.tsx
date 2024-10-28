@@ -47,7 +47,7 @@ const Button = (props: ButtonProps) => {
     const handleClick = useCallback(() => {
         dispatch(createSendActionNameAction(id, module, onAction));
     }, [id, onAction, dispatch, module]);
-    
+
     useEffect(() => {
         setValue((val) => {
             if (props.label === undefined && defaultLabel) {
