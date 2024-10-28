@@ -1,5 +1,4 @@
 from taipy.gui import Gui
-import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import mpld3
@@ -13,7 +12,7 @@ sizes = [e * h * 50 for e, h in zip(employee_performance, happiness_scores)]
 colors = sizes  # Color based on sizes
 
 # Create the Matplotlib figure
-figure, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots(figsize=(12, 8))  # Adjust figsize for better height
 scatter = ax.scatter(employee_performance, happiness_scores, s=sizes, c=colors, cmap="Greens", vmin=min(colors), vmax=max(colors))
 ax.set(xlim=(1, 6), xticks=np.arange(1, 7), ylim=(1, 6), yticks=np.arange(1, 7))
 ax.set_xlabel('Performance Score')
@@ -29,26 +28,20 @@ legend_labels = np.unique(np.round(sizes, decimals=-1))
 for label in legend_labels:
     ax.scatter([], [], c='g', alpha=0.5, s=label, label=str(int(label)))
 
-legend1 = ax.legend(title="Bubble Size (Efficiency)", loc="upper right", frameon=True, fontsize=10)
-ax.legend(title="Bubble Size (Efficiency)", scatterpoints=1, labelspacing=1.5)
+# Only one legend on the left side
+legend1 = ax.legend(title="Bubble Size (Efficiency)", loc="upper left", frameon=True, fontsize=10)
 ax.add_artist(legend1)
 
-# Ensure figure is rendered in Taipy
-figure.tight_layout()
-
 # Convert the plot to an interactive HTML
-#html_str = mpld3.fig_to_html(figure)
-
-# Show the plot in a browser
-#mpld3.show()
+html_str = mpld3.fig_to_html(fig)
 
 # Define Taipy page content
-page = f"""
+page = """
 # Enhanced 2D Scatter Plot
 
 This page contains an enhanced 2D scatter plot created with Matplotlib:
 
-<|data={figure}|chart|height=520px|>
+<|part|content={fig}|height=600px>
 """
 
 if __name__ == "__main__":
