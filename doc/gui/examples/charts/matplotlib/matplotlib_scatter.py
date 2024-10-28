@@ -50,9 +50,13 @@ ax.add_artist(legend1)
 
 # Define Taipy page content
 page = """
-# Enhanced 2D Scatter Plot
+<|toggle|theme|>
 
-This page contains an enhanced 2D scatter plot created with Matplotlib:
+<center style="color: var(--taipy-primary); font-size: 2.5em; font-weight:bold">
+  **Matplotlib**{: .color-primary} 2D Scatter Plot
+</center>
+This page contains an enhanced 2D scatter plot created with Matplotlib: 
+<br/><br/>
 
 <|part|content={fig}|>
 """
