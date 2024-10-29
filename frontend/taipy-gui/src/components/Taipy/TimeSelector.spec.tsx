@@ -77,7 +77,15 @@ describe("TimeSelector component with digital time picker", () => {
         const elt = getByTestId("ClockIcon");
         expect(elt.parentElement?.tagName).toBe("BUTTON");
     });
-
+    it("renders time dropdown with minutes steps", async () => {
+        const { getByTestId } = render(
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <TimeSelector time={curDateStr} minuteJump={15}/>
+            </LocalizationProvider>
+        );
+        const elt = getByTestId("CalendarIcon");
+        expect(elt.parentElement?.tagName).toBe("BUTTON");
+    });
     it("displays the right info for string", async () => {
         const { getByTestId } = render(
             <LocalizationProvider dateAdapter={AdapterDateFns}>

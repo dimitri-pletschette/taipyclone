@@ -257,6 +257,16 @@ describe("DateRange with time Component", () => {
         expect(elts).toHaveLength(2);
         expect(elts[0].parentElement?.tagName).toBe("BUTTON");
     });
+    it("renders time dropdown with minutes steps", async () => {
+        const { getAllByTestId } = render(
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateRange dates={curDates} withTime={true} minuteJump={15}/>
+            </LocalizationProvider>
+        );
+        const elts = getAllByTestId("CalendarIcon");
+        expect(elts).toHaveLength(2);
+        expect(elts[0].parentElement?.tagName).toBe("BUTTON");
+    });
     it("displays the right info for string", async () => {
         const { getAllByTestId } = render(
             <LocalizationProvider dateAdapter={AdapterDateFns}>

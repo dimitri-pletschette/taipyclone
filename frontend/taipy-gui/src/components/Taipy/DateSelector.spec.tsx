@@ -216,6 +216,15 @@ describe("DateSelector with time Component", () => {
         const elt = getByTestId("CalendarIcon");
         expect(elt.parentElement?.tagName).toBe("BUTTON");
     });
+    it("renders time dropdown with minutes steps", async () => {
+        const { getByTestId } = render(
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateSelector date={curDateStr} withTime={true} minuteJump={15}/>
+            </LocalizationProvider>
+        );
+        const elt = getByTestId("CalendarIcon");
+        expect(elt.parentElement?.tagName).toBe("BUTTON");
+    });
     it("displays the right info for string", async () => {
         const { getByTestId } = render(
             <LocalizationProvider dateAdapter={AdapterDateFns}>
