@@ -83,7 +83,7 @@ describe("TimeSelector component with digital time picker", () => {
                 <TimeSelector time={curDateStr} minuteJump={15}/>
             </LocalizationProvider>
         );
-        const elt = getByTestId("CalendarIcon");
+        const elt = getByTestId("ClockIcon");
         expect(elt.parentElement?.tagName).toBe("BUTTON");
     });
     it("displays the right info for string", async () => {
