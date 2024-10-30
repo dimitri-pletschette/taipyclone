@@ -64,17 +64,28 @@ ax.add_artist(legend1)
 plt.tight_layout(rect=[0, 0, 0.75, 1])  # Adjust the rect parameter to leave space for the legend
 
 # Define Taipy page content
-page = """
-<|toggle|theme|>
+page = Markdown(
+  """
+  <|toggle|theme|>
+  # **Matplotlib** 2D Scatter Plot
 
-<center style="color: var(--taipy-primary); font-size: 2.5em; font-weight:bold">
-  **Matplotlib**{: .color-primary} 2D Scatter Plot
-</center>
-This page contains a 2D scatter plot created with Matplotlib: 
-<br/><br/>
+  This page contains a 2D scatter plot created with Matplotlib: 
 
-<|part|content={fig}|>
-"""
+  <|part|class_name='scatter-plot'|content={fig}|>
+  """, 
+  style={
+      "img": {
+          "display": "block",
+          "margin": "auto"
+      },
+      ".scatter-plot": {
+          "height": "560px",
+          "display": "flex",
+          "align-items": "center",
+          "justify-content": "center"
+      }
+  }
+)
 
 if __name__ == "__main__":
-    Gui(page, css_file="styles.css").run(title="Chart-Scatter-Matplotlib")
+    Gui(page, style="style").run(title="Chart-Scatter-Matplotlib")
