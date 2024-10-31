@@ -18,10 +18,10 @@
 # -----------------------------------------------------------------------------------------
 # Matplotlib example
 import numpy as np
-import matplotlib.pyplot as plt
 
-from taipy.gui import Gui
+import matplotlib.pyplot as plt
 import taipy.gui.builder as tgb
+from taipy.gui import Gui
 
 fig = plt.figure(figsize=(5, 4))
 xx = np.arange(0, 2 * np.pi, 0.01)

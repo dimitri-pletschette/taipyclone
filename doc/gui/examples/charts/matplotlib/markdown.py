@@ -18,8 +18,8 @@
 # -----------------------------------------------------------------------------------------
 # Matplotlib example
 import numpy as np
-import matplotlib.pyplot as plt
 
+import matplotlib.pyplot as plt
 from taipy.gui import Gui, Markdown
 
 fig = plt.figure(figsize=(5,4))
