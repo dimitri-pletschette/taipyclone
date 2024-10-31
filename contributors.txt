@@ -18,4 +18,7 @@ Luke-0162
 Satoshi-Sh
 kushal34712
 DeepanshuProgrammer
+<<<<<<< HEAD
 kaze-droid
+=======
+>>>>>>> 11bcae94c (Update contributors.txt)
