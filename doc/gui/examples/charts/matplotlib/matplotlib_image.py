@@ -29,7 +29,8 @@ colors = sizes  # Color based on sizes
 
 # Create the Matplotlib figure
 fig, ax = plt.subplots(figsize=(10, 5.2))  # Adjust figsize for a slightly smaller chart
-scatter = ax.scatter(employee_performance, happiness_scores, s=sizes, c=colors, cmap="Greens", vmin=min(colors), vmax=max(colors))
+scatter = ax.scatter(employee_performance, happiness_scores, s=sizes,
+                     c=colors, cmap="Greens", vmin=min(colors), vmax=max(colors))
 ax.set(xlim=(1, 6), xticks=np.arange(1, 7), ylim=(1, 6), yticks=np.arange(1, 7))
 ax.set_xlabel('Performance Score')
 ax.set_ylabel('Happiness Index')
@@ -47,17 +48,19 @@ scaled_sizes = [size / max(sizes) * 100 for size in sizes]
 handles = [
     plt.Line2D(
         [0], [0], marker='o', color='w', 
-        markerfacecolor=plt.cm.Greens(color / max(colors)), 
-        markersize=np.sqrt(size) / 1, 
+        markerfacecolor=plt.cm.Greens(color / max(colors)),
+        markersize=np.sqrt(size) / 1,
         label=f'Emp {i+1} ({int(size)}%)'
-    ) 
+    )
     for i, (color, size) in enumerate(zip(colors, scaled_sizes))
 ]
-legend1 = ax.legend(handles=handles, title="Employees and Efficiency (%)", loc="center left", bbox_to_anchor=(1, 0.5), frameon=True, fontsize=10, labelspacing=2)
+legend1 = ax.legend(handles=handles, title="Employees and Efficiency (%)",
+                     loc="center left", bbox_to_anchor=(1, 0.5), frameon=True, fontsize=10, labelspacing=2)
 ax.add_artist(legend1)
 
 # Positioning the legend to avoid clipping
-legend1 = ax.legend(handles=handles, title="Employees and Efficiency (%)", loc="center right", bbox_to_anchor=(-0.2, 0.5), frameon=True, fontsize=10, labelspacing=2)
+legend1 = ax.legend(handles=handles, title="Employees and Efficiency (%)",
+                     loc="center right", bbox_to_anchor=(-0.2, 0.5), frameon=True, fontsize=10, labelspacing=2)
 ax.add_artist(legend1)
 
 # Adjust layout to ensure everything fits
@@ -65,16 +68,19 @@ plt.tight_layout(rect=[0, 0, 0.75, 1])
 
 # Define Taipy page content
 page_content = Markdown("""
-# Matplotlib 2D Scatter Plot
-<|part|content={fig}|class_name=scatter-plot|>
-""",style={
+    # Matplotlib 2D Scatter Plot
+    <|part|content={fig}|class_name=scatter-plot|>
+    """,style={
+    ".img": {
+        "display": "block",
+        "margin": "auto",
+    }
     ".scatter-plot": {
         "display": "block",
         "margin": "auto",
-        "height": "560px"
+        "height": "560px",
     }
-}
-)
+})
 
 if __name__ == "__main__":
     Gui(page_content).run(title="Chart-Scatter-Matplotlib")
