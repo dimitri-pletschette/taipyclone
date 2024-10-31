@@ -17,7 +17,6 @@
 from taipy.gui import Gui, Markdown
 import matplotlib.pyplot as plt
 import numpy as np
-import mpld3
 import os
 
 # Define data
