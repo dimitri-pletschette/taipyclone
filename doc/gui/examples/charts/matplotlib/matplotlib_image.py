@@ -61,7 +61,7 @@ legend1 = ax.legend(handles=handles, title="Employees and Efficiency (%)", loc="
 ax.add_artist(legend1)
 
 # Adjust layout to ensure everything fits
-plt.tight_layout(rect=[0, 0, 0.75, 1])  # Adjust the rect parameter to leave space for the legend
+plt.tight_layout(rect=[0, 0, 0.75, 1])
 
 # Save the figure as a PNG image
 output_dir = './images'
@@ -78,8 +78,8 @@ page_content = Markdown("""
     ".scatter-plot": {
         "display": "block",
         "margin": "auto",
-        "max-width": "100% !important",  # Ensures the image does not overflow
-        "width": "1000px !important",   # Sets the width to the intrinsic size with higher priority
+        "max-width": "100% !important",
+        "width": "1000px !important",
         "height": "520px !important" 
     }
 }
