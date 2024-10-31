@@ -71,10 +71,6 @@ page_content = Markdown("""
     # Matplotlib 2D Scatter Plot
     <|part|content={fig}|class_name=scatter-plot|>
     """,style={
-    ".img": {
-        "display": "block",
-        "margin": "auto",
-    }
     ".scatter-plot": {
         "display": "block",
         "margin": "auto",
