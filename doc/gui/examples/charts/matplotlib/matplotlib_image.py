@@ -16,55 +16,47 @@
 # Matplotlib scatter chart example
 from taipy.gui import Gui, Markdown
 import matplotlib.pyplot as plt
-import numpy as np
 import os
 
-# Define data
-employee_performance = [2, 3.5, 2, 3.5, 3, 4]
-happiness_scores = [2, 3, 4, 5, 2, 3]
+# Generate a scatter plot
+x = [1, 2, 3, 4, 5]  # x axis values
+y = [10, 14, 12, 15, 18]  # y axis values
+sizes = [100, 100, 100, 100, 100]  # Bubble sizes
+colors = [30, 40, 50, 60, 70]  # Bubble color values that will be mapped to shades of colormap (cmap)
 
-# Calculate sizes based on product of performance and happiness, scaled to 1-100%
-sizes = [e * h * 20 for e, h in zip(employee_performance, happiness_scores)]
-colors = sizes  # Color based on sizes
+# Scatter plot
+# The `c` parameter uses the `colors` list to map values to the colormap (cmap)
+# The `edgecolors` parameter sets the color of the edges around the bubbles
+plt.scatter(x, y, s=sizes, c=colors, cmap='Greens', edgecolors='black', linewidths=1) # scatter plot
+plt.xlabel('X-axis')
+plt.ylabel('Y-axis')
+plt.title('Matplotlib 2D Scatter Plot')
 
-# Create the Matplotlib figure
-fig, ax = plt.subplots(figsize=(10, 5.2))  # Adjust figsize for a slightly smaller chart
-scatter = ax.scatter(employee_performance, happiness_scores, s=sizes,
-                     c=colors, cmap="Greens", vmin=min(colors), vmax=max(colors))
-ax.set(xlim=(1, 6), xticks=np.arange(1, 7), ylim=(1, 6), yticks=np.arange(1, 7))
-ax.set_xlabel('Performance Score')
-ax.set_ylabel('Happiness Index')
-ax.set_title('Employee Performance vs. Happiness')
+# Adding labels next to each point
+for i in range(len(x)):
+    plt.text(x[i] + 0.1, y[i] - 0.1, f'Point {i+1}', fontsize=9, ha='left')
 
-# Example labels for bubbles
-for i in range(len(employee_performance)):
-    ax.text(employee_performance[i], happiness_scores[i], f'Emp {i+1}', fontsize=12, ha='right')
-
-# Scale sizes to percentages
-scaled_sizes = [size / max(sizes) * 100 for size in sizes]
-
-# Create legend with employee labels and matching bubble colors and percentages
-scaled_sizes = [size / max(sizes) * 100 for size in sizes]
+# Creating legend entries for each point
+# Each entry corresponds to a point, with the color and label indicating the point's position.
+# The `markerfacecolor` sets the fill color of the legend marker to match the point's color in the 'Greens' colormap.
+# The `markeredgecolor` sets the edge color of the legend marker.
+# The `markeredgewidth` sets the width of the edge.
 handles = [
     plt.Line2D(
-        [0], [0], marker='o', color='w', 
+        [0], [0], marker='o', color='w',
         markerfacecolor=plt.cm.Greens(color / max(colors)),
-        markersize=np.sqrt(size) / 1,
-        label=f'Emp {i+1} ({int(size)}%)'
-    )
-    for i, (color, size) in enumerate(zip(colors, scaled_sizes))
+        markersize=10,  # Adjust the size for visibility
+        label=f'Point {i+1}',
+        markeredgewidth=1,  # Thickness of the edge color
+        markeredgecolor='black'  # Edge color to match the plot
+    ) for i, color in enumerate(colors)
 ]
-legend1 = ax.legend(handles=handles, title="Employees and Efficiency (%)",
-                     loc="center left", bbox_to_anchor=(1, 0.5), frameon=True, fontsize=10, labelspacing=2)
-ax.add_artist(legend1)
 
-# Positioning the legend to avoid clipping
-legend1 = ax.legend(handles=handles, title="Employees and Efficiency (%)",
-                     loc="center right", bbox_to_anchor=(-0.2, 0.5), frameon=True, fontsize=10, labelspacing=2)
-ax.add_artist(legend1)
+# Placing the legend on the left side of the chart
+plt.legend(handles=handles, title="Points", loc="center left", bbox_to_anchor=(1, 0.5), frameon=True)
 
-# Adjust layout to ensure everything fits
-plt.tight_layout(rect=[0, 0, 0.75, 1])
+# Adjust the layout to ensure everything fits and nothing is clipped
+plt.tight_layout(rect=[0, 0, 1, 1])
 
 # Save the figure as a PNG image
 output_dir = './images'
@@ -77,13 +69,13 @@ plt.savefig(content)
 page_content = Markdown("""
 # Matplotlib 2D Scatter Plot
 <|{content}|image|class_name=scatter-plot|>
-""",style={
+""", style={
     ".scatter-plot": {
         "display": "block",
         "margin": "auto",
         "max-width": "100% !important",
-        "width": "1000px !important",
-        "height": "520px !important" 
+        "width": "max-content !important",
+        "height": "max-content !important"
     }
 })
 
