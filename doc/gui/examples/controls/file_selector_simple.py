@@ -20,5 +20,6 @@ filename = "<unknown>"
 page = """<|{filename}|file_selector|>
 <|selected File: {filename}|>
 """
+
 if __name__ == "__main__":
     Gui(page).run(title="File Selector - Simple")

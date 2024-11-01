@@ -22,16 +22,16 @@ from taipy.gui import Gui, State
 path = ""
 image = None
 
-page = """
-<|{path}|file_selector|on_action=upload|extensions=png,jpg|>
-<|{image}|image|>
-"""
-
 def upload(state: State):
     img = Image.open(state.path)
     img_byte_arr = io.BytesIO()
     img.save(img_byte_arr, format="PNG")
     state.image = img_byte_arr.getvalue()
+
+page = """
+<|{path}|file_selector|on_action=upload|extensions=png,jpg|>
+<|{image}|image|>
+"""
 
 if __name__ == "__main__":
     Gui(page).run(title="File Selector - With image")
