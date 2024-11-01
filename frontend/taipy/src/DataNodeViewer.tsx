@@ -96,8 +96,7 @@ import CoreSelector from "./CoreSelector";
 import { useUniqueId } from "./utils/hooks";
 import DataNodeChart from "./DataNodeChart";
 import DataNodeTable from "./DataNodeTable";
-
-const LazyReactJson = lazy(() => import("react-json-view"));
+import JSONTree from "./utils/LazyReactJsonTree";
 
 const editTimestampFormat = "YYY/MM/dd HH:mm";
 
@@ -1025,19 +1024,14 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
                                                     <>
                                                     <Suspense fallback={<div>Loading JSON...</div>}>
                                                         <Grid container spacing={2}>
-                                                            <Grid xs={12}>
+                                                            <Grid size={12}>
                                                                 <Typography variant="subtitle2">JSON Data</Typography>
                                                             </Grid>
-                                                            <Grid xs={12}>
-                                                                <LazyReactJson
-                                                                    // json data as prop
-                                                                    src={dtValue}
-                                                                    // collapsed intitially
-                                                                    collapsed={true}
-                                                                    // disabling copy to clipboard
-                                                                    enableClipboard={true}
-                                                                    // hide data type
-                                                                    displayDataTypes={false}
+                                                            <Grid size={12}>
+                                                                <JSONTree
+                                                                    data={dtValue}
+                                                                    hideRoot={true}
+                                                                    shouldExpandNode={() => false}
                                                                 />
                                                             </Grid>
                                                         </Grid>

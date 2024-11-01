@@ -1,25 +1,23 @@
+import taipy as tp
+import taipy.gui.builder as tgb
+from taipy import Config, Orchestrator, Scope
 from taipy.gui import Gui
-import json
 
-# Sample JSON data for testing
-json_data = {
-    "name": "Sample Data",
-    "type": "Example JSON",
-    "attributes": {
-        "id": 123,
-        "description": "A simple JSON structure for demonstration",
-        "values": [1, 2, 3, 4, 5],
-        "nested": {
-            "flag": True,
-            "count": 10
-        }
-    }
-}
+json_config_node = Config.configure_json_data_node(
+    id="json_node",
+    default_path="./demo-1248-dn.json",
+    scope=Scope.GLOBAL,
+)
 
-# Define the page with the JSON viewer
-page = """
-<|{json_data}|json|expandable|>
-"""
+with tgb.Page() as data_node_viewer:
+    tgb.html("h2", "Discovering Data Node JSON Viewer")
+    tgb.data_node(
+        data_node="{json_data_node}"
+    )
+
+gui = Gui(page=data_node_viewer)
 
 if __name__ == "__main__":
-    Gui(page).run(title="DataNode JSON Viewer Example")
+    Orchestrator().run()
+    json_data_node = tp.create_global_data_node(json_config_node)
+    gui.run(title="1248 JSON Data Node")

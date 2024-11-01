@@ -42,6 +42,7 @@ from taipy.core.reason import ReasonCollection
 from taipy.gui._warnings import _warn
 from taipy.gui.gui import _DoNotUpdate
 from taipy.gui.utils import _is_boolean, _is_true, _TaipyBase
+from taipy.core.data import JSONDataNode
 
 from .filters import DataNodeFilter, ScenarioFilter, _Filter
 
@@ -187,8 +188,8 @@ class _GuiCoreScenarioNoUpdate(_TaipyBase, _DoNotUpdate):
 class _GuiCoreDatanodeAdapter(_TaipyBase):
     @staticmethod
     def _is_tabular_data(datanode: DataNode, value: t.Any):
-        return isinstance(datanode, _TabularDataNodeMixin) or isinstance(
-            value, (pd.DataFrame, pd.Series, list, tuple, dict)
+        return isinstance(datanode, _TabularDataNodeMixin) or (
+            isinstance(value, (pd.DataFrame, pd.Series, list, tuple, dict)) and not isinstance(datanode, JSONDataNode)
         )
 
     def __get_data(self, dn: DataNode):
