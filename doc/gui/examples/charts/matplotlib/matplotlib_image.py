@@ -13,10 +13,12 @@
 # Python environment and run:
 #     python <script>
 # -----------------------------------------------------------------------------------------
-# Matplotlib scatter chart example
 import os
+
 import matplotlib.pyplot as plt
+
 from taipy.gui import Gui, Markdown
+
 
 # Generate a scatter plot
 x = [1, 2, 3, 4, 5]  # x axis values
