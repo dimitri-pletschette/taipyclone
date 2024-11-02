@@ -41,7 +41,7 @@ interface DisableDateConfig {
     dayOfWeek?: number;
     interval?: number;
     oddInterval?:boolean;
-    occurence?: number;
+    occurrence?: number;
 }
 interface DateSelectorProps extends TaipyActiveProps, TaipyChangeProps {
     withTime?: boolean;
@@ -157,7 +157,7 @@ const DateSelector = (props: DateSelectorProps) => {
                 const isCorrectDay = date.getDay() === disableDateConfig.dayOfWeek;
                 const weekNumberInMonth = getWeekNumberInMonth(date);
                 const intervalCheck=disableDateConfig.oddInterval?1:0;
-                if (isCorrectDay && !disableDateConfig.interval && !disableDateConfig.occurence) {
+                if (isCorrectDay && !disableDateConfig.interval && !disableDateConfig.occurrence) {
                     return true;
                 } 
                 if (isCorrectDay && disableDateConfig.interval) {   
@@ -165,10 +165,10 @@ const DateSelector = (props: DateSelectorProps) => {
                         return true;
                     }
                 }
-                if (isCorrectDay && disableDateConfig.occurence) {
+                if (isCorrectDay && disableDateConfig.occurrence) {
                     const dayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
                     const dayDifference = (disableDateConfig.dayOfWeek - dayOfMonth.getDay() + 7) % 7;
-                    const occurrenceDate = new Date(date.getFullYear(), date.getMonth(), 1 + dayDifference + (7 * (disableDateConfig.occurence-1)));
+                    const occurrenceDate = new Date(date.getFullYear(), date.getMonth(), 1 + dayDifference + (7 * (disableDateConfig.occurrence-1)));
                     if(occurrenceDate.getDate()==date.getDate()){
                         return true;
                     }
