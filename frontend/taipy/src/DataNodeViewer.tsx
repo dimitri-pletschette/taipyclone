@@ -96,7 +96,7 @@ import CoreSelector from "./CoreSelector";
 import { useUniqueId } from "./utils/hooks";
 import DataNodeChart from "./DataNodeChart";
 import DataNodeTable from "./DataNodeTable";
-import JSONTree from "./utils/LazyReactJsonTree";
+import LazyJsonViewer from "./utils/LazyJsonViewer";
 
 const editTimestampFormat = "YYY/MM/dd HH:mm";
 
@@ -1113,14 +1113,15 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
                                                             disabled={true}
                                                             title={`${dtValue}`}
                                                         />
-                                                    ) : dtType === "json" ? (
-                                                        <Suspense fallback={<div>Loading JSON...</div>}>
-                                                            <JSONTree
-                                                                data={dtValue}
-                                                                shouldExpandNode={() => true}
-                                                                hideRoot={true}
-                                                            />
-                                                        </Suspense>
+                                                    ) : dtType === "dict" ? (
+                                                        <Grid container spacing={2}>
+                                                            <Grid size={12}>
+                                                                <Typography variant="subtitle2">JSON Data</Typography>
+                                                            </Grid>
+                                                            <Grid size={12}>
+                                                                <LazyJsonViewer value={dtValue} collapsed={true} />
+                                                            </Grid>
+                                                        </Grid>
                                                     ) : (
                                                         <Typography variant="subtitle2">
                                                             {dtType == "date"
