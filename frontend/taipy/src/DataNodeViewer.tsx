@@ -67,6 +67,7 @@ import {
     createRequestUpdateAction,
     createSendActionNameAction,
     getUpdateVar,
+    useClassNames,
     useDynamicProperty,
     useModule,
     Store,
@@ -88,7 +89,6 @@ import {
     iconLabelSx,
     popoverOrigin,
     tinySelPinIconButtonSx,
-    useClassNames,
 } from "./utils";
 import PropertiesEditor, { DatanodeProperties } from "./PropertiesEditor";
 import { NodeType, Scenarios } from "./utils/types";
@@ -162,7 +162,7 @@ enum DatanodeDataProps {
     error,
 }
 
-interface DataNodeViewerProps extends  CoreProps {
+interface DataNodeViewerProps extends CoreProps {
     expandable?: boolean;
     expanded?: boolean;
     defaultDataNode?: string;
@@ -172,6 +172,7 @@ interface DataNodeViewerProps extends  CoreProps {
     showOwner?: boolean;
     showEditDate?: boolean;
     showExpirationDate?: boolean;
+    showCustomProperties?: boolean;
     showProperties?: boolean;
     showHistory?: boolean;
     showData?: boolean;
@@ -241,6 +242,7 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
         showOwner = true,
         showEditDate = false,
         showExpirationDate = false,
+        showCustomProperties = true,
         showProperties = true,
         showHistory = true,
         showData = true,
@@ -285,7 +287,9 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
     const dtError = dnData[DatanodeDataProps.error];
 
     // Tabs
-    const [tabValue, setTabValue] = useState<TabValues>(TabValues.Data);
+    const [tabValue, setTabValue] = useState<TabValues | undefined>(
+        showData ? TabValues.Data : showProperties ? TabValues.Properties : showHistory ? TabValues.History : undefined
+    );
     const handleTabChange = useCallback(
         (_: SyntheticEvent, newValue: number) => {
             if (valid) {
@@ -382,14 +386,14 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
                 );
             }
             if (!dn || isNewDn) {
-                setTabValue(showData ? TabValues.Data : TabValues.Properties);
+                (showData || showProperties || showHistory) && setTabValue(showData ? TabValues.Data : showProperties ? TabValues.Properties: showHistory ? TabValues.History: undefined);
             }
             if (!dn) {
                 return invalidDatanode;
             }
             editLock.current = dn[DataNodeFullProps.editInProgress];
             setHistoryRequested((req) => {
-                if (req && !isNewDn && tabValue == TabValues.History) {
+                if (req && showHistory && !isNewDn && tabValue == TabValues.History) {
                     const idVar = getUpdateVar(updateDnVars, "history_id");
                     const vars = getUpdateVarNames(updateVars, "history");
                     Promise.resolve().then(() =>
@@ -415,9 +419,9 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
                 return false;
             });
             setPropertiesRequested((req) => {
-                if ((req || !showData) && tabValue == TabValues.Properties) {
+                if ((req || !showData) && showProperties && tabValue == TabValues.Properties) {
                     const idVar = getUpdateVar(updateDnVars, "properties_id");
-                    const vars = getUpdateVarNames(updateVars, "properties");
+                    const vars = getUpdateVarNames(updateVars, "dnProperties");
                     Promise.resolve().then(() =>
                         dispatch(
                             createRequestUpdateAction(id, module, vars, true, idVar ? { [idVar]: newDnId } : undefined)
@@ -433,7 +437,7 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
             return dn;
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.dataNode, props.defaultDataNode, showData, id, dispatch, module, props.onLock]);
+    }, [props.dataNode, props.defaultDataNode, showData, showProperties, showHistory, id, dispatch, module, props.onLock]);
 
     // clean lock on unmount
     useEffect(
@@ -635,7 +639,7 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
     );
 
     // file action
-    const onfileHandler = useCallback(
+    const onFileHandler = useCallback(
         (e: MouseEvent<HTMLElement>) => {
             e.stopPropagation();
             const { action = "import" } = e.currentTarget.dataset || {};
@@ -669,14 +673,18 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
     useEffect(() => {
         const ids = coreChanged?.datanode;
         if ((typeof ids === "string" && ids === dnId) || (Array.isArray(ids) && ids.includes(dnId))) {
-            props.updateVarName &&
-                dispatch(createRequestUpdateAction(id, module, [props.updateVarName], true));
+            props.updateVarName && dispatch(createRequestUpdateAction(id, module, [props.updateVarName], true));
         }
     }, [coreChanged, props.updateVarName, id, module, dispatch, dnId]);
 
     return (
         <>
-            <Box sx={dnMainBoxSx} id={id} onClick={onFocus} className={`${className} ${getComponentClassName(props.children)}`}>
+            <Box
+                sx={dnMainBoxSx}
+                id={id}
+                onClick={onFocus}
+                className={`${className} ${getComponentClassName(props.children)}`}
+            >
                 <Accordion defaultExpanded={expanded} expanded={userExpanded} onChange={onExpand} disabled={!valid}>
                     <AccordionSummary
                         expandIcon={expandable ? <ArrowForwardIosSharp sx={AccordionIconSx} /> : null}
@@ -720,6 +728,7 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
                                         label="Properties"
                                         id={`${uniqId}-properties`}
                                         aria-controls={`${uniqId}-dn-tabpanel-properties`}
+                                        style={showProperties ? undefined : noDisplay}
                                     />
                                     <Tab
                                         label="History"
@@ -737,7 +746,7 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
                                                 <span>
                                                     <Button
                                                         data-action="export"
-                                                        onClick={onfileHandler}
+                                                        onClick={onFileHandler}
                                                         sx={buttonSx}
                                                         disabled={!!dnNotDownloadableReason}
                                                     >
@@ -917,7 +926,7 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
                                             ? props.dnProperties
                                             : []
                                     }
-                                    show={showProperties}
+                                    show={showCustomProperties}
                                     focusName={focusName}
                                     setFocusName={setFocusName}
                                     onFocus={onFocus}
