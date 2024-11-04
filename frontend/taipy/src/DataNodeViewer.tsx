@@ -1115,16 +1115,9 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
                                                             title={`${dtValue}`}
                                                         />
                                                     ) : dtType === "dict" ? (
-                                                        <Grid container spacing={2}>
-                                                            <Grid size={12}>
-                                                                <Typography variant="subtitle2">JSON Data</Typography>
-                                                            </Grid>
-                                                            <Grid size={12}>
-                                                                <Suspense fallback={<div>Loading JSON Viewer...</div>}>
-                                                                    <JsonViewer value={dtValue} collapsed={1} groupArraysAfterLength={5} />
-                                                                </Suspense>
-                                                            </Grid>
-                                                        </Grid> 
+                                                        <Suspense fallback={<div>Loading JSON Viewer...</div>}>
+                                                            <JsonViewer value={dtValue} collapsed={1} groupArraysAfterLength={5} />
+                                                        </Suspense>
                                                     ) : (
                                                         <Typography variant="subtitle2">
                                                             {dtType == "date"
