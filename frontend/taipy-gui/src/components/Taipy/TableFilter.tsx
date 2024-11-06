@@ -304,7 +304,7 @@ const FilterRow = (props: FilterRowProps) => {
                         slotProps={{
                             input: {
                                 endAdornment: (
-                                    <Tooltip title={matchCase ? "Case Sensitive" : "Case Insensitive"}>
+                                    <Tooltip title={matchCase ? "Case sensitive" : "Case insensitive"}>
                                         <IconButton onClick={toggleMatchCase} size="small">
                                             <MatchCase color={matchCase ? "primary" : "disabled"} />
                                         </IconButton>
