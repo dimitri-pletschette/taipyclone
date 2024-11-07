@@ -61,25 +61,31 @@ describe("Field Component", () => {
         expect(elt).toHaveStyle("width: 500px");
     });
     it("can render markdown", async () => {
-        const {container, getByText, findByText} = render(<Field value="titi" className="taipy-text" mode="md" />);
+        const { container, getByText, findByText } = render(<Field value="titi" className="taipy-text" mode="md" />);
         getByText(/markdown/i);
         // https://stackoverflow.com/questions/72382316/jest-encountered-an-unexpected-token-react-markdown
         // expect(await findByText(/titi/i)).toBeInTheDocument();
     });
     it("can render pre", async () => {
-        const {container} = render(<Field value="titi" className="taipy-text" mode="pre" />);
+        const { container } = render(<Field value="titi" className="taipy-text" mode="pre" />);
         const elt = container.querySelector("pre.taipy-text-pre");
         expect(elt).toBeInTheDocument();
     });
-    it("renders LaTeX as block math", async () => {
-        const {container, getByText} = render(<Field value={"$$x = y + 1$$"} className="taipy-text" mode="latex" />);
-        getByText(/latex/i);
-        await waitFor(() => expect(container.querySelector(".taipy-text-latex")).toBeInTheDocument());
-    });
-    it("renders LaTeX as inline math", async () => {
-        const {container, getByText, findByText} = render(<Field value={"This is inline $x = y + 1$ math."} className="taipy-text" mode="latex" />);
-        // getByText(/latex/i); already loaded ?
-        await waitFor(() => expect(container.querySelector(".taipy-text-latex")).toBeInTheDocument());
-        expect(await findByText(/inline/i)).toBeInTheDocument();
+    describe("latex mode", () => {
+        it("renders LaTeX as block math", async () => {
+            const { container, getByText } = render(
+                <Field value={"$$x = y + 1$$"} className="taipy-text" mode="latex" />
+            );
+            getByText(/latex/i);
+            await waitFor(() => expect(container.querySelector(".taipy-text-latex")).toBeInTheDocument());
+        });
+        it("renders LaTeX as inline math", async () => {
+            const { container, getByText, findByText } = render(
+                <Field value={"This is inline $x = y + 1$ math."} className="taipy-text" mode="latex" />
+            );
+            // getByText(/latex/i); // already loaded ?
+            await waitFor(() => expect(container.querySelector(".taipy-text-latex")).toBeInTheDocument());
+            expect(await findByText(/inline/i)).toBeInTheDocument();
+        });
     });
 });
