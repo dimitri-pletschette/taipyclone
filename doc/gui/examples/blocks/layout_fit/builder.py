@@ -24,4 +24,4 @@ with tgb.Page() as page:
             tgb.text("Metric 2")  # type: ignore[attr-defined]
 
 if __name__ == "__main__":
-    Gui(page).run(title="layout - fit content")
+    Gui(page).run(title="Layout - Fit to content")
