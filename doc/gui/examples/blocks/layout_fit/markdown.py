@@ -30,4 +30,4 @@ Metric 2
 """
 
 if __name__ == "__main__":
-    Gui(page).run(title="layout - fit content")
+    Gui(page).run(title="Layout - Fit to content")
