@@ -35,18 +35,16 @@ def mock_core_get(entity_id):
         return datanode_b
     return None
 
-def mock_is_deletable_false(entity_id):
-    return False
-
 def mock_is_true(entity_id):
     return True
-
-mock_core_delete = Mock()
 
 class TestGuiCoreContext_crud_scenario:
     def test_crud_scenario_delete(self):
         gui_core_context = _GuiCoreContext(Mock())
         state = MockState(Mock())
+
+        mock_core_delete = Mock()
+
         with (
             patch("taipy.gui_core._context.core_get", side_effect=mock_core_get),
             patch("taipy.gui_core._context.is_deletable", side_effect=mock_is_true),
