@@ -5,7 +5,7 @@ from taipy.gui import Gui
 
 json_config_node = Config.configure_json_data_node(
     id="json_node",
-    default_path="./demo-1248-dn.json",
+    default_path="./datanode_viewer_json.json",
     scope=Scope.GLOBAL,
 )
 
