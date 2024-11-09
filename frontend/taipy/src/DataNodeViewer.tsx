@@ -1128,7 +1128,7 @@ const DataNodeViewer = (props: DataNodeViewerProps) => {
                                                         />
                                                     ) : dtType === "dict" ? (
                                                         <Suspense fallback={<div>Loading JSON Viewer...</div>}>
-                                                            <JsonViewer value={dtValue} collapsed={true} theme={theme.palette.mode} />
+                                                            <JsonViewer value={dtValue} theme={theme.palette.mode} />
                                                         </Suspense>
                                                     ) : (
                                                         <Typography variant="subtitle2">
