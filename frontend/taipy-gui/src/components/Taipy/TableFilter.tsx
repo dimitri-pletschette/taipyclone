@@ -133,7 +133,7 @@ const getFilterDesc = (
 };
 
 const FilterRow = (props: FilterRowProps) => {
-    const { idx, fieldHeader, fieldHeaderTooltip="", filter, columns, colsOrder, setFilter } = props;
+    const { idx, fieldHeader, fieldHeaderTooltip, filter, columns, colsOrder, setFilter } = props;
 
     const [colId, setColId] = useState<string>("");
     const [action, setAction] = useState<string>("");
