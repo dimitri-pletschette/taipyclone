@@ -65,7 +65,7 @@ const actionsByType = {
     string: { "==": "is", contains: "contains", "!=": "is not" },
     number: {
         "<": "is less than",
-        "<=": "is less tha or equal to",
+        "<=": "is less than or equal to",
         "==": "equals",
         "!=": "does not equal",
         ">=": "is greater than or equal to",
