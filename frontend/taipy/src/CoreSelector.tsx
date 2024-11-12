@@ -639,9 +639,8 @@ const CoreSelector = (props: CoreSelectorProps) => {
                             fieldHeaderTooltip="Select the property to sort"
                             columns={colSorts}
                             appliedSorts={sorts}
-                            onValidate={applySorts}
-                            className={className}>
-                            </TableSort>
+                            onValidate={applySorts}>
+                        </TableSort>
                     </Grid>
                 ) : null}
                 {showSearch ? (
