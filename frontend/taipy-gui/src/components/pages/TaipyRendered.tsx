@@ -95,7 +95,7 @@ const TaipyRendered = (props: TaipyRenderedProps) => {
                         setPageState({ module: result.data.context, jsx: result.data.jsx });
                     }
                     if (!fromBlock) {
-                        setStyle("Taipy_style", result.data.style || "");
+                        setStyle(path == "/TaiPy_root_page" ? "Taipy_root_style": "Taipy_style", result.data.style || "");
                         Array.isArray(result.data.head) && setHead(result.data.head);
                     }
                 })
