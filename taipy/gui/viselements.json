@@ -277,7 +277,7 @@
                     },
                     {
                         "name": "unselected_value",
-                        "type": "Any",
+                        "type": "str",
                         "default_value": "None",
                         "doc": "Value assigned to <i>value</i> when no item is selected."
                     },
@@ -1626,7 +1626,7 @@
             }
         ],
         [
-            "alert",  
+            "alert",
             {
                 "inherits": ["shared"],
                 "properties": [
@@ -1656,7 +1656,7 @@
                         "doc": "If False, the alert is hidden."
                     }
                 ]
-            }                       
+            }
         ],
         [
             "status",
@@ -1836,7 +1836,7 @@
                     }
                 ]
             }
-        ]                                       
+        ]
     ],
     "blocks": [
         [

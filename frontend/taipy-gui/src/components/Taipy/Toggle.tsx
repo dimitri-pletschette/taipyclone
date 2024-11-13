@@ -14,19 +14,19 @@
 import React, { MouseEvent, SyntheticEvent, useCallback, useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import Switch from "@mui/material/Switch";
-import Typography from "@mui/material/Typography";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 
+import { FormControlLabel, SxProps } from "@mui/material";
 import { createSendUpdateAction } from "../../context/taipyReducers";
+import { useClassNames, useDispatch, useDynamicProperty, useModule } from "../../utils/hooks";
+import { Icon, IconAvatar } from "../../utils/icon";
+import { getComponentClassName } from "./TaipyStyle";
 import ThemeToggle, { emptyStyle } from "./ThemeToggle";
 import { LovProps, useLovListMemo } from "./lovUtils";
-import { useClassNames, useDispatch, useDynamicProperty, useModule } from "../../utils/hooks";
 import { getCssSize, getSuffixedClassNames, getUpdateVar } from "./utils";
-import { Icon, IconAvatar } from "../../utils/icon";
-import { FormControlLabel, SxProps } from "@mui/material";
-import { getComponentClassName } from "./TaipyStyle";
 
 const baseGroupSx = { verticalAlign: "middle" };
 
@@ -49,14 +49,14 @@ const Toggle = (props: ToggleProps) => {
         propagate = true,
         lov,
         defaultLov = "",
-        unselectedValue = "",
+        unselectedValue = null,
         updateVars = "",
         valueById,
         mode = "",
         isSwitch = false,
     } = props;
     const dispatch = useDispatch();
-    const [value, setValue] = useState(props.defaultValue);
+    const [value, setValue] = useState<string | null | undefined>(props.defaultValue);
     const [bVal, setBVal] = useState(() =>
         typeof props.defaultValue === "boolean"
             ? props.defaultValue

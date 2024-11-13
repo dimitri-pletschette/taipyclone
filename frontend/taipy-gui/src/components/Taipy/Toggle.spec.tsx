@@ -153,6 +153,23 @@ describe("Toggle Component", () => {
         await userEvent.click(elt);
         expect(dispatch).not.toHaveBeenCalled();
     });
+    it("dispatch null unselected_value on deselection when allowUnselect", async () => {
+        const dispatch = jest.fn();
+        const state: TaipyState = INITIAL_STATE;
+        const { getByText } = render(
+            <TaipyContext.Provider value={{ state, dispatch }}>
+                <Toggle lov={lov} updateVarName="varname" value="id2" allowUnselect={true} />
+            </TaipyContext.Provider>
+        );
+        const elt = getByText("Item 2");
+        await userEvent.click(elt);
+        expect(dispatch).toHaveBeenCalledWith({
+            name: "varname",
+            payload: { value: null },
+            propagate: true,
+            type: "SEND_UPDATE_ACTION",
+        });
+    });
 
     describe("As Switch", () => {
         it("renders", async () => {
