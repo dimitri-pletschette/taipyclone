@@ -16,7 +16,6 @@
 import os
 
 import matplotlib.pyplot as plt
-
 from taipy.gui import Gui, Markdown
 
 
