@@ -11,6 +11,7 @@
 
 import functools
 import os
+import typing
 import uuid
 from abc import abstractmethod
 from datetime import datetime, timedelta
@@ -468,7 +469,7 @@ class DataNode(_Entity, _Labeled):
             comment (Optional[str]): The optional comment of the edit.
             **options (Any): User-custom attributes to attach to the edit.
         """
-        edit: Dict[str, Any] = {k: v for k, v in options.items() if v is not None}
+        edit = {k: v for k, v in options.items() if v is not None}
         if job_id:
             edit[EDIT_JOB_ID_KEY] = job_id
         if editor_id:
@@ -479,7 +480,7 @@ class DataNode(_Entity, _Labeled):
             timestamp = self._get_last_modified_datetime(self._properties.get(self._PATH_KEY)) or datetime.now()
         edit[EDIT_TIMESTAMP_KEY] = timestamp
         self.last_edit_date = edit.get(EDIT_TIMESTAMP_KEY)
-        self._edits.append(edit) # type: ignore
+        self._edits.append(typing.cast(Edit, edit))
         self.edits = self._edits
 
     def lock_edit(self, editor_id: Optional[str] = None):
