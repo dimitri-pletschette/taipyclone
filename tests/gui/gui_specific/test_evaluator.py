@@ -13,13 +13,13 @@ from taipy.gui import Gui
 from taipy.gui.utils._evaluator import _Evaluator
 
 
-def _create_chart(x):
+def _identity(x):
     return x
 
 def test_evaluate_expr_lambda_from_element(gui: Gui, test_client, helpers):
     gui._Gui__evaluator = _Evaluator({}, []) # type: ignore[attr-defined]
-    gui._Gui__locals_context.add("a_module", {"create_chart": _create_chart}) # type: ignore[attr-defined]
+    gui._Gui__locals_context.add("a_module", {"identity": _identity}) # type: ignore[attr-defined]
     with gui._set_locals_context("a_module"):
-        evaluated_expr: str = gui._evaluate_expr("lambda x: create_chart(x)", lambda_expr=True)
+        evaluated_expr: str = gui._evaluate_expr("lambda x: identity(x)", lambda_expr=True)
         assert evaluated_expr.startswith("__lambda_")
         assert evaluated_expr.endswith("_TPMDL_0")
