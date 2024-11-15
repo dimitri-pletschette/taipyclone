@@ -9,15 +9,8 @@
 # an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-from typing import Any, Dict, NewType
+from .state import State
 
-DataNodeId = NewType("DataNodeId", str)
-"""Type that holds a `DataNode^` identifier."""
-DataNodeId.__doc__ = """Type that holds a `DataNode^` identifier."""
-Edit = NewType("Edit", Dict[str, Any])
-"""Type that holds a `DataNode^` edit information."""
-Edit.__doc__ = """Type that holds a `DataNode^` edit information."""
-EDIT_TIMESTAMP_KEY = "timestamp"
-EDIT_JOB_ID_KEY = "job_id"
-EDIT_COMMENT_KEY = "comment"
-EDIT_EDITOR_ID_KEY = "editor_id"
+
+class StateSupport(State):
+    pass
