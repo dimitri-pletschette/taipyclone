@@ -8,7 +8,6 @@ from taipy.gui import Gui
 def test_handle_invalid_data_no_callback():
     result = Gui._convert_unsupported_data("invalid_data")
     assert result is None
-    
 
 
 def test_unsupported_data_converter_returns_none():
@@ -43,6 +42,7 @@ def test_unsupported_data_converter_raises_exception(capfd, monkeypatch):
 
     def mock_warn(message: str):
         logging.warning(message)  # Ensure the warning goes to stderr.
+
     # Patch the _warn function inside the taipy.gui._warnings module.
     monkeypatch.setattr("taipy.gui._warnings._warn", mock_warn)
 

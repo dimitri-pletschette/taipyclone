@@ -1,4 +1,3 @@
-from unittest.mock import MagicMock
 from taipy.gui import Gui
 from taipy.gui.data.data_accessor import (
     _DataAccessor,
@@ -23,7 +22,7 @@ class MyDataAccessor(_DataAccessor):
         payload: t.Dict[str, t.Any],
         data_format: _DataFormat,
     ) -> t.Dict[str, t.Any]:
-        return {"value": 2*int(value)}
+        return {"value": 2 * int(value)}
 
     def get_col_types(self, var_name: str, value: t.Any) -> t.Dict[str, str]:  # type: ignore
         pass
@@ -48,6 +47,7 @@ class MyDataAccessor(_DataAccessor):
     def to_csv(self, var_name: str, value: t.Any) -> t.Optional[str]:
         pass
 
+
 def mock_taipy_data(value):
     """Helper to mock _TaipyData objects."""
     mock_data = Mock(spec=_TaipyData)
@@ -61,8 +61,10 @@ def test_custom_accessor(gui: Gui):
     data = mock_taipy_data(123)
 
     # Testing when accessor is not registered
-    data_accessor = data_accessors._DataAccessors__get_instance(mock_taipy_data) # type: ignore
-    assert isinstance(data_accessor, _InvalidDataAccessor), f"Expected _InvalidDataAccessor but got {type(data_accessor)}"
+    data_accessor = data_accessors._DataAccessors__get_instance(mock_taipy_data)  # type: ignore
+    assert isinstance(
+        data_accessor, _InvalidDataAccessor
+    ), f"Expected _InvalidDataAccessor but got {type(data_accessor)}"
     result = data_accessors.get_data("var_name", data, {})
     assert result == {}
 
