@@ -34,7 +34,7 @@ export const getStatusIntValue = (status: string) => {
     } else if (status.startsWith("e")) {
         return 3;
     }
-    return 0;
+    return -1;
 };
 
 export const getStatusStrValue = (status: number) => {
@@ -73,6 +73,8 @@ const getGlobalStatus = (values: StatusDel[]) => {
 
 const statusEqual = (v1: StatusDel, v2: StatusDel) => v1.status === v2.status && v1.message === v2.message;
 
+const getIcon = (icons: Array<boolean|string>, index: number) => index >= 0 && index < icons.length ? icons[index] : false;
+
 const ORIGIN = {
     vertical: "bottom",
     horizontal: "left",
@@ -87,8 +89,7 @@ interface StatusListProps extends TaipyBaseProps, TaipyHoverProps {
     value: Array<[string, string] | StatusType> | [string, string] | StatusType;
     defaultValue?: string;
     withoutClose?: boolean;
-    icons?: boolean | Array<string>;
-    defaultIcons?: boolean | string;
+    useIcon?: boolean | string;
 }
 
 const StatusList = (props: StatusListProps) => {
@@ -102,43 +103,26 @@ const StatusList = (props: StatusListProps) => {
     const hover = useDynamicProperty(props.hoverText, props.defaultHoverText, undefined);
 
     const icons = useMemo(() => {
-        if (props.icons !== undefined) {
-            if (Array.isArray(props.icons)) {
-                return [...props.icons, false, false, false, false]
-                    .slice(0, 4)
-                    .map((val) =>
-                        typeof val !== "string" || val.toLowerCase() === "false"
-                            ? false
-                            : !val || val.toLowerCase() === "true"
-                            ? true
-                            : val
-                    );
-            } else {
-                return [!!props.icons, !!props.icons, !!props.icons, !!props.icons];
-            }
-        } else if (typeof props.defaultIcons === "string") {
+        if (typeof props.useIcon === "string") {
             try {
-                const arr = JSON.parse(props.defaultIcons);
-                if (Array.isArray(arr)) {
-                    return [...arr, false, false, false, false]
-                        .slice(0, 4)
-                        .map((val) =>
-                            typeof val !== "string" || val.toLowerCase() === "false"
-                                ? false
-                                : !val || val.toLowerCase() === "true"
-                                ? true
-                                : val
-                        );
-                }
+                const iconsDict = JSON.parse(props.useIcon);
+                const defaultVal = iconsDict.__default !== undefined ? iconsDict.__default : false;
+                const res = [defaultVal, defaultVal, defaultVal, defaultVal];
+                Object.entries(iconsDict).forEach(([k, v]) => {
+                    const idx = getStatusIntValue(k);
+                    if (idx >=0) {
+                        res[idx] = v;
+                    }
+                });
+                return res;
             } catch (e) {
-                console.info(`Error parsing custom icons\n${(e as Error).message || e}`);
+                console.info(`Error parsing icons\n${(e as Error).message || e}`);
             }
-        } else {
-            return [!!props.defaultIcons, !!props.defaultIcons, !!props.defaultIcons, !!props.defaultIcons];
+            return [false, false, false, false];
         }
+        return [!!props.useIcon, !!props.useIcon, !!props.useIcon, !!props.useIcon];
 
-        return [false, false, false, false];
-    }, [props.defaultIcons, props.icons]);
+    }, [props.useIcon]);
 
     useEffect(() => {
         let val;
@@ -207,7 +191,7 @@ const StatusList = (props: StatusListProps) => {
                     value={globStatus}
                     className={`${className} ${getComponentClassName(props.children)}`}
                     {...globalProps}
-                    icon={icons[getStatusIntValue(globStatus.status)]}
+                    icon={getIcon(icons, getStatusIntValue(globStatus.status))}
                 />
                 <Popover open={opened} anchorEl={anchorEl} onClose={onOpen} anchorOrigin={ORIGIN}>
                     <Stack direction="column" spacing={1}>
@@ -222,7 +206,7 @@ const StatusList = (props: StatusListProps) => {
                                         value={val}
                                         className={`${className} ${getComponentClassName(props.children)}`}
                                         {...closeProp}
-                                        icon={icons[getStatusIntValue(val.status)]}
+                                        icon={getIcon(icons, getStatusIntValue(val.status))}
                                     />
                                 );
                             })}

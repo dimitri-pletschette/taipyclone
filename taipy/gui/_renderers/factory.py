@@ -546,9 +546,8 @@ class _Factory:
             [
                 ("without_close", PropertyType.boolean, False),
                 ("hover_text", PropertyType.dynamic_string),
-                ("icons", PropertyType.boolean_or_list),
             ]
-        ),
+        )._set_indexed_icons(),
         "table": lambda gui, control_type, attrs: _Builder(
             gui=gui,
             control_type=control_type,

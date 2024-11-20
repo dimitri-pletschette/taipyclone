@@ -69,11 +69,11 @@ describe("StatusList Component", () => {
         await userEvent.click(icons[0]);
         expect(queryAllByTestId("CancelIcon")).toHaveLength(3);
     });
-    it("should return 0 for unknown status", () => {
-        expect(getStatusIntValue("unknown")).toBe(0);
-        expect(getStatusIntValue("")).toBe(0);
-        expect(getStatusIntValue("a")).toBe(0);
-        expect(getStatusIntValue("z")).toBe(0);
+    it("should return -1 for unknown status", () => {
+        expect(getStatusIntValue("unknown")).toBe(-1);
+        expect(getStatusIntValue("")).toBe(-1);
+        expect(getStatusIntValue("a")).toBe(-1);
+        expect(getStatusIntValue("z")).toBe(-1);
     });
     it('should return "info" for status 0', () => {
         expect(getStatusStrValue(0)).toBe("info");
@@ -122,7 +122,7 @@ describe("StatusList Component", () => {
 
         const content = "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16'><circle cx='8' cy='8' r='8' fill='red'/></svg>"
 
-        const { container } = render(<StatusList value={statuses} defaultIcons={JSON.stringify([content, true])} />);
+        const { container } = render(<StatusList value={statuses} useIcon={JSON.stringify({warning: content, info: true})} />);
 
 
         // Check if the SVG is rendered for the warning status

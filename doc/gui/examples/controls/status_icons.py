@@ -9,7 +9,7 @@ status = [
 ]
 
 page = """
-<|{status}|status|icons|>
+<|{status}|status|use_icon|>
 """
 
 if __name__ == "__main__":
