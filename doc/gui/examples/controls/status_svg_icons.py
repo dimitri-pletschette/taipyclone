@@ -2,9 +2,9 @@ from taipy.gui import Gui
 
 status = [
     ("warning", "Task is launched."),
-    ("warning", "Taks is waiting."),
+    ("warning", "Tasks is waiting."),
     ("error", "Task timeout."),
-    ("success", "Task Succeded"),
+    ("success", "Task Succeeded"),
     ("info", "Process was cancelled.")
 ]
 
