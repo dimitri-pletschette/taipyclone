@@ -88,7 +88,7 @@ describe("reducer", () => {
     it("set alert", async () => {
         expect(
             taipyReducer({ ...INITIAL_STATE }, {
-                type: "SET_ALERT",
+                type: "SET_NOTIFICATION",
                 atype: "i",
                 message: "message",
                 system: "system",
