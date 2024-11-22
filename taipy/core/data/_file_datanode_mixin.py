@@ -11,7 +11,6 @@
 
 import os
 import pathlib
-import re
 import shutil
 from datetime import datetime
 from os.path import isfile
@@ -21,6 +20,7 @@ from taipy.common.config import Config
 from taipy.common.logger._taipy_logger import _TaipyLogger
 
 from .._entity._reload import _self_reload
+from ..common._utils import _normalize_path
 from ..reason import InvalidUploadFile, NoFileToDownload, NotAFile, ReasonCollection, UploadFileCanNotBeRead
 from .data_node import DataNode
 from .data_node_id import Edit
@@ -61,11 +61,11 @@ class _FileDataNodeMixin(object):
     @_self_reload(DataNode._MANAGER_NAME)
     def path(self) -> str:
         """The path to the file data of the data node."""
-        return self._path
+        return _normalize_path(self._path)
 
     @path.setter
     def path(self, value) -> None:
-        _path = self._normalize_path(value)
+        _path = _normalize_path(value)
         self._path = _path
         self.properties[self._PATH_KEY] = _path  # type: ignore[attr-defined]
         self.properties[self._IS_GENERATED_KEY] = False  # type: ignore[attr-defined]
@@ -182,7 +182,3 @@ class _FileDataNodeMixin(object):
         if os.path.exists(old_path):
             shutil.move(old_path, new_path)
         return new_path
-
-    @staticmethod
-    def _normalize_path(path: str) -> str:
-        return re.sub(r"[\\]+", "/", path)

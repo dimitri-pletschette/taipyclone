@@ -10,7 +10,6 @@
 # specific language governing permissions and limitations under the License.
 
 import json
-import re
 from copy import copy
 from datetime import timedelta
 from typing import Any, Callable, Dict, List, Optional, Union
@@ -22,6 +21,7 @@ from taipy.common.config.common._template_handler import _TemplateHandler as _tp
 from taipy.common.config.common.scope import Scope
 from taipy.common.config.section import Section
 
+from ..common._utils import _normalize_path
 from ..common._warnings import _warn_deprecated
 from ..common.mongo_default_document import MongoDefaultDocument
 
@@ -277,7 +277,7 @@ class DataNodeConfig(Section):
         self._scope = scope
         self._validity_period = validity_period
         if "path" in properties:
-            properties["path"] = self._normalize_path(properties["path"])
+            properties["path"] = _normalize_path(properties["path"])
         super().__init__(id, **properties)
 
         # modin exposed type is deprecated since taipy 3.1.0
@@ -294,10 +294,6 @@ class DataNodeConfig(Section):
 
     def __getattr__(self, item: str) -> Optional[Any]:
         return _tpl._replace_templates(self._properties.get(item))
-
-    @staticmethod
-    def _normalize_path(path: str) -> str:
-        return re.sub(r"[\\]+", "/", path)
 
     @property
     def storage_type(self) -> str:
