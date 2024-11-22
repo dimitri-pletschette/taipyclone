@@ -12,10 +12,10 @@
 from taipy.gui import Gui, Icon
 
 msgs = [
-    ["1", "msg 1", "Alice"],
-    ["2", "msg From Another unknown User", "Charles"],
-    ["3", "This from the sender User", "taipy"],
-    ["4", "And from another known one", "Alice"],
+    ["1", "msg 1", "Alice", None],
+    ["2", "msg From Another unknown User", "Charles", None],
+    ["3", "This from the sender User", "taipy", None],
+    ["4", "And from another known one", "Alice", None],
 ]
 users = [
     ["Alice", Icon("./alice-avatar.png", "Alice avatar")],
@@ -25,14 +25,14 @@ users = [
 
 
 def on_action(state, var_name: str, payload: dict):
-    args = payload.get("args", [])
-    msgs.append([f"{len(msgs) +1 }", args[2], args[3]])
+    (reason, varName, text, senderId, imageData) = payload.get("args", [])
+    msgs.append([f"{len(msgs) +1 }", text, senderId, imageData])
     state.msgs = msgs
 
 
 page="""
 <|1 1 1|layout|
-<|{msgs}|chat|users={users}|show_sender={True}|don't allow_send_images|>
+<|{msgs}|chat|users={users}|show_sender={True}|>
 
 <|part|>
 
