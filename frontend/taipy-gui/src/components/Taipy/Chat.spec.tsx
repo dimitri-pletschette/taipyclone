@@ -71,29 +71,29 @@ describe("Chat Component", () => {
     it("is disabled", async () => {
         const { getByLabelText, getByRole } = render(<Chat messages={messages} active={false} defaultKey={valueKey} mode="raw" />);
         const elt = getByLabelText("message (taipy)");
-        const sendButton = getByRole("button", { name: /send message/i });
         expect(elt).toHaveClass("Mui-disabled");
-        await userEvent.click(elt);
-        await userEvent.keyboard("new message");
-        expect(elt).toHaveClass("Mui-disabled");
+        expect(getByRole("button", { name: /send message/i })).toHaveClass("Mui-disabled");
     });
     it("is enabled by default", async () => {
         const { getByLabelText, getByRole } = render(<Chat messages={messages} defaultKey={valueKey} mode="raw" />);
         const elt = getByLabelText("message (taipy)");
+        expect(elt).not.toHaveClass("Mui-disabled");
         const sendButton = getByRole("button", { name: /send message/i });
-        expect(elt).toHaveClass("Mui-disabled");
+        expect(sendButton).toHaveClass("Mui-disabled");
         await userEvent.click(elt);
         await userEvent.keyboard("new message");
-        expect(elt).not.toHaveClass("Mui-disabled");
+        expect(sendButton).not.toHaveClass("Mui-disabled");
     });
     it("is enabled by active", async () => {
         const { getByLabelText, getByRole } = render(<Chat messages={messages} active={true} defaultKey={valueKey} mode="raw" />);
         const elt = getByLabelText("message (taipy)");
+        expect(elt).not.toHaveClass("Mui-disabled");
         const sendButton = getByRole("button", { name: /send message/i });
-        expect(elt).toHaveClass("Mui-disabled");
+        expect(sendButton).toHaveClass("Mui-disabled");
         await userEvent.click(elt);
         await userEvent.keyboard("new message");
         expect(elt).not.toHaveClass("Mui-disabled");
+        expect(sendButton).not.toHaveClass("Mui-disabled");
     });
     it("can hide input", async () => {
         render(<Chat messages={messages} withInput={false} className="taipy-chat" defaultKey={valueKey} mode="raw" />);
