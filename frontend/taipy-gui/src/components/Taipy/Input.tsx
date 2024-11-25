@@ -21,7 +21,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import { createSendActionNameAction, createSendUpdateAction } from "../../context/taipyReducers";
-import { disableColor, getCssSize, TaipyInputProps } from "./utils";
+import { getCssSize, TaipyInputProps } from "./utils";
 import { useClassNames, useDispatch, useDynamicProperty, useModule } from "../../utils/hooks";
 import { getComponentClassName } from "./TaipyStyle";
 
