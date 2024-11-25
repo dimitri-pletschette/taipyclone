@@ -127,14 +127,14 @@ class TestGuiCoreContext_update_data:
                         assign = self.__call_update_data(col, idx, new_value)
 
                         mock_core_get.assert_called_once_with(dn.id)
-                        mock_write.assert_called_once() # TODO should not been called
+                        mock_write.assert_called_once()
                         # Cannot use the following line because of the pandas DataFrame comparison
                         # mock_write.assert_called_once_with(new_data, editor_id="a_client_id", comment=None
                         # Instead, we will compare the arguments of the call manually
                         assert mock_write.call_args_list[0].args[0].equals(new_data)
                         assert mock_write.call_args_list[0].kwargs["editor_id"] == "a_client_id"
                         assert mock_write.call_args_list[0].kwargs["comment"] is None
-                        assign.assert_called_once_with("error_var", "")  # TODO have a message
+                        assign.assert_called_once_with("error_var", "")
 
     def test_edit_pandas_wrong_col(self):
         data = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
@@ -150,14 +150,14 @@ class TestGuiCoreContext_update_data:
                     with patch.object(DataNode, "write") as mock_write:
                         assign = self.__call_update_data(col, idx, new_value)
                         mock_core_get.assert_called_once_with(dn.id)
-                        mock_write.assert_called_once()  # TODO should not been called
+                        mock_write.assert_called_once()
                         # Cannot use the following line because of the pandas DataFrame comparison
                         # mock_write.assert_called_once_with(new_data, editor_id="a_client_id", comment=None
                         # Instead, we will compare the arguments of the call manually
                         assert mock_write.call_args_list[0].args[0].equals(new_data)
                         assert mock_write.call_args_list[0].kwargs["editor_id"] == "a_client_id"
                         assert mock_write.call_args_list[0].kwargs["comment"] is None
-                        assign.assert_called_once_with("error_var", "")  # TODO should have a message
+                        assign.assert_called_once_with("error_var", "")
 
     def test_edit_pandas_series(self):
         data = pd.Series([1, 2, 3])
@@ -195,14 +195,14 @@ class TestGuiCoreContext_update_data:
                     with patch.object(DataNode, "write") as mock_write:
                         assign = self.__call_update_data(col, idx, new_value)
                         mock_core_get.assert_called_once_with(dn.id)
-                        mock_write.assert_called_once()  # TODO should not been called
+                        mock_write.assert_called_once()
                         # Cannot use the following line because of the pandas Series comparison
                         # mock_write.assert_called_once_with(new_data, editor_id="a_client_id", comment=None
                         # Instead, we will compare the arguments of the call manually
                         assert mock_write.call_args_list[0].args[0].equals(new_data)
                         assert mock_write.call_args_list[0].kwargs["editor_id"] == "a_client_id"
                         assert mock_write.call_args_list[0].kwargs["comment"] is None
-                        assign.assert_called_once_with("error_var", "")  # TODO should have a message
+                        assign.assert_called_once_with("error_var", "")
 
     def test_edit_dict(self):
         data = {"a": [1, 2, 3], "b": [4, 5, 6]}
@@ -235,8 +235,7 @@ class TestGuiCoreContext_update_data:
                         mock_write.assert_not_called()
                         assign.assert_called_once_with(
                             "error_var",
-                            "Error updating data node tabular value. list assignment index out of range") # TODO
-                            # message unclear
+                            "Error updating data node tabular value. list assignment index out of range")
 
     def test_edit_dict_wrong_col(self):
         data = {"a": [1, 2, 3], "b": [4, 5, 6]}
@@ -253,7 +252,7 @@ class TestGuiCoreContext_update_data:
                         mock_write.assert_not_called()
                         assign.assert_called_once_with(
                             "error_var",
-                            "Error updating Data node: dict values must be list or tuple.") # TODO Wrong message
+                            "Error updating Data node: dict values must be list or tuple.")
 
     def test_edit_dict_of_tuples(self):
         data = {"a": (1, 2, 3), "b": (4, 5, 6)}
@@ -286,8 +285,7 @@ class TestGuiCoreContext_update_data:
                         mock_write.assert_not_called()
                         assign.assert_called_once_with(
                             "error_var",
-                            "Error updating data node tabular value. list assignment index out of range") # TODO
-                            # message unclear
+                            "Error updating data node tabular value. list assignment index out of range")
 
     def test_edit_dict_of_tuples_wrong_col(self):
         data = {"a": (1, 2, 3), "b": (4, 5, 6)}
@@ -304,7 +302,7 @@ class TestGuiCoreContext_update_data:
                         mock_write.assert_not_called()
                         assign.assert_called_once_with(
                             "error_var",
-                            "Error updating Data node: dict values must be list or tuple.") # TODO Wrong message
+                            "Error updating Data node: dict values must be list or tuple.")
 
     def test_edit_wrong_dict(self):
         data = {"a": 1, "b": 2}
@@ -354,8 +352,7 @@ class TestGuiCoreContext_update_data:
                         mock_write.assert_not_called()
                         assign.assert_called_once_with(
                             "error_var",
-                            "Error updating data node tabular value. list index out of range") # TODO
-                            # message unclear
+                            "Error updating data node tabular value. list index out of range")
 
     def test_edit_list_wrong_col(self):
         data = [[1, 2, 3], [4, 5, 6]]
@@ -372,8 +369,7 @@ class TestGuiCoreContext_update_data:
                         mock_write.assert_not_called()
                         assign.assert_called_once_with(
                             "error_var",
-                            "Error updating data node tabular value. list assignment index out of range")  # TODO
-                            # message unclear
+                            "Error updating data node tabular value. list assignment index out of range")
 
     def test_edit_tuple(self):
         data = ([1, 2, 3], [4, 5, 6])
