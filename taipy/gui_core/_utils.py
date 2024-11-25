@@ -15,6 +15,6 @@ from taipy.core.submission.submission_status import SubmissionStatus
 
 
 @dataclass
-class ClientStatus:
+class _ClientStatus:
     client_id: t.Optional[str]
     submission_status: SubmissionStatus

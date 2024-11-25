@@ -70,7 +70,7 @@ from ._adapters import (
     _GuiCoreScenarioProperties,
     _invoke_action,
 )
-from ._utils import ClientStatus
+from ._utils import _ClientStatus
 from .filters import CustomScenarioFilter
 
 
@@ -93,7 +93,7 @@ class _GuiCoreContext(CoreEventConsumerBase):
         self.data_nodes_by_owner: t.Optional[t.Dict[t.Optional[str], t.List[DataNode]]] = None
         self.scenario_configs: t.Optional[t.List[t.Tuple[str, str]]] = None
         self.jobs_list: t.Optional[t.List[Job]] = None
-        self.client_submission: t.Dict[str, ClientStatus] = {}
+        self.client_submission: t.Dict[str, _ClientStatus] = {}
         # register to taipy core notification
         reg_id, reg_queue = Notifier.register()
         # locks
@@ -639,7 +639,7 @@ class _GuiCoreContext(CoreEventConsumerBase):
                     client_id=self.gui._get_client_id(),
                     module_context=self.gui._get_locals_context(),
                 )
-                client_status = ClientStatus(self.gui._get_client_id(), submission_entity.submission_status)
+                client_status = _ClientStatus(self.gui._get_client_id(), submission_entity.submission_status)
                 with self.submissions_lock:
                     self.client_submission[submission_entity.id] = client_status
                 if Config.core.mode == "development":
