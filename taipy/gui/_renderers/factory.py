@@ -99,6 +99,8 @@ class _Factory:
                 ("active", PropertyType.dynamic_boolean, True),
                 ("hover_text", PropertyType.dynamic_string),
                 ("width", PropertyType.string_or_number),
+                ("size", PropertyType.string),
+                ("variant", PropertyType.string),
             ]
         ),
         "chat": lambda gui, control_type, attrs: _Builder(
@@ -114,9 +116,10 @@ class _Factory:
                 ("users", PropertyType.lov),
                 ("sender_id",),
                 ("height",),
-                ("page_size", PropertyType.number, 50),
-                ("max_file_size", PropertyType.number, 1 * 1024 * 1024),
+                ("page_size", PropertyType.number),
+                ("max_file_size", PropertyType.number),
                 ("show_sender", PropertyType.boolean, False),
+                ("allow_send_images", PropertyType.boolean, True),
                 ("mode",),
             ]
         ),
@@ -545,7 +548,7 @@ class _Factory:
                 ("without_close", PropertyType.boolean, False),
                 ("hover_text", PropertyType.dynamic_string),
             ]
-        ),
+        )._set_indexed_icons(),
         "table": lambda gui, control_type, attrs: _Builder(
             gui=gui,
             control_type=control_type,
@@ -626,7 +629,6 @@ class _Factory:
                 ("hover_text", PropertyType.dynamic_string),
                 ("label",),
                 ("value_by_id", PropertyType.boolean),
-                ("unselected_value", PropertyType.string, ""),
                 ("allow_unselect", PropertyType.boolean),
                 ("on_change", PropertyType.function),
                 ("mode",),

@@ -55,6 +55,18 @@
                         "doc": "The label displayed in the button."
                     },
                     {
+                        "name": "size",
+                        "type": "str",
+                        "default_value": "\"medium\"",
+                        "doc": "The size of the button. Valid values: \"small\", \"medium\", or \"large\"."
+                    },
+                    {
+                        "name": "variant",
+                        "type": "str",
+                        "default_value": "\"outlined\"",
+                        "doc": "The variant of the button. Valid values: \"contained\", \"outlined\", or \"text\"."
+                    },
+                    {
                         "name": "on_action",
                         "type": "Union[str, Callable]",
                         "doc": "A function or the name of a function that is triggered when the button is pressed.<br/>This function is invoked with the following parameters:\n<ul>\n<li>state (<code>State^</code>): the state instance.</li><li>id (str): the identifier of the button it it has one.</li><li>payload (dict): a dictionary that contains the key \"action\" set to the name of the action that triggered this callback.</li></ul>",
@@ -274,12 +286,6 @@
                         "type": "bool",
                         "default_value": "False",
                         "doc": "If set, this allows de-selection and the value is set to unselected_value."
-                    },
-                    {
-                        "name": "unselected_value",
-                        "type": "Any",
-                        "default_value": "None",
-                        "doc": "Value assigned to <i>value</i> when no item is selected."
                     },
                     {
                         "name": "mode",
@@ -1632,9 +1638,11 @@
             }
         ],
         [
-            "alert",  
+            "alert",
             {
-                "inherits": ["shared"],
+                "inherits": [
+                    "shared"
+                ],
                 "properties": [
                     {
                         "name": "message",
@@ -1662,7 +1670,7 @@
                         "doc": "If False, the alert is hidden."
                     }
                 ]
-            }                       
+            }
         ],
         [
             "status",
@@ -1682,6 +1690,12 @@
                         "type": "bool",
                         "default_value": "False",
                         "doc": "If True, the user cannot remove the status items from the list."
+                    },
+                    {
+                        "name": "use_icon",
+                        "type": "indexed(Union[bool,str])",
+                        "default_value": "False",
+                        "doc": "TODO If True, status shows a predefined icon. A string shows as svg content (URL or element). Key from \"info\", \"success\", \"warning\", \"error\"."
                     }
                 ]
             }
@@ -1804,8 +1818,14 @@
                     {
                         "name": "max_file_size",
                         "type": "int",
-                        "default_value": "1024 * 1024",
-                        "doc": "The maximum allowable file size, in bytes, for files uploaded to a chat message.\nThe default is 1 MB."
+                        "default_value": "0.8 * 1024 * 1024",
+                        "doc": "The maximum allowable file size, in bytes, for files uploaded to a chat message.\nThe default is 0.8 MB."
+                    },
+                    {
+                        "name": "allow_send_images",
+                        "type": "bool",
+                        "default_value": "True",
+                        "doc": "TODO if True, an upload image icon is shown."
                     }
                 ]
             }
@@ -1839,10 +1859,18 @@
                         "name": "row_height",
                         "type": "str",
                         "doc": "The height of each row of this tree, in CSS units."
+                    },
+                    {
+                        "name": "mode",
+                        "hide": true
+                    },
+                    {
+                        "name": "dropdown",
+                        "hide": true
                     }
                 ]
             }
-        ]                                       
+        ]
     ],
     "blocks": [
         [
