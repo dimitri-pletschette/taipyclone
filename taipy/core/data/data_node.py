@@ -147,8 +147,6 @@ class DataNode(_Entity, _Labeled):
         self._edits: List[Edit] = edits or []
 
         self._properties: _Properties = _Properties(self, **kwargs)
-        dn_cfg = Config.data_nodes.get(self._config_id, None)
-        self._ranks: Dict[str, int] = dn_cfg._ranks if dn_cfg else {}
 
     def __eq__(self, other) -> bool:
         """Check if two data nodes are equal."""
@@ -572,23 +570,28 @@ class DataNode(_Entity, _Labeled):
         """
         return self._edits[-1] if self._edits else None
 
-    def get_rank(self) -> int:
-        """Get the rank of this data node regarding to its scenario owner
+    def _get_rank(self, scenario_config_id: str) -> int:
+        """Get the data node rank for given scenario config.
+
+        The rank corresponds to the order of appearance of the data nodes in a scenario config DAG.
+
+        Arguments:
+            scenario_config_id (str): The identifier of the scenario config used to
+                get the data node rank.
 
         Returns:
-            The int value representing the rank.
+            The int value representing the rank of the data node config in the scenario config DAG.
+            If the data node config is not found or has no rank, 0xffff is returned. These cases should never happen.
+            If the data node config is not part of the scenario config, 0xfffe is returned as an infinite rank.
         """
-        if not self.owner_id:
-            return 0xfffe
-        config = Config.data_nodes.get(self.config_id, None)
-        if not config:
-            return 0xfffd
-
-        from ... import core as tp
-        owner = tp.get(self.owner_id)
-        if not isinstance(owner, tp.Scenario):
-            return 0xfffc
-        return config._ranks.get(owner.config_id, 0xfffb)
+        dn_config = Config.data_nodes.get(self._config_id, None)
+        if not dn_config:
+            self._logger.error(f"Data node config `{self.config_id}` for data node `{self.id}` is not found.")
+            return 0xffff
+        if not dn_config._ranks:
+            self._logger.error(f"Data node config `{self.config_id}` for data node `{self.id}` has no rank.")
+            return 0xffff
+        return dn_config._ranks.get(scenario_config_id, 0xfffe)
 
     @abstractmethod
     def _read(self):

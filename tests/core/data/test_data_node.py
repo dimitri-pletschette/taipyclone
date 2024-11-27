@@ -74,7 +74,6 @@ class TestDataNode:
         assert dn.job_ids == []
         assert not dn.is_ready_for_reading
         assert len(dn.properties) == 0
-        assert len(dn._ranks) == 0
 
     def test_create_with_ranks(self):
         # Test _rank is propagated from the config
@@ -92,10 +91,9 @@ class TestDataNode:
         assert dn.job_ids == []
         assert not dn.is_ready_for_reading
         assert len(dn.properties) == 0
-        assert len(dn._ranks) == 3
-        assert dn._ranks["A"] == 1
-        assert dn._ranks["B"] == 2
-        assert dn._ranks["C"] == 0
+        assert dn._get_rank("A") == 1
+        assert dn._get_rank("B") == 2
+        assert dn._get_rank("C") == 0
 
     def test_is_up_to_date_when_not_written(self):
         dn_confg_1 = Config.configure_in_memory_data_node("dn_1", default_data="a")
@@ -137,7 +135,6 @@ class TestDataNode:
         assert dn.is_ready_for_reading
         assert len(dn.properties) == 2
         assert dn.properties == {"prop": "erty", "name": "a name"}
-        assert len(dn._ranks) == 0
 
         with pytest.raises(InvalidConfigurationId):
             DataNode("foo bar")
