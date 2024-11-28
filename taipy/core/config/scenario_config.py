@@ -13,7 +13,6 @@ from collections import defaultdict
 from copy import copy
 from typing import Any, Callable, Dict, List, Optional, Union
 
-from doc.gui.examples.controls.slider_labels_dictionary import labels
 from taipy.common.config import Config
 from taipy.common.config._config import _Config
 from taipy.common.config.common._template_handler import _TemplateHandler as _tpl
