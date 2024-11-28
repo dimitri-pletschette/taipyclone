@@ -427,6 +427,7 @@ class ScenarioConfig(Section):
                                node_size=2000)
         nx.draw_networkx_labels(graph, pos, labels=labls)
         nx.draw_networkx_edges(graph, pos, node_size=2000, edge_color="black", arrowstyle="->", arrowsize=25)
-        plt.savefig(file_path or f"{self.id}.png")
+        path = file_path or f"{self.id}.png"
+        plt.savefig(path)
         plt.close()  # Close the plot to avoid display
-        logger.info(f"Graph exported as image: {file_path or f"{self.id}.png"}")
+        logger.info(f"Graph exported as image: {path}")
