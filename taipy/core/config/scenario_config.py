@@ -13,6 +13,7 @@ from collections import defaultdict
 from copy import copy
 from typing import Any, Callable, Dict, List, Optional, Union
 
+from doc.gui.examples.controls.slider_labels_dictionary import labels
 from taipy.common.config import Config
 from taipy.common.config._config import _Config
 from taipy.common.config.common._template_handler import _TemplateHandler as _tpl
@@ -33,7 +34,6 @@ class ScenarioConfig(Section):
     _TASKS_KEY = "tasks"
     _ADDITIONAL_DATA_NODES_KEY = "additional_data_nodes"
     _FREQUENCY_KEY = "frequency"
-    _SEQUENCES_KEY = "sequences"
     _COMPARATOR_KEY = "comparators"
 
     frequency: Optional[Frequency]
@@ -373,3 +373,50 @@ class ScenarioConfig(Section):
         )
         Config._register(section)
         return Config.sections[ScenarioConfig.name][_Config.DEFAULT_KEY]
+
+    def draw(self, file_path: Optional[str]=None) -> None:
+        """Draw the scenario configuration and export it as a PNG file."""
+        from importlib import util
+        from taipy.common.logger._taipy_logger import _TaipyLogger
+        logger = _TaipyLogger._get_logger()
+
+        if not util.find_spec("matplotlib"):
+            logger.error("Cannot draw the scenario configuration as matplotlib is not installed.")
+            return
+        import networkx as nx
+        from taipy.core._entity._dag import _DAG
+        import matplotlib.pyplot as plt
+
+        # Build the nx DAG
+        graph = nx.DiGraph()
+        for task in set(self.tasks):
+            if has_input := task.inputs:
+                for predecessor in task.inputs:
+                    graph.add_edges_from([(predecessor, task)])
+            if has_output := task.outputs:
+                for successor in task.outputs:
+                    graph.add_edges_from([(task, successor)])
+            if not has_input and not has_output:
+                graph.add_node(task)
+        dag = _DAG(graph)
+        pos = {node.entity: (node.x, node.y) for node in dag.nodes.values()}
+        print({k.id: v for k, v in pos.items()})
+        labels = {node.entity: node.entity.id for node in dag.nodes.values()}
+
+        # Draw the graph
+        plt.figure(figsize=(10, 10))
+        nx.draw_networkx_nodes(graph, pos,
+                               nodelist=[node for node in graph.nodes if isinstance(node, DataNodeConfig)],
+                               node_color="skyblue",
+                               node_shape="s",
+                               node_size=2000)
+        nx.draw_networkx_nodes(graph, pos,
+                               nodelist=[node for node in graph.nodes if isinstance(node, TaskConfig)],
+                               node_color="orange",
+                               node_shape="D",
+                               node_size=2000)
+        nx.draw_networkx_labels(graph, pos, labels=labels)
+        nx.draw_networkx_edges(graph, pos, node_size=2000, edge_color="black", arrowstyle="->", arrowsize=25)
+        plt.savefig(file_path or f"{self.id}.png")
+        plt.close()  # Close the plot to avoid display
+        logger.info(f"Graph exported as image: {file_path or f"{self.id}.png"}")
