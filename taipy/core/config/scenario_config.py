@@ -304,7 +304,7 @@ class ScenarioConfig(Section):
                 corresponds to the data node configuration id. During the scenarios'
                 comparison, each comparator is applied to all the data nodes instantiated from
                 the data node configuration attached to the comparator. See
-                `(taipy.)compare_scenarios()^` more more details.
+                `(taipy.)compare_scenarios()^` more details.
             sequences (Optional[Dict[str, List[TaskConfig]]]): Dictionary of sequence descriptions.
                 The default value is None.
             **properties (dict[str, any]): A keyworded variable length list of additional arguments.
@@ -354,7 +354,7 @@ class ScenarioConfig(Section):
                 corresponds to the data node configuration id. During the scenarios'
                 comparison, each comparator is applied to all the data nodes instantiated from
                 the data node configuration attached to the comparator. See
-                `taipy.compare_scenarios()^` more more details.
+                `taipy.compare_scenarios()^` more details.
             sequences (Optional[Dict[str, List[TaskConfig]]]): Dictionary of sequences. The default value is None.
             **properties (dict[str, any]): A keyworded variable length list of additional arguments.
 
@@ -386,28 +386,30 @@ class ScenarioConfig(Section):
                 If not provided, the file will be saved with the scenario configuration id.
         """
         from importlib import util
+
         from taipy.common.logger._taipy_logger import _TaipyLogger
         logger = _TaipyLogger._get_logger()
 
         if not util.find_spec("matplotlib"):
             logger.error("Cannot draw the scenario configuration as `matplotlib` is not installed.")
             return
-        import networkx as nx
-        from taipy.core._entity._dag import _DAG
         import matplotlib.pyplot as plt
+        import networkx as nx
+
+        from taipy.core._entity._dag import _DAG
 
         def build_dag() -> nx.DiGraph:
-            graph = nx.DiGraph()
+            g = nx.DiGraph()
             for task in set(self.tasks):
                 if has_input := task.inputs:
                     for predecessor in task.inputs:
-                        graph.add_edges_from([(predecessor, task)])
+                        g.add_edges_from([(predecessor, task)])
                 if has_output := task.outputs:
                     for successor in task.outputs:
-                        graph.add_edges_from([(task, successor)])
+                        g.add_edges_from([(task, successor)])
                 if not has_input and not has_output:
-                    graph.add_node(task)
-            return graph
+                    g.add_node(task)
+            return g
         graph = build_dag()
         dag = _DAG(graph)
         pos = {node.entity: (node.x, node.y) for node in dag.nodes.values()}
