@@ -619,8 +619,12 @@ class DataNode(_Entity, _Labeled):
 
         Returns:
             The int value representing the rank of the data node config in the scenario config DAG.
-            If the data node config is not found or has no rank, 0xffff is returned. These cases should never happen.
-            If the data node config is not part of the scenario config, 0xfffe is returned as an infinite rank.
+            If the scenario config is None or an empty string, 0xfffb is returned.<br/>
+            If the data node config is not found, 0xfffd is returned. This case cannot
+            happen in a normal situation.<br/>
+            If the data node config has no precomputed ranks, 0xfffe is returned. This case
+            cannot happen in a normal situation.<br/>
+            If the data node config is not part of the scenario config, 0xfffc is returned as an infinite rank.
         """
         if not scenario_config_id:
             return 0xfffb
