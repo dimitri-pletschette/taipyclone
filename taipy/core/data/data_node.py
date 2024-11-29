@@ -622,14 +622,16 @@ class DataNode(_Entity, _Labeled):
             If the data node config is not found or has no rank, 0xffff is returned. These cases should never happen.
             If the data node config is not part of the scenario config, 0xfffe is returned as an infinite rank.
         """
+        if not scenario_config_id:
+            return 0xfffb
         dn_config = Config.data_nodes.get(self._config_id, None)
         if not dn_config:
             self._logger.error(f"Data node config `{self.config_id}` for data node `{self.id}` is not found.")
-            return 0xffff
+            return 0xfffd
         if not dn_config._ranks:
             self._logger.error(f"Data node config `{self.config_id}` for data node `{self.id}` has no rank.")
-            return 0xffff
-        return dn_config._ranks.get(scenario_config_id, 0xfffe)
+            return 0xfffe
+        return dn_config._ranks.get(scenario_config_id, 0xfffc)
 
     @abstractmethod
     def _read(self):
