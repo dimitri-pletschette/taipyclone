@@ -141,7 +141,7 @@ const Input = (props: TaipyInputProps) => {
 
     const handleBlur = useCallback(
         (evt: React.FocusEvent<HTMLInputElement>) => {
-            let val = (type === "number")
+            const val = (type === "number")
                 ? Number(evt.currentTarget.querySelector("input")?.value)
                 : (multiline
                     ? evt.currentTarget.querySelector("textarea")?.value
@@ -157,7 +157,7 @@ const Input = (props: TaipyInputProps) => {
             onAction && dispatch(createSendActionNameAction(id, module, onAction, "Tab", updateVarName, val));
             evt.preventDefault();
         },
-        [dispatch, updateVarName, module, onChange, propagate, changeDelay]
+        [dispatch, type, updateVarName, module, onChange, propagate, changeDelay, id, multiline, onAction]
     );
 
     const handleAction = useCallback(
