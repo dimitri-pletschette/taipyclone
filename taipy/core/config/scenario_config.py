@@ -205,7 +205,7 @@ class ScenarioConfig(Section):
         import matplotlib.pyplot as plt
 
         from taipy.core._entity._dag import _DAG
-        graph = self.__build_dag()
+        graph = self.__build_nx_dag()
         positioned_nodes = _DAG(graph).nodes.values()
         pos = {node.entity: (node.x, node.y) for node in positioned_nodes}
         labls = {node.entity: node.entity.id for node in positioned_nodes}
