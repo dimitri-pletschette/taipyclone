@@ -461,7 +461,7 @@ class DataNode(_Entity, _Labeled):
             **kwargs (Any): Extra information to attach to the edit document
                 corresponding to this write.
         """
-        self._do_write(data, job_id, editor_id, comment, **kwargs)
+        self._do_write(data=data, job_id=job_id, editor_id=editor_id, comment=comment, **kwargs)
         self.track_edit(job_id=job_id, editor_id=editor_id, comment=comment, **kwargs)
         self.unlock_edit()
         from ._data_manager_factory import _DataManagerFactory
