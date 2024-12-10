@@ -38,4 +38,3 @@ _We encourage you to keep the code coverage percentage at 80% and above._
 - [ ] End-to-End tests have been added or updated. If not, why?
 - [ ] The documentation has been updated, or a dedicated issue created. (If applicable)
 - [ ] The release notes have been updated? (If applicable)
-
