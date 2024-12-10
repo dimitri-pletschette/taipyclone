@@ -461,17 +461,26 @@ class DataNode(_Entity, _Labeled):
             **kwargs (Any): Extra information to attach to the edit document
                 corresponding to this write.
         """
+        self._do_write(data, job_id, editor_id, comment, **kwargs)
+        self.track_edit(job_id=job_id, editor_id=editor_id, comment=comment, **kwargs)
+        self.unlock_edit()
         from ._data_manager_factory import _DataManagerFactory
 
+        _DataManagerFactory._build_manager()._set(self)
+
+    def _do_write(self,
+          data,
+          job_id: Optional[JobId] = None,
+          editor_id: Optional[str] = None,
+          comment: Optional[str] = None,
+          **kwargs: Any):
         if (editor_id
             and self.edit_in_progress
             and self.editor_id != editor_id
             and (not self.editor_expiration_date or self.editor_expiration_date > datetime.now())):
             raise DataNodeIsBeingEdited(self.id, self.editor_id)
         self._write(data)
-        self.track_edit(job_id=job_id, editor_id=editor_id, comment=comment, **kwargs)
-        self.unlock_edit()
-        _DataManagerFactory._build_manager()._set(self)
+
 
     def track_edit(self,
                    job_id: Optional[str] = None,
