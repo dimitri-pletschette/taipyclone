@@ -32,9 +32,9 @@ _Describe which projects this change will impact and that needs to be backported
 ## Checklist
 _We encourage you to keep the code coverage percentage at 80% and above._
 
-- [ ] This solution meet the acceptance criteria of the related issue.
+- [ ] This solution meets the acceptance criteria of the related issue.
 - [ ] The related issue checklist is completed.
-- [ ] This PR add unit tests for the developed code. If not, why?
+- [ ] This PR adds unit tests for the developed code. If not, why?
 - [ ] End-to-End tests have been added or updated. If not, why?
 - [ ] The documentation has been updated, or a dedicated issue created. (If applicable)
 - [ ] The release notes have been updated? (If applicable)
