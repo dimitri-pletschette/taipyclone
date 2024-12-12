@@ -204,7 +204,7 @@ class TestGuiCoreContext_is_readable:
             mockGui._get_authorization = lambda s: contextlib.nullcontext()
             gui_core_context = _GuiCoreContext(mockGui)
 
-            gui_core_context.client_submission[a_submission.id] = _ClientStatus("client_id", SubmissionStatus.UNDEFINED)
+            gui_core_context.client_submission[a_submission.id] = _ClientStatus("client_id", None)
             gui_core_context.submission_status_callback(a_submission.id)
             mockget.assert_called()
             found = False
