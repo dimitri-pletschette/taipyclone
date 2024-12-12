@@ -25,7 +25,7 @@ from taipy.core.data.pickle import PickleDataNode
 from taipy.core.job._job_manager_factory import _JobManagerFactory
 from taipy.core.scenario._scenario_manager_factory import _ScenarioManagerFactory
 from taipy.core.submission._submission_manager_factory import _SubmissionManagerFactory
-from taipy.core.submission.submission import Submission, SubmissionStatus
+from taipy.core.submission.submission import Submission
 from taipy.core.task._task_manager_factory import _TaskManagerFactory
 from taipy.gui import Gui, State
 from taipy.gui_core._context import _GuiCoreContext
