@@ -12,6 +12,8 @@
 from queue import SimpleQueue
 from typing import Any, Dict, List
 
+import pytest
+
 from taipy import Orchestrator
 from taipy.common.config import Config, Frequency
 from taipy.core import taipy as tp
@@ -155,14 +157,8 @@ def test_events_published_for_writing_dn():
     assert snapshot.operation_collected.get(EventOperation.UPDATE, 0) == 5
     all_evts.stop()
 
-
-def test_events_published_for_scenario_submission():
-    _events_published_for_scenario_submission()
-
-def test_events_published_for_scenario_submission_standalone():
-    _events_published_for_scenario_submission(standalone=True)
-
-def _events_published_for_scenario_submission(standalone=False):
+@pytest.mark.parametrize("standalone", [False, True])
+def test_events_published_for_scenario_submission(standalone):
     if standalone:
         Config.configure_job_executions(mode="standalone", max_nb_of_workers=2)
     input_config = Config.configure_data_node("the_input")
