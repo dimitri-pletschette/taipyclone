@@ -161,8 +161,8 @@ const PaginatedTable = (props: TaipyPaginatedTableProps) => {
                         if (nDesc.tooltip === undefined) {
                             nDesc.tooltip = props.tooltip;
                         }
-                        if (typeof nDesc.notSortable != "boolean") {
-                            nDesc.notSortable = !sortable;
+                        if (typeof nDesc.sortable != "boolean") {
+                            nDesc.sortable = sortable;
                         }
                     });
                     addActionColumn(
@@ -173,6 +173,7 @@ const PaginatedTable = (props: TaipyPaginatedTableProps) => {
                     );
                     const colsOrder = Object.keys(newCols).sort(getSortByIndex(newCols));
                     let nbWidth = 0;
+                    let widthRate = 0;
                     const functions = colsOrder.reduce<Record<string, Record<string, string>>>((pv, col) => {
                         if (newCols[col].className) {
                             pv.classNames = pv.classNames || {};
@@ -192,6 +193,9 @@ const PaginatedTable = (props: TaipyPaginatedTableProps) => {
                             if (cssWidth) {
                                 newCols[col].width = cssWidth;
                                 nbWidth++;
+                                if (cssWidth.endsWith("%")) {
+                                    widthRate += parseInt(cssWidth, 10);
+                                }
                             }
                         }
                         return pv;
@@ -210,7 +214,7 @@ const PaginatedTable = (props: TaipyPaginatedTableProps) => {
                         hNan,
                         filter,
                         partialEditable,
-                        nbWidth > 0 ? `${100 / nbWidth}%` : undefined
+                        nbWidth > 0 ? `${(100 - widthRate) / nbWidth}%` : undefined
                     ];
                 } catch (e) {
                     console.info("PaginatedTable.columns: ", (e as Error).message || e);
@@ -585,8 +589,8 @@ const PaginatedTable = (props: TaipyPaginatedTableProps) => {
                                                     direction={orderBy === columns[col].dfid ? order : "asc"}
                                                     data-dfid={columns[col].dfid}
                                                     onClick={onSort}
-                                                    disabled={!active || columns[col].notSortable}
-                                                    hideSortIcon={!active || columns[col].notSortable}
+                                                    disabled={!active || !columns[col].sortable}
+                                                    hideSortIcon={!active || !columns[col].sortable}
                                                 >
                                                     <Box sx={headBoxSx}>
                                                         {columns[col].groupBy ? (

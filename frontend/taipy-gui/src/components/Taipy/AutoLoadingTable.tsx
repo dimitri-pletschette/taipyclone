@@ -310,8 +310,8 @@ const AutoLoadingTable = (props: TaipyTableProps) => {
                         if (nDesc.tooltip === undefined) {
                             nDesc.tooltip = props.tooltip;
                         }
-                        if (typeof nDesc.notSortable != "boolean") {
-                            nDesc.notSortable = !sortable;
+                        if (typeof nDesc.sortable != "boolean") {
+                            nDesc.sortable = sortable;
                         }
                     });
                     addActionColumn(
@@ -706,8 +706,8 @@ const AutoLoadingTable = (props: TaipyTableProps) => {
                                                     direction={orderBy === columns[col].dfid ? order : "asc"}
                                                     data-dfid={columns[col].dfid}
                                                     onClick={onSort}
-                                                    disabled={!active || columns[col].notSortable}
-                                                    hideSortIcon={!active || columns[col].notSortable}
+                                                    disabled={!active || !columns[col].sortable}
+                                                    hideSortIcon={!active || !columns[col].sortable}
                                                 >
                                                     <Box sx={headBoxSx}>
                                                         {columns[col].groupBy ? (
