@@ -10,7 +10,7 @@
 # specific language governing permissions and limitations under the License.
 
 from datetime import timedelta
-from typing import Any, Callable, Dict, List, Tuple, cast
+from typing import Callable, Dict, List, cast
 
 from taipy.common.config._config import _Config
 from taipy.common.config.checker._checkers._config_checker import _ConfigChecker
@@ -23,7 +23,6 @@ from ..data_node_config import DataNodeConfig
 
 
 class _DataNodeConfigChecker(_ConfigChecker):
-
     def __init__(self, config: _Config, collector: IssueCollector):
         super().__init__(config, collector)
 
@@ -201,6 +200,7 @@ class _DataNodeConfigChecker(_ConfigChecker):
         if property_types := data_node_config._PROPERTIES_TYPES.get(data_node_config.storage_type):
             for prop_key, prop_type in property_types.items():
                 prop_value = data_node_config.properties.get(prop_key) if data_node_config.properties else None
+
                 if prop_value and not isinstance(prop_value, prop_type):
                     self._error(
                         prop_key,
@@ -208,12 +208,13 @@ class _DataNodeConfigChecker(_ConfigChecker):
                         f"`{prop_key}` of DataNodeConfig `{data_node_config_id}` must be"
                         f" populated with a {prop_type}.",
                     )
+
                 if prop_type == Callable and callable(prop_value) and prop_value.__name__ == "<lambda>":
                     self._error(
                         prop_key,
                         prop_value,
                         f"`{prop_key}` of DataNodeConfig `{data_node_config_id}` must be"
-                        f" populated with a serializable Callable function but not a lambda.",
+                        f" populated with a serializable typing.Callable function but not a lambda.",
                     )
 
     def _check_exposed_type(self, data_node_config_id: str, data_node_config: DataNodeConfig):

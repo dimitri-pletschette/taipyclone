@@ -38,7 +38,7 @@ class DataNodeConfig(Section):
     """
 
     name = "DATA_NODE"
-
+    _ALL_TYPES = (str, int, float, bool, list, dict, tuple, set, type(None), callable)
     _STORAGE_TYPE_KEY = "storage_type"
     _STORAGE_TYPE_VALUE_PICKLE = "pickle"
     _STORAGE_TYPE_VALUE_SQL_TABLE = "sql_table"
@@ -171,7 +171,7 @@ class DataNodeConfig(Section):
             _OPTIONAL_FOLDER_PATH_SQLITE_PROPERTY: str,
             _OPTIONAL_FILE_EXTENSION_SQLITE_PROPERTY: str,
             _OPTIONAL_DB_EXTRA_ARGS_SQL_PROPERTY: dict,
-            _OPTIONAL_EXPOSED_TYPE_SQL_PROPERTY: str,
+            _OPTIONAL_EXPOSED_TYPE_SQL_PROPERTY: (str, Callable),
         },
         _STORAGE_TYPE_VALUE_SQL_TABLE: {
             _REQUIRED_DB_NAME_SQL_PROPERTY: str,
@@ -185,26 +185,26 @@ class DataNodeConfig(Section):
             _OPTIONAL_FOLDER_PATH_SQLITE_PROPERTY: str,
             _OPTIONAL_FILE_EXTENSION_SQLITE_PROPERTY: str,
             _OPTIONAL_DB_EXTRA_ARGS_SQL_PROPERTY: dict,
-            _OPTIONAL_EXPOSED_TYPE_SQL_PROPERTY: str,
+            _OPTIONAL_EXPOSED_TYPE_SQL_PROPERTY: (str, Callable),
         },
         _STORAGE_TYPE_VALUE_CSV: {
             _OPTIONAL_DEFAULT_PATH_CSV_PROPERTY: str,
             _OPTIONAL_ENCODING_PROPERTY: str,
             _OPTIONAL_HAS_HEADER_CSV_PROPERTY: bool,
-            _OPTIONAL_EXPOSED_TYPE_CSV_PROPERTY: str,
+            _OPTIONAL_EXPOSED_TYPE_CSV_PROPERTY: (str, Callable),
         },
         _STORAGE_TYPE_VALUE_EXCEL: {
             _OPTIONAL_DEFAULT_PATH_EXCEL_PROPERTY: str,
             _OPTIONAL_HAS_HEADER_EXCEL_PROPERTY: bool,
-            _OPTIONAL_SHEET_NAME_EXCEL_PROPERTY: Union[str, List[str]],
-            _OPTIONAL_EXPOSED_TYPE_EXCEL_PROPERTY: str,
+            _OPTIONAL_SHEET_NAME_EXCEL_PROPERTY: (str, list),
+            _OPTIONAL_EXPOSED_TYPE_EXCEL_PROPERTY: (str, Callable),
         },
         _STORAGE_TYPE_VALUE_IN_MEMORY: {
-            _OPTIONAL_DEFAULT_DATA_IN_MEMORY_PROPERTY: Any,
+            _OPTIONAL_DEFAULT_DATA_IN_MEMORY_PROPERTY: _ALL_TYPES,
         },
         _STORAGE_TYPE_VALUE_PICKLE: {
             _OPTIONAL_DEFAULT_PATH_PICKLE_PROPERTY: str,
-            _OPTIONAL_DEFAULT_DATA_PICKLE_PROPERTY: Any,
+            _OPTIONAL_DEFAULT_DATA_PICKLE_PROPERTY: _ALL_TYPES,
         },
         _STORAGE_TYPE_VALUE_JSON: {
             _OPTIONAL_DEFAULT_PATH_JSON_PROPERTY: str,
@@ -218,12 +218,12 @@ class DataNodeConfig(Section):
             _OPTIONAL_COMPRESSION_PARQUET_PROPERTY: str,
             _OPTIONAL_READ_KWARGS_PARQUET_PROPERTY: dict,
             _OPTIONAL_WRITE_KWARGS_PARQUET_PROPERTY: dict,
-            _OPTIONAL_EXPOSED_TYPE_PARQUET_PROPERTY: str,
+            _OPTIONAL_EXPOSED_TYPE_PARQUET_PROPERTY: (str, Callable),
         },
         _STORAGE_TYPE_VALUE_MONGO_COLLECTION: {
             _REQUIRED_DB_NAME_MONGO_PROPERTY: str,
             _REQUIRED_COLLECTION_NAME_MONGO_PROPERTY: str,
-            _OPTIONAL_CUSTOM_DOCUMENT_MONGO_PROPERTY: Any,
+            _OPTIONAL_CUSTOM_DOCUMENT_MONGO_PROPERTY: str,
             _OPTIONAL_USERNAME_MONGO_PROPERTY: str,
             _OPTIONAL_PASSWORD_MONGO_PROPERTY: str,
             _OPTIONAL_HOST_MONGO_PROPERTY: str,
@@ -242,7 +242,6 @@ class DataNodeConfig(Section):
             _OPTIONAL_AWS_S3_PUT_OBJECT_PARAMETERS_PROPERTY: dict,
         },
     }
-
 
     _REQUIRED_PROPERTIES: Dict[str, List] = {
         _STORAGE_TYPE_VALUE_PICKLE: [],
