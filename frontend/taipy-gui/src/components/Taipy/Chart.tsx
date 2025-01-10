@@ -501,15 +501,15 @@ const Chart = (props: ChartProp) => {
         if (props.figure) {
             return lastDataPl.current || [];
         }
-        const datas = dataKeys.map((_, idx) => getData(data, additionalDatas, idx));
-        if (!datas.length || datas.every((d) => !d || isDataRefresh(d) || !Object.keys(d).length)) {
+        const dataList = dataKeys.map((_, idx) => getData(data, additionalDatas, idx));
+        if (!dataList.length || dataList.every((d) => !d || isDataRefresh(d) || !Object.keys(d).length)) {
             return lastDataPl.current || [];
         }
         let changed = false;
         const newDataPl = config.traces.map((trace, idx) => {
             const currentData = idx < lastDataPl.current.length ? lastDataPl.current[idx] : {};
             const dataKey = idx < dataKeys.length ? dataKeys[idx] : dataKeys[0];
-            const lData = idx < datas.length ? datas[idx] : datas[0];
+            const lData = idx < dataList.length ? dataList[idx] : dataList[0];
             if (!lData || isDataRefresh(lData) || !Object.keys(lData).length) {
                 return currentData;
             }
