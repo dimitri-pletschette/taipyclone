@@ -10,7 +10,7 @@
 # specific language governing permissions and limitations under the License.
 
 from copy import copy
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 
 import pytest
 
