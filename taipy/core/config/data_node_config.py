@@ -41,7 +41,7 @@ class DataNodeConfig(Section):
     """
 
     name = "DATA_NODE"
-    _ALL_TYPES = (str, int, float, bool, list, dict, tuple, set, type(None), callable, datetime, timedelta)
+    _ALL_TYPES = (str, int, float, bool, list, dict, tuple, set, type(None), type(callable), datetime, timedelta)
     _STORAGE_TYPE_KEY = "storage_type"
     _STORAGE_TYPE_VALUE_PICKLE = "pickle"
     _STORAGE_TYPE_VALUE_SQL_TABLE = "sql_table"
