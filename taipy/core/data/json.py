@@ -158,6 +158,9 @@ class JSONDataNode(DataNode, _FileDataNodeMixin):
         with open(self._path, "w", encoding=self.properties[self.__ENCODING_KEY]) as f:  # type: ignore
             json.dump(data, f, indent=4, cls=self._encoder)
 
+    def _clone_data(self):
+        return self._clone_data_file(self.id)
+
 
 class _DefaultJSONEncoder(json.JSONEncoder):
     def default(self, o):

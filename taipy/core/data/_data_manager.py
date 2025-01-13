@@ -188,5 +188,5 @@ class _DataManager(_Manager[DataNode], _VersionMixin):
         dn._owner_id = cls._get_owner_id(dn._scope, cycle_id, scenario_id)
         dn._parent_ids = set()
         cls._set(dn)
-        # dn._clone_data()
+        dn._clone_data()
         return dn

@@ -108,3 +108,6 @@ class PickleDataNode(DataNode, _FileDataNodeMixin):
     def _write(self, data):
         with open(self._path, "wb") as pf:
             pickle.dump(data, pf)
+
+    def _clone_data(self):
+        return self._clone_data_file(self.id)

@@ -192,3 +192,6 @@ class CSVDataNode(DataNode, _FileDataNodeMixin, _TabularDataNodeMixin):
             encoding=properties[self.__ENCODING_KEY],
             header=properties[self._HAS_HEADER_PROPERTY],
         )
+
+    def _clone_data(self):
+        return self._clone_data_file(self.id)
