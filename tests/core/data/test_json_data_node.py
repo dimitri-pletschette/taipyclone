@@ -10,6 +10,7 @@
 # specific language governing permissions and limitations under the License.
 
 import datetime
+import filecmp
 import json
 import os
 import pathlib
@@ -492,3 +493,13 @@ class TestJSONDataNode:
 
         # The upload should succeed when check_data_keys() return True
         assert dn._upload(json_file, upload_checker=check_data_keys)
+
+    def test_clone_data_file(self):
+        path = os.path.join(pathlib.Path(__file__).parent.resolve(), "data_sample/json/example_dict.json")
+        dn = JSONDataNode("foo", Scope.SCENARIO, properties={"path": path})
+        read_data = dn.read()
+        assert read_data is not None
+
+        new_file_path = str(dn._clone_data())
+        assert filecmp.cmp(path, new_file_path)
+        os.unlink(new_file_path)

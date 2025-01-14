@@ -10,6 +10,7 @@
 # specific language governing permissions and limitations under the License.
 
 import dataclasses
+import filecmp
 import os
 import pathlib
 import re
@@ -429,3 +430,13 @@ class TestCSVDataNode:
 
         # The upload should succeed when check_data_is_positive() return True
         assert dn._upload(new_csv_path, upload_checker=check_data_is_positive)
+
+    def test_clone_data_file(self):
+        path = os.path.join(pathlib.Path(__file__).parent.resolve(), "data_sample/example.csv")
+        dn = CSVDataNode("foo", Scope.SCENARIO, properties={"path": path, "exposed_type": "pandas"})
+        read_data = dn.read()
+        assert read_data is not None
+
+        new_file_path = str(dn._clone_data())
+        assert filecmp.cmp(path, new_file_path)
+        os.unlink(new_file_path)

@@ -9,9 +9,11 @@
 # an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
+import filecmp
 import os
 import pathlib
 import re
+import shutil
 import uuid
 from datetime import datetime, timedelta
 from importlib import util
@@ -402,3 +404,13 @@ class TestParquetDataNode:
 
         # The upload should succeed when check_data_is_positive() return True
         assert dn._upload(new_parquet_path, upload_checker=check_data_is_positive)
+
+    def test_clone_data_file(self):
+        path = os.path.join(pathlib.Path(__file__).parent.resolve(), "data_sample/parquet_example")
+        dn = ParquetDataNode("foo", Scope.SCENARIO, properties={"path": path})
+        read_data = dn.read()
+        assert read_data is not None
+
+        new_file_path = str(dn._clone_data())
+        assert filecmp.dircmp(path, new_file_path)
+        shutil.rmtree(new_file_path)

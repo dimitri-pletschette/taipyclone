@@ -225,9 +225,12 @@ class _FileDataNodeMixin:
 
     def _clone_data_file(self, id: str) -> Optional[str]:
         if os.path.exists(self.path):
-            file_path, file_name = os.path.split(self.path)
-            new_file_path = os.path.join(file_path, f"TAIPY_CLONE_{id}_{file_name}")
-            shutil.copy(self.path, new_file_path)
-            return new_file_path
+            folder_path, base_name = os.path.split(self.path)
+            new_base_path = os.path.join(folder_path, f"TAIPY_CLONE_{id}_{base_name}")
+            if os.path.isdir(self.path):
+                shutil.copytree(self.path, new_base_path)
+            else:
+                shutil.copy(self.path, new_base_path)
+            return new_base_path
         # TODO: update file path?????
         return None
