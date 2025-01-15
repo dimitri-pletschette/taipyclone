@@ -17,12 +17,15 @@ from taipy.gui.utils.callable import _function_name, _is_function, _is_unnamed_f
 def my_function():
     pass
 
-class my_class():
+
+class my_class:
     pass
 
-class my_callable_class():
+
+class my_callable_class:
     def __call__(self):
         pass
+
 
 def test__is_unnamed_function():
     assert _is_unnamed_function(my_function) is False
@@ -48,7 +51,7 @@ def test__function_name():
     assert _function_name([]) == "[]"
     assert _function_name({}) == "{}"
     assert _function_name(set()) == "set()"
-    assert _function_name(tuple()) == "()" #noqa C408
+    assert _function_name(tuple()) == "()"  # noqa C408
     assert _function_name(object) == "object"
     assert _function_name(object()).startswith("<object ")
     assert _function_name(my_class) == "my_class"
