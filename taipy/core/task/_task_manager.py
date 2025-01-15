@@ -235,12 +235,18 @@ class _TaskManager(_Manager[Task], _VersionMixin):
     @classmethod
     def _clone(cls, task: Task, cycle_id: Optional[CycleId] = None, scenario_id: Optional[ScenarioId] = None) -> Task:
         data_manager = _DataManagerFactory._build_manager()
-        inputs = [data_manager._clone(i, cycle_id, scenario_id) for i in task.input.values()]
-        outputs = [data_manager._clone(o, cycle_id, scenario_id) for o in task.output.values()]
-        task.id = task._new_id(task.config_id)
-        task._parent_ids = set()
-        task._owner_id = cls._get_owner_id(task.scope, cycle_id, scenario_id)
+
+        cloned_task = cls._get(task)
+
+        inputs = [data_manager._clone(i, cycle_id, scenario_id) for i in cloned_task.input.values()]
+        outputs = [data_manager._clone(o, cycle_id, scenario_id) for o in cloned_task.output.values()]
+
+        cloned_task.id = cloned_task._new_id(cloned_task.config_id)
+        cloned_task._parent_ids = set()
+        cloned_task._owner_id = cls._get_owner_id(cloned_task.scope, cycle_id, scenario_id)
+
         for dn in set(inputs + outputs):
-            dn._parent_ids.update([task.id])
-        cls._set(task)
-        return task
+            dn._parent_ids.update([cloned_task.id])
+
+        cls._set(cloned_task)
+        return cloned_task

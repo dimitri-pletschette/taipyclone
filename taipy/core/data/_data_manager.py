@@ -184,9 +184,14 @@ class _DataManager(_Manager[DataNode], _VersionMixin):
     def _clone(
         cls, dn: DataNode, cycle_id: Optional[CycleId] = None, scenario_id: Optional[ScenarioId] = None
     ) -> DataNode:
-        dn.id = dn._new_id(dn._config_id)
-        dn._owner_id = cls._get_owner_id(dn._scope, cycle_id, scenario_id)
-        dn._parent_ids = set()
-        cls._set(dn)
-        dn._clone_data()
-        return dn
+        cloned_dn = cls._get(dn)
+
+        cloned_dn.id = cloned_dn._new_id(cloned_dn._config_id)
+        cloned_dn._owner_id = cls._get_owner_id(cloned_dn._scope, cycle_id, scenario_id)
+        cloned_dn._parent_ids = set()
+
+        cls._set(cloned_dn)
+
+        cloned_dn._clone_data()
+
+        return cloned_dn

@@ -1562,24 +1562,22 @@ def test_clone_scenario():
     task_config_1 = Config.configure_task("task_1", print, [dn_config_1], [dn_config_2])
     scenario_config_1 = Config.configure_scenario("scenario_1", [task_config_1], [additional_dn_config_1])
     scenario = _ScenarioManager._create(scenario_config_1)
-    old_scenario_id = scenario.id
 
     assert len(_ScenarioManager._get_all()) == 1
     assert len(_DataManager._get_all()) == 3
     assert len(_TaskManager._get_all()) == 1
 
     new_scenario = _ScenarioManager._clone(scenario)
-    old_scenario = _ScenarioManager._get(old_scenario_id)
 
-    assert old_scenario.id != new_scenario.id
+    assert scenario.id != new_scenario.id
     assert len(_ScenarioManager._get_all()) == 2
     assert len(_DataManager._get_all()) == 6
     assert len(_TaskManager._get_all()) == 2
 
-    assert all(old_scenario_id in t.parent_ids for t in old_scenario.tasks.values())
-    assert all(old_scenario_id == t.owner_id for t in old_scenario.tasks.values())
-    assert all(old_scenario_id in dn.parent_ids for dn in old_scenario.additional_data_nodes.values())
-    assert all(old_scenario_id == dn.owner_id for dn in old_scenario.data_nodes.values())
+    assert all(scenario.id in t.parent_ids for t in scenario.tasks.values())
+    assert all(scenario.id == t.owner_id for t in scenario.tasks.values())
+    assert all(scenario.id in dn.parent_ids for dn in scenario.additional_data_nodes.values())
+    assert all(scenario.id == dn.owner_id for dn in scenario.data_nodes.values())
 
     assert all(new_scenario.id in t.parent_ids for t in new_scenario.tasks.values())
     assert all(new_scenario.id == t.owner_id for t in new_scenario.tasks.values())
