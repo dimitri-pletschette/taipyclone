@@ -48,7 +48,7 @@ def test__function_name():
     assert _function_name([]) == "[]"
     assert _function_name({}) == "{}"
     assert _function_name(set()) == "set()"
-    assert _function_name(tuple()) == "()"
+    assert _function_name(tuple()) == "()" #noqa C408
     assert _function_name(object) == "object"
     assert _function_name(object()).startswith("<object ")
     assert _function_name(my_class) == "my_class"
