@@ -456,12 +456,13 @@ def query_local_storage(state: State, *keys: str) -> t.Optional[t.Union[str, t.D
         *keys (string): One or more keys to retrieve values for from the client's local storage.
 
     Returns:
-        The requested values from the browser's local storage.<br/>
+        The requested values from the browser's local storage.
+
         - If a single key is provided (*keys* has a single element), this function returns the
-          corresponding value as a string.<br/>
+            corresponding value as a string.<br/>
         - If multiple keys are provided, this function returns a dictionary mapping each key to its
-          value in the client's local storage.<br/>
-          If no value is found for a key, that key will not appear in the dictionary.
+            value in the client's local storage.<br/>
+            If no value is found for a key, that key will not appear in the dictionary.
     """
     if state and isinstance(state._gui, Gui):
         return state._gui._query_local_storage(*keys)
