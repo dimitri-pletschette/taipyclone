@@ -533,7 +533,8 @@ class _ScenarioManager(_Manager[Scenario], _VersionMixin):
         Returns:
             Scenario: The cloned scenario.
         """
-        scenario.id = scenario._new_id(scenario.config_id)
+        new_scenario_id = scenario._new_id(scenario.config_id)
+        scenario.id = new_scenario_id
         # TODO: update sequences
 
         # Clone tasks and data nodes
@@ -542,22 +543,22 @@ class _ScenarioManager(_Manager[Scenario], _VersionMixin):
 
         cloned_tasks = set()
         for task in scenario.tasks.values():
-            cloned_tasks.add(_task_manager._clone(task, None, scenario.id))
+            cloned_tasks.add(_task_manager._clone(task, None, new_scenario_id))
         scenario._tasks = cloned_tasks
 
         cloned_additional_data_nodes = set()
         for data_node in scenario.additional_data_nodes.values():
-            cloned_additional_data_nodes.add(_data_manager._clone(data_node, None, scenario.id))
+            cloned_additional_data_nodes.add(_data_manager._clone(data_node, None, new_scenario_id))
         scenario._additional_data_nodes = cloned_additional_data_nodes
 
         for task in cloned_tasks:
-            if scenario.id not in task._parent_ids:
-                task._parent_ids.update([scenario.id])
+            if new_scenario_id not in task._parent_ids:
+                task._parent_ids.update([new_scenario_id])
                 _task_manager._set(task)
 
         for dn in cloned_additional_data_nodes:
-            if scenario.id not in dn._parent_ids:
-                dn._parent_ids.update([scenario.id])
+            if new_scenario_id not in dn._parent_ids:
+                dn._parent_ids.update([new_scenario_id])
                 _data_manager._set(dn)
 
         cls._set(scenario)

@@ -232,5 +232,4 @@ class _FileDataNodeMixin:
             else:
                 shutil.copy(self.path, new_base_path)
             return new_base_path
-        # TODO: update file path?????
-        return None
+        return ""

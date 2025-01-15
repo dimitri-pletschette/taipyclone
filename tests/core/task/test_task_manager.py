@@ -483,3 +483,28 @@ def test_get_scenarios_by_config_id_in_multiple_versions_environment():
 
 def _create_task_from_config(task_config, *args, **kwargs):
     return _TaskManager._bulk_get_or_create([task_config], *args, **kwargs)[0]
+
+
+def test_clone_task():
+    dn_input_config_1 = Config.configure_pickle_data_node("my_input_1", scope=Scope.SCENARIO, default_data="testing")
+    dn_output_config_1 = Config.configure_pickle_data_node("my_output_1")
+    task_config_1 = Config.configure_task("task_config_1", print, dn_input_config_1, dn_output_config_1)
+    task = _create_task_from_config(task_config_1)
+
+    old_task_id = task.id
+
+    assert len(_TaskManager._get_all()) == 1
+    assert len(_DataManager._get_all()) == 2
+
+    new_task = _TaskManager._clone(task)
+    old_task = _TaskManager._get(old_task_id)
+
+    assert old_task.id != new_task.id
+    assert len(_TaskManager._get_all()) == 2
+    assert len(_DataManager._get_all()) == 4
+
+    assert all(old_task_id in dn.parent_ids for dn in old_task.data_nodes.values())
+    assert all(dn.owner_id is None for dn in old_task.data_nodes.values())
+
+    assert all(new_task.id in dn.parent_ids for dn in new_task.data_nodes.values())
+    assert all(dn.owner_id is None for dn in new_task.data_nodes.values())

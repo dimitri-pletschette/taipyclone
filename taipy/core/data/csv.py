@@ -194,4 +194,6 @@ class CSVDataNode(DataNode, _FileDataNodeMixin, _TabularDataNodeMixin):
         )
 
     def _clone_data(self):
-        return self._clone_data_file(self.id)
+        new_data_path = self._clone_data_file(self.id)
+        self._properties[self._PATH_KEY] = new_data_path
+        return new_data_path
