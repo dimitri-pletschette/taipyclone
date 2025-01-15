@@ -444,15 +444,26 @@ def invoke_long_callback(
         thread_status(thread.name, period / 1000.0, 0)
 
 
-def get_local_storage(state: State, *keys: str) -> t.Optional[t.Union[str, t.Dict[str, str]]]:
-    """Get local storage value(s).
+def query_local_storage(state: State, *keys: str) -> t.Optional[t.Union[str, t.Dict[str, str]]]:
+    """Retrieve values from the browser's local storage.
+
+    This function queries the local storage of the client identified by *state* and returns the
+    values associated with the specified keys. Local storage is a key-value store available in the
+    user's browser, typically manipulated by client-side code.
+
     Arguments:
         state (State^): The current user state as received in any callback.
-        *keys (string): The keys to get from the local storage
+        *keys (string): One or more keys to retrieve values for from the client's local storage.
+
     Returns:
-        All local storage values
+        The requested values from the browser's local storage.<br/>
+        - If a single key is provided (*keys* has a single element), this function returns the
+          corresponding value as a string.<br/>
+        - If multiple keys are provided, this function returns a dictionary mapping each key to its
+          value in the client's local storage.<br/>
+          If no value is found for a key, that key will not appear in the dictionary.
     """
     if state and isinstance(state._gui, Gui):
-        return state._gui._get_local_storage(*keys)
-    _warn("'get_local_storage()' must be called in the context of a callback.")
+        return state._gui._query_local_storage(*keys)
+    _warn("'query_local_storage()' must be called in the context of a callback.")
     return None

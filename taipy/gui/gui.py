@@ -1345,7 +1345,7 @@ class Gui:
             if value is not None and scope_meta_ls.get(key) != value:
                 scope_meta_ls[key] = value
 
-    def _get_local_storage(self, *keys: str) -> t.Optional[t.Union[str, t.Dict[str, str]]]:
+    def _query_local_storage(self, *keys: str) -> t.Optional[t.Union[str, t.Dict[str, str]]]:
         if not keys:
             return None
         if len(keys) == 1:

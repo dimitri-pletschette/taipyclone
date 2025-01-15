@@ -78,7 +78,6 @@ from ._renderers.json import JsonAdapter
 from .gui_actions import (
     broadcast_callback,
     download,
-    get_local_storage,
     get_module_context,
     get_module_name_from_state,
     get_state_id,
@@ -88,6 +87,7 @@ from .gui_actions import (
     invoke_long_callback,
     navigate,
     notify,
+    query_local_storage,
     resume_control,
 )
 from .icon import Icon
