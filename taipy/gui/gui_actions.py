@@ -226,8 +226,8 @@ def get_state_id(state: State) -> t.Optional[str]:
         state (State^): The current user state as received in any callback.
 
     Returns:
-        A string that uniquely identifies the state. If this value None, it indicates that *state* is not
-        handled by a `Gui^` instance.
+        A string that uniquely identifies the state.<br/>
+            If this value None, it indicates that *state* is not handled by a `Gui^` instance.
     """
     if state and isinstance(state._gui, Gui):
         return state._gui._get_client_id()
@@ -241,7 +241,7 @@ def get_module_context(state: State) -> t.Optional[str]:
         state (State^): The current user state as received in any callback.
 
     Returns:
-        The name of the current module
+        The name of the current module.
     """
     if state and isinstance(state._gui, Gui):
         return state._gui._get_locals_context()
@@ -458,11 +458,11 @@ def query_local_storage(state: State, *keys: str) -> t.Optional[t.Union[str, t.D
     Returns:
         The requested values from the browser's local storage.
 
-        - If a single key is provided (*keys* has a single element), this function returns the
-            corresponding value as a string.<br/>
-        - If multiple keys are provided, this function returns a dictionary mapping each key to its
-            value in the client's local storage.<br/>
-            If no value is found for a key, that key will not appear in the dictionary.
+            - If a single key is provided (*keys* has a single element), this function returns the
+              corresponding value as a string.
+            - If multiple keys are provided, this function returns a dictionary mapping each key to
+              its value in the client's local storage.
+            - If no value is found for a key, that key will not appear in the dictionary.
     """
     if state and isinstance(state._gui, Gui):
         return state._gui._query_local_storage(*keys)
