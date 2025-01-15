@@ -2399,9 +2399,6 @@ class Gui:
             action_name = (
                 callback if isinstance(callback, str) else (callback.__name__ if callback is not None else None)
             )
-        if not isinstance(action_name, str):
-            _warn("hold_actions() callback is invalid.")
-            return
         func = self.__get_on_cancel_block_ui(action_name)
         def_action_name = func.__name__
         _setscopeattr(self, def_action_name, func)
