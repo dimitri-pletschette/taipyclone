@@ -241,12 +241,26 @@ class _TaskManager(_Manager[Task], _VersionMixin):
         inputs = [data_manager._clone(i, cycle_id, scenario_id) for i in cloned_task.input.values()]
         outputs = [data_manager._clone(o, cycle_id, scenario_id) for o in cloned_task.output.values()]
 
+        scope = min(dn.scope for dn in (inputs + outputs)) if (len(inputs) + len(outputs)) != 0 else Scope.GLOBAL
+        owner_id = cls._get_owner_id(scope, cycle_id, scenario_id)
+
+        tasks_by_config = cls._repository._get_by_configs_and_owner_ids(  # type: ignore
+            [(task.config_id, owner_id)], cls._build_filters_with_version(None)
+        )
+
+        if existing_task := tasks_by_config.get((task.config_id, owner_id)):
+            return existing_task
+
         cloned_task.id = cloned_task._new_id(cloned_task.config_id)
         cloned_task._parent_ids = set()
-        cloned_task._owner_id = cls._get_owner_id(cloned_task.scope, cycle_id, scenario_id)
+        cloned_task._owner_id = owner_id
+
+        cloned_task._input = {i.config_id: i for i in inputs}
+        cloned_task._output = {o.config_id: o for o in outputs}
 
         for dn in set(inputs + outputs):
             dn._parent_ids.update([cloned_task.id])
+            data_manager._set(dn)
 
         cls._set(cloned_task)
         return cloned_task

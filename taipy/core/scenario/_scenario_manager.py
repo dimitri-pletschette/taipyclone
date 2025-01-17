@@ -523,7 +523,7 @@ class _ScenarioManager(_Manager[Scenario], _VersionMixin):
         return cls._repository._load_all(filters)
 
     @classmethod
-    def _clone(cls, scenario: Scenario) -> Scenario:
+    def _clone(cls, scenario: Scenario, creation_date: Optional[datetime] = None) -> Scenario:
         """
         Clone a scenario.
 
@@ -533,9 +533,14 @@ class _ScenarioManager(_Manager[Scenario], _VersionMixin):
         Returns:
             Scenario: The cloned scenario.
         """
+        creation_date = creation_date or datetime.now()
         cloned_scenario = cls._get(scenario)
-        cloned_scenario_id = cloned_scenario._new_id(cloned_scenario.config_id)
-        cloned_scenario.id = cloned_scenario_id
+        cloned_scenario.id = cloned_scenario._new_id(cloned_scenario.config_id)
+
+        frequency = cls.__get_config(scenario).frequency
+        cycle = _CycleManagerFactory._build_manager()._get_or_create(frequency, creation_date) if frequency else None
+        cycle_id = cycle.id if cycle else None
+
         # TODO: update sequences
 
         # Clone tasks and data nodes
@@ -544,23 +549,27 @@ class _ScenarioManager(_Manager[Scenario], _VersionMixin):
 
         cloned_tasks = set()
         for task in cloned_scenario.tasks.values():
-            cloned_tasks.add(_task_manager._clone(task, None, cloned_scenario_id))
+            cloned_tasks.add(_task_manager._clone(task, cycle_id, cloned_scenario.id))
         cloned_scenario._tasks = cloned_tasks
 
         cloned_additional_data_nodes = set()
         for data_node in cloned_scenario.additional_data_nodes.values():
-            cloned_additional_data_nodes.add(_data_manager._clone(data_node, None, cloned_scenario_id))
+            cloned_additional_data_nodes.add(_data_manager._clone(data_node, None, cloned_scenario.id))
         cloned_scenario._additional_data_nodes = cloned_additional_data_nodes
 
         for task in cloned_tasks:
-            if cloned_scenario_id not in task._parent_ids:
-                task._parent_ids.update([cloned_scenario_id])
+            if cloned_scenario.id not in task._parent_ids:
+                task._parent_ids.update([cloned_scenario.id])
                 _task_manager._set(task)
 
         for dn in cloned_additional_data_nodes:
-            if cloned_scenario_id not in dn._parent_ids:
-                dn._parent_ids.update([cloned_scenario_id])
+            if cloned_scenario.id not in dn._parent_ids:
+                dn._parent_ids.update([cloned_scenario.id])
                 _data_manager._set(dn)
+
+        cloned_scenario._cycle = cycle
+        cloned_scenario._creation_date = creation_date
+        cloned_scenario._primary_scenario = len(cls._get_all_by_cycle(cycle)) == 0 if cycle else False
 
         cls._set(cloned_scenario)
 
