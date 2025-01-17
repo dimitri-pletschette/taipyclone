@@ -20,6 +20,9 @@ jobs:
   coverage:
     timeout-minutes: 50
     runs-on: ubuntu-latest
+    env:
+      COVERAGE_SINGLE: 60
+      COVERAGE_TOTAL: 60
     if: github.event_name == 'pull_request' && github.event.pull_request.base.repo.full_name == github.event.pull_request.head.repo.full_name
     steps:
       - uses: actions/checkout@v4
@@ -36,15 +39,18 @@ jobs:
           os: 'ubuntu-latest'
           pipfile-version: 'min'
 
-      - name: Pytest
-        run: |
-          pipenv run pytest --cov=taipy --cov-report="xml:overall-coverage.xml" tests
+#      - name: Pytest
+#        run: |
+#          pipenv run pytest --cov=taipy --cov-report="xml:overall-coverage.xml" tests
 
-      - name: Coverage
-        uses: orgoro/coverage@v3.1
+      - name: pytester-cov
+        id: pytester-cov
+        uses: programmingwithalex/pytester-cov@main
         with:
-          coverageFile: overall-coverage.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          pytest-root-dir: 'taipy'
+          cov-omit-list: 'tests/*'
+          cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
+          cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
 
   overall-tests:
     needs: [partial-tests]
