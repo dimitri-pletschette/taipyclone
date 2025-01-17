@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2024 Avaiga Private Limited
+ * Copyright 2021-2025 Avaiga Private Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 
 import { useContext, useEffect } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router";
 
 import { TaipyContext } from "../../context/taipyContext";
 import { createNavigateAction } from "../../context/taipyReducers";
@@ -49,7 +49,8 @@ const Navigate = ({ to, params, tab, force }: NavigateProps) => {
             const reloadAll = params?.tp_reload_all === "true";
             const reloadSameRouteOnly = params?.tp_reload_same_route_only === "true";
             if (reloadAll) {
-                return navigate(0);
+                navigate(0);
+                return;
             }
             if (reloadSameRouteOnly) {
                 if (location.pathname === tos) {

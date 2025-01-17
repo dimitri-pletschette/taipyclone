@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2024 Avaiga Private Limited
+ * Copyright 2021-2025 Avaiga Private Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -46,7 +46,7 @@ import Toggle from "./Toggle";
 import TimeSelector from "./TimeSelector";
 import TreeView from "./TreeView";
 
-const registeredComponents: Record<string, ComponentType> = {};
+const registeredComponents: Record<string, ComponentType<object>> = {};
 
 export const getRegisteredComponents = () => {
     if (registeredComponents.TreeView === undefined) {
@@ -106,5 +106,5 @@ export const getRegisteredComponents = () => {
             });
         }
     }
-    return registeredComponents;
+    return registeredComponents  as Record<string, ComponentType<object>>;
 };

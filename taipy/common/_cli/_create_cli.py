@@ -1,4 +1,4 @@
-# Copyright 2021-2024 Avaiga Private Limited
+# Copyright 2021-2025 Avaiga Private Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
 # the License. You may obtain a copy of the License at
@@ -11,7 +11,7 @@
 
 import pathlib
 import sys
-from typing import Dict, Optional
+from typing import Dict
 
 from cookiecutter.exceptions import OutputDirExistsException
 from cookiecutter.main import cookiecutter
@@ -29,9 +29,8 @@ class _CreateCLI(_AbstractCLI):
     _ARGUMENTS = ["--application"]
 
     @classmethod
-    def generate_template_map(cls, template_path: Optional[pathlib.Path] = None):
-        if not template_path:
-            template_path = pathlib.Path(taipy.__file__).parent.resolve() / "templates"
+    def generate_template_map(cls):
+        template_path = pathlib.Path(taipy.__file__).parent.resolve() / "templates"
 
         # Update the template map with the new templates but do not override the existing ones
         cls._template_map.update(

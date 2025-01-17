@@ -1,4 +1,4 @@
-# Copyright 2021-2024 Avaiga Private Limited
+# Copyright 2021-2025 Avaiga Private Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
 # the License. You may obtain a copy of the License at
@@ -187,6 +187,7 @@ class Gui:
         env_filename: t.Optional[str] = None,
         libraries: t.Optional[t.List[ElementLibrary]] = None,
         flask: t.Optional[Flask] = None,
+        script_paths: t.Optional[t.Union[str, Path, t.List[t.Union[str, Path]]]] = None,
     ):
         """Initialize a new Gui instance.
 
@@ -231,11 +232,18 @@ class Gui:
                 If this argument is set, this `Gui` instance will use the value of this argument
                 as the underlying server. If omitted or set to None, this `Gui` will create its
                 own Flask application instance and use it to serve the pages.
+            script_paths (Optional[Union[str, Path, List[Union[str, Path]]]]):
+                Specifies the path(s) to the JavaScript files or external resources used by the application.
+                It can be a single URL or path, or a list containing multiple URLs and/or paths.
         """
         # store suspected local containing frame
         self.__frame = t.cast(FrameType, t.cast(FrameType, currentframe()).f_back)
         self.__default_module_name = _get_module_name_from_frame(self.__frame)
         self._set_css_file(css_file)
+
+        # Set the assets URL path
+        self.__script_files: list[str] = []
+        self.__load_scripts(script_paths)
 
         # Preserve server config for server initialization
         if path_mapping is None:
@@ -410,6 +418,34 @@ class Gui:
         if libraries is not None:
             for library in libraries:
                 Gui.add_library(library)
+
+    def __load_scripts(self, script_paths: t.Optional[t.Union[str, Path, t.List[t.Union[str, Path]]]]):
+        if script_paths is None:
+            return
+        else:
+            if isinstance(script_paths, (str, Path)):
+                script_paths = [script_paths]
+
+            for script_path in script_paths:
+                if isinstance(script_path, str):
+                    parsed_url = urlparse(script_path)
+                    if parsed_url.netloc:
+                        self.__script_files.append(script_path)
+                        continue
+                    script_path = Path(script_path)
+
+                if (
+                    isinstance(script_path, Path)
+                    and script_path.exists()
+                    and script_path.is_file()
+                    and script_path.suffix == ".js"
+                ):
+                    self.__script_files.append(str(script_path))
+                else:
+                    _warn(f"Script path '{script_path}' does not exist, is not a file, or is not a JavaScript file.")
+
+            if not self.__script_files:
+                _warn("No JavaScript files found in the specified script paths.")
 
     @staticmethod
     def add_library(library: ElementLibrary) -> None:
@@ -1894,11 +1930,18 @@ class Gui:
                 rebuild = rebuild_val if rebuild_val is not None else rebuild
                 if rebuild:
                     attributes, hashes = self.__get_attributes(attr_json, hash_json, kwargs)
-                    data_hash = hashes.get("data", "")
+                    idx = 0
+                    data_hashes = []
+                    while data_hash := hashes.get("data" if idx == 0 else f"data[{idx}]", ""):
+                        data_hashes.append(data_hash)
+                        idx += 1
                     config = _build_chart_config(
                         self,
                         attributes,
-                        self._get_accessor().get_col_types(data_hash, _TaipyData(kwargs.get(data_hash), data_hash)),
+                        [
+                            self._get_accessor().get_col_types(data_hash, _TaipyData(kwargs.get(data_hash), data_hash))
+                            for data_hash in data_hashes
+                        ],
                     )
 
                     return json.dumps(config, cls=_TaipyJsonEncoder)
@@ -1932,10 +1975,11 @@ class Gui:
         return _getscopeattr(self, Gui.__UI_BLOCK_NAME, False)
 
     def __get_on_cancel_block_ui(self, callback: t.Optional[str]):
-        def _taipy_on_cancel_block_ui(guiApp, id: t.Optional[str], payload: t.Any):
-            if _hasscopeattr(guiApp, Gui.__UI_BLOCK_NAME):
-                _setscopeattr(guiApp, Gui.__UI_BLOCK_NAME, False)
-            guiApp.__on_action(id, {"action": callback})
+        def _taipy_on_cancel_block_ui(a_state: State, id: t.Optional[str], payload: t.Any):
+            gui_app = a_state.get_gui()
+            if _hasscopeattr(gui_app, Gui.__UI_BLOCK_NAME):
+                _setscopeattr(gui_app, Gui.__UI_BLOCK_NAME, False)
+            gui_app.__on_action(id, {"action": callback})
 
         return _taipy_on_cancel_block_ui
 
@@ -1968,6 +2012,12 @@ class Gui:
                 self.__add_pages_in_folder(child_dir_name, child_dir_path)
 
     # Proxy methods for LocalsContext
+    def _get_locals_context_obj(self) -> _LocalsContext:
+        return self.__locals_context
+
+    def _get_variable_directory_obj(self) -> _VariableDirectory:
+        return self.__var_dir
+
     def _get_locals_bind(self) -> t.Dict[str, t.Any]:
         return self.__locals_context.get_locals()
 
@@ -2072,6 +2122,7 @@ class Gui:
         new_page._route = name
         new_page._renderer = page
         new_page._style = style or page._get_style()
+        new_page._script_paths = page._get_script_paths()
         # Append page to _config
         self._config.pages.append(new_page)
         self._config.routes.append(name)
@@ -2368,15 +2419,13 @@ class Gui:
         callback: t.Optional[t.Union[str, t.Callable]] = None,
         message: t.Optional[str] = "Work in Progress...",
     ):  # pragma: no cover
-        action_name = (
-            callback
-            if isinstance(callback, str)
-            else _get_lambda_id(t.cast(LambdaType, callback))
-            if _is_unnamed_function(callback)
-            else callback.__name__
-            if callback is not None
-            else None
-        )
+        if _is_unnamed_function(callback):
+            action_name = _get_lambda_id(t.cast(LambdaType, callback))
+            self._bind_var_val(action_name, callback)
+        else:
+            action_name = (
+                callback if isinstance(callback, str) else (callback.__name__ if callback is not None else None)
+            )
         func = self.__get_on_cancel_block_ui(action_name)
         def_action_name = func.__name__
         _setscopeattr(self, def_action_name, func)
@@ -2556,7 +2605,11 @@ class Gui:
             with self._set_locals_context(context):
                 self._call_on_page_load(nav_page)
             return self._server._render(
-                page._rendered_jsx, page._style if page._style is not None else "", page._head, context
+                page._rendered_jsx,
+                page._script_paths if page._script_paths is not None else [],
+                page._style if page._style is not None else "",
+                page._head,
+                context,  # noqa: E501
             )
         else:
             return ("No page template", 404)
@@ -2756,6 +2809,9 @@ class Gui:
             styles.append(Gui.__ROBOTO_FONT)
         if self.__css_file:
             styles.append(f"{self.__css_file}")
+
+        if self.__script_files:
+            scripts.extend(self.__script_files)
 
         self._flask_blueprint.append(extension_bp)
 

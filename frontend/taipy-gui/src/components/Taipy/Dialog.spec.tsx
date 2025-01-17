@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2024 Avaiga Private Limited
+ * Copyright 2021-2025 Avaiga Private Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -28,8 +28,8 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 mockedAxios.get.mockRejectedValue("Network error: Something went wrong");
 mockedAxios.get.mockResolvedValue({ data: { jsx_no: '<div key="mock" data-testid="mocked"></div>' } });
 
-jest.mock("react-router-dom", () => ({
-    ...jest.requireActual("react-router-dom"),
+jest.mock("react-router", () => ({
+    ...jest.requireActual("react-router"),
     useLocation: () => ({
         pathname: "pathname",
     }),

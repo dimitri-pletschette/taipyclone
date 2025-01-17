@@ -1,4 +1,4 @@
-# Copyright 2021-2024 Avaiga Private Limited
+# Copyright 2021-2025 Avaiga Private Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
 # the License. You may obtain a copy of the License at
@@ -257,4 +257,22 @@ def test_chart_indexed_properties_with_arrays_builder(gui: Gui, helpers):
         "&quot;traces&quot;: [[&quot;Date_str&quot;, &quot;La Rochelle&quot;], [&quot;Date_str&quot;, &quot;La Rochelle 1&quot;], [&quot;Date_str&quot;, &quot;La Rochelle 2&quot;], [&quot;Date_str&quot;, &quot;Montpellier&quot;], [&quot;Date_str&quot;, &quot;Montpellier 1&quot;], [&quot;Date_str&quot;, &quot;Montpellier 2&quot;]]",  # noqa: E501
         "&quot;lines&quot;: [null, &#x7B;&quot;dash&quot;: &quot;dashdot&quot;&#x7D;, &#x7B;&quot;dash&quot;: &quot;dash&quot;&#x7D;, null, &#x7B;&quot;dash&quot;: &quot;dashdot&quot;&#x7D;, &#x7B;&quot;dash&quot;: &quot;dash&quot;&#x7D;]",  # noqa: E501
     ]
+    helpers.test_control_builder(gui, page, expected_list)
+
+def test_chart_multi_data(gui: Gui, helpers, csvdata):
+    with tgb.Page(frame=None) as page:
+        tgb.chart(  # type: ignore[attr-defined]
+            data="{csvdata}",
+            x="Day",
+            y="Daily hospital occupancy",
+            data__1="{csvdata}",
+        )
+    expected_list = [
+        "<Chart",
+        'updateVarName="_TpD_tpec_TpExPr_csvdata_TPMDL_0"',
+        'dataVarNames="_TpD_tpec_TpExPr_csvdata_TPMDL_0"',
+        "data={_TpD_tpec_TpExPr_csvdata_TPMDL_0}",
+        "data1={_TpD_tpec_TpExPr_csvdata_TPMDL_0}",
+    ]
+    gui._set_frame(inspect.currentframe())
     helpers.test_control_builder(gui, page, expected_list)

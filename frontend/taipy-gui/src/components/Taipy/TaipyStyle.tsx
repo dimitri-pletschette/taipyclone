@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2024 Avaiga Private Limited
+ * Copyright 2021-2025 Avaiga Private Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
  * the License. You may obtain a copy of the License at
@@ -29,7 +29,7 @@ interface TaipyStyleProps {
 export const getComponentClassName = (children: ReactNode) =>
     (
         React.Children.map(children, (element) =>
-            React.isValidElement(element) && element.type == TaipyStyle ? element.props.className : undefined
+            React.isValidElement(element) && element.type == TaipyStyle ? (element.props as Record<string, unknown>).className : undefined
         )?.filter((v) => v) || []
     ).join(" ");
 

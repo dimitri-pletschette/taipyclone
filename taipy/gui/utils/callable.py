@@ -1,4 +1,4 @@
-# Copyright 2021-2024 Avaiga Private Limited
+# Copyright 2021-2025 Avaiga Private Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
 # the License. You may obtain a copy of the License at
@@ -11,7 +11,6 @@
 
 import typing as t
 from inspect import isclass
-from types import LambdaType
 
 
 def _is_function(s: t.Any) -> bool:
@@ -28,4 +27,4 @@ def _function_name(s: t.Any) -> str:
 
 
 def _is_unnamed_function(s: t.Any):
-    return isinstance(s, LambdaType) or (callable(s) and not hasattr(s, "__name__"))
+    return (hasattr(s, "__name__") and s.__name__ == "<lambda>") or (callable(s) and not hasattr(s, "__name__"))

@@ -1,4 +1,4 @@
-# Copyright 2021-2024 Avaiga Private Limited
+# Copyright 2021-2025 Avaiga Private Limited
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
 # the License. You may obtain a copy of the License at
@@ -16,6 +16,7 @@ import logging
 import re
 import typing as t
 import warnings
+from pathlib import Path
 
 from ._warnings import TaipyGuiAlwaysWarning
 
@@ -34,14 +35,20 @@ class _Page(object):
         self._style: t.Optional[t.Union[str, t.Dict[str, t.Any]]] = None
         self._route: t.Optional[str] = None
         self._head: t.Optional[list] = None
+        self._script_paths: t.Optional[t.Union[str, Path, t.List[t.Union[str, Path]]]] = None
 
     def render(self, gui: Gui, silent: t.Optional[bool] = False):
         if self._renderer is None:
             raise RuntimeError(f"Can't render page {self._route}: no renderer found")
         with warnings.catch_warnings(record=True) as w:
             warnings.resetwarnings()
-            with gui._set_locals_context(self._renderer._get_module_name()):
-                self._rendered_jsx = self._renderer.render(gui)
+            module_name = self._renderer._get_module_name()
+            with gui._set_locals_context(module_name):
+                render_return = self._renderer.render(gui)
+                if isinstance(render_return, tuple):
+                    self._rendered_jsx, module_name = render_return
+                else:
+                    self._rendered_jsx = render_return
             if silent:
                 s = ""
                 for wm in w:
@@ -76,4 +83,4 @@ class _Page(object):
         if hasattr(self._renderer, "head"):
             self._head = list(self._renderer.head)  # type: ignore
         # return renderer module_name from frame
-        return self._renderer._get_module_name()
+        return module_name
