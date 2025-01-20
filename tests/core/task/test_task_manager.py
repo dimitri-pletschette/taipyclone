@@ -485,9 +485,33 @@ def _create_task_from_config(task_config, *args, **kwargs):
     return _TaskManager._bulk_get_or_create([task_config], *args, **kwargs)[0]
 
 
-def test_clone_task():
+def test_clone_task_wit_different_owner_id():
     dn_input_config_1 = Config.configure_pickle_data_node("my_input_1", scope=Scope.SCENARIO, default_data="testing")
-    dn_output_config_1 = Config.configure_pickle_data_node("my_output_1")
+    dn_output_config_1 = Config.configure_pickle_data_node("my_output_1", scope=Scope.SCENARIO)
+    task_config_1 = Config.configure_task("task_config_1", print, dn_input_config_1, dn_output_config_1)
+    task = _create_task_from_config(task_config_1)
+
+    task_id = task.id
+
+    assert len(_TaskManager._get_all()) == 1
+    assert len(_DataManager._get_all()) == 2
+
+    new_task = _TaskManager._clone(task, scenario_id="scenario_id")
+
+    assert task.id != new_task.id
+    assert len(_TaskManager._get_all()) == 2
+    assert len(_DataManager._get_all()) == 4
+
+    assert all(task_id in dn.parent_ids for dn in task.data_nodes.values())
+    assert all(dn.owner_id is None for dn in task.data_nodes.values())
+
+    assert all(new_task.id in dn.parent_ids for dn in new_task.data_nodes.values())
+    assert all(dn.owner_id == "scenario_id" for dn in new_task.data_nodes.values())
+
+
+def test_clone_task_wit_same_owner_id():
+    dn_input_config_1 = Config.configure_pickle_data_node("my_input_1", scope=Scope.SCENARIO, default_data="testing")
+    dn_output_config_1 = Config.configure_pickle_data_node("my_output_1", scope=Scope.SCENARIO)
     task_config_1 = Config.configure_task("task_config_1", print, dn_input_config_1, dn_output_config_1)
     task = _create_task_from_config(task_config_1)
 
@@ -498,9 +522,9 @@ def test_clone_task():
 
     new_task = _TaskManager._clone(task)
 
-    assert task.id != new_task.id
-    assert len(_TaskManager._get_all()) == 2
-    assert len(_DataManager._get_all()) == 4
+    assert task.id == new_task.id
+    assert len(_TaskManager._get_all()) == 1
+    assert len(_DataManager._get_all()) == 2
 
     assert all(task_id in dn.parent_ids for dn in task.data_nodes.values())
     assert all(dn.owner_id is None for dn in task.data_nodes.values())
