@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Socket } from "socket.io-client";
 
 export type ModuleData = Record<string, VarName>;
@@ -186,5 +187,92 @@ export declare const createApp: (
     socket?: Socket,
     handleCookie?: boolean,
 ) => TaipyApp;
+export interface PageState {
+    jsx?: string;
+    module?: string;
+}
+export interface TaipyRenderedProps {
+    pageState: PageState;
+}
+export declare const TaipyRendered: (props: TaipyRenderedProps) => import("react/jsx-runtime").JSX.Element;
+export interface TaipyActiveProps extends TaipyDynamicProps, TaipyHoverProps {
+    defaultActive?: boolean;
+    active?: boolean;
+}
+export interface TaipyHoverProps {
+    hoverText?: string;
+    defaultHoverText?: string;
+}
+export interface TaipyDynamicProps extends TaipyBaseProps {
+    updateVarName?: string;
+    propagate?: boolean;
+    updateVars?: string;
+}
+export interface TaipyBaseProps {
+    id?: string;
+    libClassName?: string;
+    className?: string;
+    dynamicClassName?: string;
+    privateClassName?: string;
+    children?: ReactNode;
+}
+export interface TaipyChangeProps {
+    onChange?: string;
+}
+/**
+ * An Icon representation.
+ */
+export interface Icon {
+    /** The URL to the image. */
+    path: string;
+    /** The text. */
+    text: string;
+    /** light theme path */
+    lightPath?: string;
+    /** dark theme path */
+    darkPath?: string;
+}
+/**
+ * A string or an icon.
+ */
+export type stringIcon = string | Icon;
+export interface LovProps<T = string | string[], U = string> extends TaipyActiveProps, TaipyChangeProps {
+    defaultLov?: string;
+    lov?: LoV;
+    value?: T;
+    defaultValue?: U;
+    height?: string | number;
+    valueById?: boolean;
+}
+/**
+ * A LoV (list of value) element.
+ *
+ * Each `LoVElt` holds:
+ *
+ * - Its identifier as a string;
+ * - Its label (or icon) as a `stringIcon`;
+ * - Potential child elements as an array of `LoVElt`s.
+ */
+export type LoVElt = [string, stringIcon, LoVElt[]?];
+/**
+ * A series of LoV elements.
+ */
+export type LoV = LoVElt[];
+export interface SliderProps
+    extends LovProps<number | string | number[] | string[], number | string | number[] | string[]> {
+    width?: string;
+    height?: string;
+    min?: number;
+    max?: number;
+    step?: number;
+    textAnchor?: string;
+    continuous?: boolean;
+    labels?: string | boolean;
+    orientation?: string;
+    changeDelay?: number;
+}
+export declare const Slider: (props: SliderProps) => import("react/jsx-runtime").JSX.Element;
 
 export { TaipyApp as default };
+
+export {};
