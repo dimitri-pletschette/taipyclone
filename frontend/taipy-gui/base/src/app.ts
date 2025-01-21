@@ -10,6 +10,7 @@ import { TaipyWsAdapter, WsAdapter } from "./wsAdapter";
 import { WsMessageType } from "../../src/context/wsUtils";
 import { getBase } from "./utils";
 import { CookieHandler } from "./cookieHandler";
+import { Element, ElementManager } from "./renderer/elementManager";
 
 export type OnInitHandler = (taipyApp: TaipyApp) => void;
 export type OnChangeHandler = (taipyApp: TaipyApp, encodedName: string, value: unknown, dataEventKey?: string) => void;
@@ -47,6 +48,7 @@ export class TaipyApp {
     path: string | undefined;
     routes: Route[] | undefined;
     wsAdapters: WsAdapter[];
+    elementManager: ElementManager;
 
     constructor(
         onInit: OnInitHandler | undefined = undefined,
@@ -68,6 +70,7 @@ export class TaipyApp {
         this.path = path;
         this.socket = socket;
         this.wsAdapters = [new TaipyWsAdapter()];
+        this.elementManager = new ElementManager(this);
         this._ackList = [];
         this._rdc = {};
         this._cookieHandler = handleCookie ? new CookieHandler() : undefined;
@@ -294,6 +297,19 @@ export class TaipyApp {
 
     getBaseUrl() {
         return getBase();
+    }
+
+    createCanvas(domElement: HTMLElement) {
+        this.elementManager.init(domElement);
+    }
+
+    addElement2Canvas(
+        type: string,
+        bindingEncodedVarName: string | undefined = undefined,
+        wrapperHtml: [string, string] | undefined = undefined,
+        id: string | undefined = undefined,
+    ) {
+        this.elementManager.addElement({ id, type, bindingEncodedVarName, wrapperHtml });
     }
 }
 

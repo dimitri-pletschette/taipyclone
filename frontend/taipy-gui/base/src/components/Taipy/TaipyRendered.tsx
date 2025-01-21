@@ -11,7 +11,7 @@
  * specific language governing permissions and limitations under the License.
  */
 
-import React, { ComponentType, useEffect, useReducer } from "react";
+import React, { ComponentType, useEffect, useMemo, useReducer } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import JsxParser from "react-jsx-parser";
 
@@ -30,18 +30,14 @@ import {
     taipyInitialize,
     taipyReducer,
 } from "../../../../src/context/taipyReducers";
+import useStore from "../../store";
 
-interface PageState {
-    jsx?: string;
-    module?: string;
-}
-
-interface TaipyRenderedProps {
-    pageState: PageState;
-}
-
-const TaipyRendered = (props: TaipyRenderedProps) => {
-    const { pageState } = props;
+const TaipyRendered = () => {
+    const jsx = useStore((state) => state.jsx);
+    const module = useStore((state) => state.module);
+    const pageState = useMemo(() => {
+        return { jsx, module };
+    }, [jsx, module]);
     const [state, dispatch] = useReducer(taipyReducer, INITIAL_STATE, taipyInitialize);
     const themeClass = "taipy-" + state.theme.palette.mode;
 
