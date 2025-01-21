@@ -24,7 +24,7 @@ from taipy.core.data.data_node_id import DataNodeId
 from taipy.core.data.in_memory import InMemoryDataNode
 from taipy.core.data.pickle import PickleDataNode
 from taipy.core.exceptions.exceptions import InvalidDataNodeType, ModelNotFound
-from taipy.core.reason import NotGlobalScope, WrongConfigType
+from taipy.core.reason import EntityDoesNotExist, NotGlobalScope, WrongConfigType
 from tests.core.utils.named_temporary_file import NamedTemporaryFile
 
 
@@ -739,7 +739,7 @@ class TestDataManager:
 
         assert len(_DataManager._get_all()) == 1
 
-        new_dn = _DataManager._clone(dn, scenario_id="new_scenario_owner_id")
+        new_dn = _DataManager._duplicate(dn, scenario_id="new_scenario_owner_id")
 
         assert dn.id != new_dn.id
         assert len(_DataManager._get_all()) == 2
@@ -756,8 +756,23 @@ class TestDataManager:
 
         assert len(_DataManager._get_all()) == 1
 
-        new_dn = _DataManager._clone(dn)
+        new_dn = _DataManager._duplicate(dn)
         old_dn = _DataManager._get(old_dn_id)
 
         assert old_dn.id == new_dn.id
         assert len(_DataManager._get_all()) == 1
+
+    def test_duplicate_data_node(self):
+        dn_config = Config.configure_pickle_data_node("dn", scope=Scope.SCENARIO)
+        data = _DataManager._create_and_set(dn_config, None, None)
+
+        reasons = _DataManager._can_duplicate(data)
+        assert bool(reasons)
+        assert reasons._reasons == {}
+
+        reasons = _DataManager._can_duplicate("1")
+        assert not bool(reasons)
+        assert reasons._reasons["1"] == {EntityDoesNotExist(1)}
+        assert str(list(reasons._reasons["1"])[0]) == "Entity 1 does not exist in the repository"
+        with pytest.raises(AttributeError):
+            _DataManager._duplicate("1")

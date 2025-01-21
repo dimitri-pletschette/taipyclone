@@ -223,10 +223,12 @@ class _FileDataNodeMixin:
             shutil.move(old_path, new_path)
         return new_path
 
-    def _clone_data_file(self, id: str) -> Optional[str]:
+    def _duplicate_data_file(self, id: str) -> Optional[str]:
         if os.path.exists(self.path):
             folder_path, base_name = os.path.split(self.path)
-            new_base_path = os.path.join(folder_path, f"TAIPY_CLONE_{id}_{base_name}")
+            if base_name.startswith(self.__TAIPY_CLONED_PREFIX):
+                base_name = "".join(base_name.split("_")[5:])
+            new_base_path = os.path.join(folder_path, f"{self.__TAIPY_CLONED_PREFIX}_{id}_{base_name}")
             if os.path.isdir(self.path):
                 shutil.copytree(self.path, new_base_path)
             else:

@@ -22,7 +22,7 @@ from ..config.data_node_config import DataNodeConfig
 from ..cycle.cycle_id import CycleId
 from ..exceptions.exceptions import InvalidDataNodeType
 from ..notification import Event, EventEntityType, EventOperation, Notifier, _make_event
-from ..reason import NotGlobalScope, ReasonCollection, WrongConfigType
+from ..reason import EntityDoesNotExist, NotGlobalScope, ReasonCollection, WrongConfigType
 from ..scenario.scenario_id import ScenarioId
 from ..sequence.sequence_id import SequenceId
 from ._data_fs_repository import _DataFSRepository
@@ -181,7 +181,7 @@ class _DataManager(_Manager[DataNode], _VersionMixin):
         return cls._repository._load_all(filters)
 
     @classmethod
-    def _clone(
+    def _duplicate(
         cls, dn: DataNode, cycle_id: Optional[CycleId] = None, scenario_id: Optional[ScenarioId] = None
     ) -> DataNode:
         data_nodes = cls._repository._get_by_configs_and_owner_ids(
@@ -197,7 +197,21 @@ class _DataManager(_Manager[DataNode], _VersionMixin):
             cloned_dn._owner_id = cls._get_owner_id(cloned_dn._scope, cycle_id, scenario_id)
             cloned_dn._parent_ids = set()
 
-            cloned_dn._clone_data()
+            cloned_dn._duplicate_data()
 
             cls._set(cloned_dn)
             return cloned_dn
+
+    @classmethod
+    def _can_duplicate(cls, dn: DataNode) -> ReasonCollection:
+        reason_collector = ReasonCollection()
+
+        if isinstance(dn, DataNode):
+            dn_id = dn.id
+        else:
+            dn_id = dn
+
+        if not cls._repository._exists(dn_id):
+            reason_collector._add_reason(dn_id, EntityDoesNotExist(dn_id))
+
+        return reason_collector

@@ -523,7 +523,7 @@ class _ScenarioManager(_Manager[Scenario], _VersionMixin):
         return cls._repository._load_all(filters)
 
     @classmethod
-    def _clone(cls, scenario: Scenario, creation_date: Optional[datetime] = None) -> Scenario:
+    def _duplicate(cls, scenario: Scenario, creation_date: Optional[datetime] = None) -> Scenario:
         """
         Clone a scenario.
 
@@ -549,12 +549,12 @@ class _ScenarioManager(_Manager[Scenario], _VersionMixin):
 
         cloned_tasks = set()
         for task in cloned_scenario.tasks.values():
-            cloned_tasks.add(_task_manager._clone(task, cycle_id, cloned_scenario.id))
+            cloned_tasks.add(_task_manager._duplicate(task, cycle_id, cloned_scenario.id))
         cloned_scenario._tasks = cloned_tasks
 
         cloned_additional_data_nodes = set()
         for data_node in cloned_scenario.additional_data_nodes.values():
-            cloned_additional_data_nodes.add(_data_manager._clone(data_node, None, cloned_scenario.id))
+            cloned_additional_data_nodes.add(_data_manager._duplicate(data_node, None, cloned_scenario.id))
         cloned_scenario._additional_data_nodes = cloned_additional_data_nodes
 
         for task in cloned_tasks:
@@ -574,3 +574,17 @@ class _ScenarioManager(_Manager[Scenario], _VersionMixin):
         cls._set(cloned_scenario)
 
         return cloned_scenario
+
+    @classmethod
+    def _can_duplicate(cls, scenario: Scenario) -> ReasonCollection:
+        reason_collector = ReasonCollection()
+
+        if isinstance(scenario, Scenario):
+            scenario_id = scenario.id
+        else:
+            scenario_id = scenario
+
+        if not cls._repository._exists(scenario_id):
+            reason_collector._add_reason(scenario_id, EntityDoesNotExist(scenario_id))
+
+        return reason_collector

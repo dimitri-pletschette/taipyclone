@@ -434,9 +434,25 @@ class TestCSVDataNode:
     def test_clone_data_file(self):
         path = os.path.join(pathlib.Path(__file__).parent.resolve(), "data_sample/example.csv")
         dn = CSVDataNode("foo", Scope.SCENARIO, properties={"path": path, "exposed_type": "pandas"})
+        _DataManager._set(dn)
+
         read_data = dn.read()
         assert read_data is not None
 
-        new_file_path = str(dn._clone_data())
+        old_path = dn.path
+        new_file_path = str(dn._duplicate_data())
         assert filecmp.cmp(path, new_file_path)
+
+        old_dn_id = dn.id
+        old_dn = _DataManager._get(old_dn_id)
+        assert old_dn.path == old_path
+
+        dn.id = dn._new_id("foo")
+        dn.path = new_file_path
+        new_file_path_2 = str(dn._duplicate_data())
+        assert len(new_file_path_2.split("TAIPY_CLONED")) == 2
         os.unlink(new_file_path)
+        os.unlink(new_file_path_2)
+
+        old_dn = _DataManager._get(old_dn_id)
+        assert old_dn.path == old_path

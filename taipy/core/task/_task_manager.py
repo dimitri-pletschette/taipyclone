@@ -233,13 +233,15 @@ class _TaskManager(_Manager[Task], _VersionMixin):
         return cls._repository._load_all(filters)
 
     @classmethod
-    def _clone(cls, task: Task, cycle_id: Optional[CycleId] = None, scenario_id: Optional[ScenarioId] = None) -> Task:
+    def _duplicate(
+        cls, task: Task, cycle_id: Optional[CycleId] = None, scenario_id: Optional[ScenarioId] = None
+    ) -> Task:
         data_manager = _DataManagerFactory._build_manager()
 
         cloned_task = cls._get(task)
 
-        inputs = [data_manager._clone(i, cycle_id, scenario_id) for i in cloned_task.input.values()]
-        outputs = [data_manager._clone(o, cycle_id, scenario_id) for o in cloned_task.output.values()]
+        inputs = [data_manager._duplicate(i, cycle_id, scenario_id) for i in cloned_task.input.values()]
+        outputs = [data_manager._duplicate(o, cycle_id, scenario_id) for o in cloned_task.output.values()]
 
         scope = min(dn.scope for dn in (inputs + outputs)) if (len(inputs) + len(outputs)) != 0 else Scope.GLOBAL
         owner_id = cls._get_owner_id(scope, cycle_id, scenario_id)
@@ -264,3 +266,17 @@ class _TaskManager(_Manager[Task], _VersionMixin):
 
         cls._set(cloned_task)
         return cloned_task
+
+    @classmethod
+    def _can_duplicate(cls, task: Task) -> ReasonCollection:
+        reason_collector = ReasonCollection()
+
+        if isinstance(task, Task):
+            task_id = task.id
+        else:
+            task_id = task
+
+        if not cls._repository._exists(task_id):
+            reason_collector._add_reason(task_id, EntityDoesNotExist(task_id))
+
+        return reason_collector

@@ -22,6 +22,7 @@ from taipy.core._version._version_manager import _VersionManager
 from taipy.core.data._data_manager import _DataManager
 from taipy.core.data.in_memory import InMemoryDataNode
 from taipy.core.exceptions.exceptions import ModelNotFound, NonExistingTask
+from taipy.core.reason import EntityDoesNotExist
 from taipy.core.task._task_manager import _TaskManager
 from taipy.core.task._task_manager_factory import _TaskManagerFactory
 from taipy.core.task.task import Task
@@ -496,7 +497,7 @@ def test_clone_task_wit_different_owner_id():
     assert len(_TaskManager._get_all()) == 1
     assert len(_DataManager._get_all()) == 2
 
-    new_task = _TaskManager._clone(task, scenario_id="scenario_id")
+    new_task = _TaskManager._duplicate(task, scenario_id="scenario_id")
 
     assert task.id != new_task.id
     assert len(_TaskManager._get_all()) == 2
@@ -520,7 +521,7 @@ def test_clone_task_wit_same_owner_id():
     assert len(_TaskManager._get_all()) == 1
     assert len(_DataManager._get_all()) == 2
 
-    new_task = _TaskManager._clone(task)
+    new_task = _TaskManager._duplicate(task)
 
     assert task.id == new_task.id
     assert len(_TaskManager._get_all()) == 1
@@ -531,3 +532,20 @@ def test_clone_task_wit_same_owner_id():
 
     assert all(new_task.id in dn.parent_ids for dn in new_task.data_nodes.values())
     assert all(dn.owner_id is None for dn in new_task.data_nodes.values())
+
+
+def test_duplicate_task():
+    dn_config = Config.configure_pickle_data_node("dn", scope=Scope.SCENARIO)
+    task_config = Config.configure_task("task_1", print, [dn_config])
+    task = _TaskManager._bulk_get_or_create([task_config])[0]
+
+    reasons = _TaskManager._can_duplicate(task)
+    assert bool(reasons)
+    assert reasons._reasons == {}
+
+    reasons = _TaskManager._can_duplicate("1")
+    assert not bool(reasons)
+    assert reasons._reasons["1"] == {EntityDoesNotExist(1)}
+    assert str(list(reasons._reasons["1"])[0]) == "Entity 1 does not exist in the repository"
+    with pytest.raises(AttributeError):
+        _TaskManager._duplicate("1")

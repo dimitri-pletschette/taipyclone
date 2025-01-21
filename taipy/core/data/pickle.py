@@ -109,8 +109,9 @@ class PickleDataNode(DataNode, _FileDataNodeMixin):
         with open(self._path, "wb") as pf:
             pickle.dump(data, pf)
 
-    def _clone_data(self):
-        new_data_path = self._clone_data_file(self.id)
-        del self._properties._entity_owner
+    def _duplicate_data(self):
+        new_data_path = self._duplicate_data_file(self.id)
+        if hasattr(self._properties, "_entity_owner"):
+            del self._properties._entity_owner
         self._properties[self._PATH_KEY] = new_data_path
         return new_data_path

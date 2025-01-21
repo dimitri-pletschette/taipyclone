@@ -685,7 +685,7 @@ class DataNode(_Entity, _Labeled):
 
         return last_modified_datetime
 
-    def _clone_data(self):
+    def _duplicate_data(self):
         raise NotImplementedError
 
     @staticmethod
