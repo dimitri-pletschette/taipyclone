@@ -183,7 +183,7 @@ export declare class TaipyApp {
     onWsStatusUpdateEvent(messageQueue: string[]): void;
     init(): void;
     initApp(): void;
-    sendWsMessage(type: WsMessageType | str, id: string, payload: unknown, context?: string | undefined): void;
+    sendWsMessage(type: WsMessageType | string, id: string, payload: unknown, context?: string | undefined): void;
     registerWsAdapter(wsAdapter: WsAdapter): void;
     getEncodedName(varName: string, module: string): string | undefined;
     getName(encodedName: string): [string, string] | undefined;
