@@ -91,6 +91,10 @@ const getMenuProps = (height?: string | number) => ({
         },
     },
 });
+const getWindowHeight = (height?: string | number) => ({
+    maxHeight: height || ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+    overflowY: "auto",
+});
 
 const getStyles = (id: string, ids: readonly string[], theme: Theme) => ({
     fontWeight: ids.indexOf(id) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
@@ -363,7 +367,7 @@ const Selector = (props: SelectorProps) => {
     return (
         <>
             {isRadio || isCheck ? (
-                <FormControl sx={controlSx} className={`${className} ${getComponentClassName(props.children)}`}>
+                <FormControl sx={{...controlSx, ...getWindowHeight(height)}} className={`${className} ${getComponentClassName(props.children)}`}>
                     {props.label ? <FormLabel>{props.label}</FormLabel> : null}
                     <Tooltip title={hover || ""}>
                         {isRadio ? (
