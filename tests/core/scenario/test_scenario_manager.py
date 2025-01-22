@@ -1567,9 +1567,10 @@ def test_clone_scenario():
     assert len(_DataManager._get_all()) == 3
     assert len(_TaskManager._get_all()) == 1
 
-    new_scenario = _ScenarioManager._duplicate(scenario)
+    new_scenario = _ScenarioManager._duplicate(scenario, name="New Scenario")
 
     assert scenario.id != new_scenario.id
+    assert new_scenario.name == "New Scenario"
     assert len(_ScenarioManager._get_all()) == 2
     assert len(_DataManager._get_all()) == 6
     assert len(_TaskManager._get_all()) == 2
