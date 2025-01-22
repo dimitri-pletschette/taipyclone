@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { TaipyApp } from "../app";
 import { TaipyCanvas } from "./canvas";
 import { FrontendRenderer, TaipyRenderer } from "./elementRenderer";
@@ -28,7 +29,7 @@ export class ElementManager {
 
     addElement(element: Element) {
         if (element.id === undefined) {
-            element.id = Math.random().toString(36).substring(10);
+            element.id = nanoid(10);
         }
         this._elements.push(element);
         this._canvas.updateContent(this._renderer.render(this._elements));
