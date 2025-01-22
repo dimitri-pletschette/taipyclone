@@ -588,7 +588,7 @@ class _ScenarioManager(_Manager[Scenario], _VersionMixin):
         if isinstance(scenario, Scenario):
             scenario_id = scenario.id
         else:
-            scenario_id = str(scenario)
+            scenario_id = str(scenario)  # type: ignore
 
         if not cls._repository._exists(scenario_id):
             reason_collector._add_reason(scenario_id, EntityDoesNotExist(scenario_id))
