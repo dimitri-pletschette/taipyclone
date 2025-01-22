@@ -231,7 +231,6 @@ class _FileSystemRepository(_AbstractRepository[ModelType, Entity]):
         except (FileNotFoundError, FileCannotBeRead, FileEmpty):
             return None
 
-        # breakpoint()
         for _filter in filters:
             conditions = [
                 f'"{key}": "{value}"' if value is not None else f'"{key}": null' for key, value in _filter.items()
