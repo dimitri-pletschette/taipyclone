@@ -91,10 +91,14 @@ const getMenuProps = (height?: string | number) => ({
         },
     },
 });
-const getWindowHeight = (height?: string | number) => ({
-    maxHeight: height || ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+const getWindowHeight = (height?: string | number) => {
+    if (!height) {
+        return {}
+    }
+    return {
+    maxHeight: height,
     overflowY: "auto",
-});
+}};
 
 const getStyles = (id: string, ids: readonly string[], theme: Theme) => ({
     fontWeight: ids.indexOf(id) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
