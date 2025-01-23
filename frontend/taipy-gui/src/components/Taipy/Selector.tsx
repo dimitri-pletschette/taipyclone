@@ -185,6 +185,8 @@ const Selector = (props: SelectorProps) => {
         }
         return {
             maxHeight: height,
+            display: 'flex',
+            flexFlow: 'column nowrap',
             overflowY: "auto",
         };
     }, [height]);
@@ -374,7 +376,7 @@ const Selector = (props: SelectorProps) => {
     return (
         <>
             {isRadio || isCheck ? (
-                <FormControl sx={{...controlSx, ...heightSx}} className={`${className} ${getComponentClassName(props.children)}`}>
+                <FormControl sx={controlSx} className={`${className} ${getComponentClassName(props.children)}`}>
                     {props.label ? <FormLabel>{props.label}</FormLabel> : null}
                     <Tooltip title={hover || ""}>
                         {isRadio ? (
@@ -382,6 +384,7 @@ const Selector = (props: SelectorProps) => {
                                 value={dropdownValue}
                                 onChange={handleChange}
                                 className={getSuffixedClassNames(className, "-radio-group")}
+                                sx={heightSx}
                             >
                                 {lovList.map((item) => (
                                     <FormControlLabel
@@ -401,7 +404,7 @@ const Selector = (props: SelectorProps) => {
                                 ))}
                             </RadioGroup>
                         ) : (
-                            <FormGroup className={getSuffixedClassNames(className, "-check-group")}>
+                            <FormGroup className={getSuffixedClassNames(className, "-check-group")} sx={heightSx}>
                                 {lovList.map((item) => (
                                     <FormControlLabel
                                         key={item.id}

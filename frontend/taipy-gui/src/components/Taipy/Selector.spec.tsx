@@ -330,9 +330,9 @@ describe("Selector Component", () => {
         });
         it('sets the correct height for the radio mode', async () => {
             const height = '200px';
-            const { container } = render(<Selector lov={lov} mode="radio" height={height} />);
-            const selector = container.querySelector('.MuiFormControl-root');
-            const style = window.getComputedStyle(selector!);
+            const { getByRole } = render(<Selector lov={lov} mode="radio" height={height} />);
+            const selector = getByRole('radiogroup');
+            const style = window.getComputedStyle(selector);
             expect(style.maxHeight).toBe(height);
           });
     });
@@ -376,7 +376,7 @@ describe("Selector Component", () => {
     it('sets the correct height for the check mode', async () => {
         const height = '200px';
         const { container } = render(<Selector lov={lov} mode="check" height={height} />);
-        const selector = container.querySelector('.MuiFormControl-root');
+        const selector = container.querySelector('.MuiFormGroup-root');
         const style = window.getComputedStyle(selector!);
         expect(style.maxHeight).toBe(height);
       });
