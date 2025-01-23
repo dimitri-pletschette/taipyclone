@@ -92,7 +92,6 @@ const getMenuProps = (height?: string | number) => ({
     },
 });
 
-
 const getStyles = (id: string, ids: readonly string[], theme: Theme) => ({
     fontWeight: ids.indexOf(id) === -1 ? theme.typography.fontWeightRegular : theme.typography.fontWeightMedium,
 });
