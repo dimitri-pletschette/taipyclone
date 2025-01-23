@@ -157,9 +157,8 @@ class _DataNodeConfigChecker(_ConfigChecker):
         required_properties.extend(
             self.__storage_type_specific_required_properties(storage_type, data_node_config.properties)
         )
-        required_properties = set(required_properties)
 
-        for required_property in required_properties:
+        for required_property in set(required_properties):
             if not data_node_config.properties or required_property not in data_node_config.properties:
                 if data_node_config_id == DataNodeConfig._DEFAULT_KEY:
                     self._warning(
