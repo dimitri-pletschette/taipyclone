@@ -1070,3 +1070,35 @@ def get_entities_by_config_id(
     if entities := _DataManagerFactory._build_manager()._get_by_config_id(config_id):
         return entities
     return entities
+
+
+def can_duplicate(entity: Optional[Scenario] = None) -> ReasonCollection:
+    """Indicate if a scenario can be duplicated.
+
+    Returns:
+        True if the given scenario can be created. False otherwise.
+    """
+    return _ScenarioManagerFactory._build_manager()._can_duplicate(entity)
+
+
+def duplicate_scenario(
+    scenario: Scenario, creation_date: Optional[datetime] = None, name: Optional[str] = None
+) -> Scenario:
+    """Duplicate an existing scenario and return a new scenario.
+
+    This function duplicates the provided scenario, optionally setting a new creation date and name.
+
+    If the scenario belongs to a cycle, the cycle (corresponding to the creation_date and the configuration
+    frequency attribute) is created if it does not exist yet.
+
+    Arguments:
+        scenario (Scenario): The scenario to duplicate.
+        creation_date (Optional[datetime.datetime]): The creation date of the new scenario.
+            If None, the current date and time is used.
+        name (Optional[str]): The displayable name of the new scenario.
+
+    Returns:
+        Scenario: The newly duplicated scenario.
+    """
+
+    return _ScenarioManagerFactory._build_manager()._duplicate(scenario, creation_date, name)

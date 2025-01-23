@@ -9,6 +9,7 @@
 # an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
+import filecmp
 import os
 import pathlib
 import re
@@ -652,3 +653,29 @@ class TestExcelDataNode:
 
         # The upload should succeed when check_data_is_positive() return True
         assert dn._upload(new_excel_path, upload_checker=check_data_is_positive)
+
+    def test_clone_data_file(self):
+        path = os.path.join(pathlib.Path(__file__).parent.resolve(), "data_sample/example.xlsx")
+        dn = ExcelDataNode("foo", Scope.SCENARIO, properties={"default_path": path})
+        _DataManager._set(dn)
+
+        read_data = dn.read()
+        assert read_data is not None
+        old_path = dn.path
+
+        new_file_path = str(dn._duplicate_data())
+        assert filecmp.cmp(path, new_file_path)
+
+        old_dn_id = dn.id
+        old_dn = _DataManager._get(old_dn_id)
+        assert old_dn.path == old_path
+
+        dn.id = dn._new_id("foo")
+        dn.path = new_file_path
+        new_file_path_2 = str(dn._duplicate_data())
+        assert len(new_file_path_2.split("TAIPY_CLONED")) == 2
+        os.unlink(new_file_path)
+        os.unlink(new_file_path_2)
+
+        old_dn = _DataManager._get(old_dn_id)
+        assert old_dn.path == old_path

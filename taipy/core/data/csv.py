@@ -192,3 +192,10 @@ class CSVDataNode(DataNode, _FileDataNodeMixin, _TabularDataNodeMixin):
             encoding=properties[self.__ENCODING_KEY],
             header=properties[self._HAS_HEADER_PROPERTY],
         )
+
+    def _duplicate_data(self):
+        new_data_path = self._duplicate_data_file(self.id)
+        if hasattr(self._properties, "_entity_owner"):
+            del self._properties._entity_owner
+        self._properties[self._PATH_KEY] = new_data_path
+        return new_data_path

@@ -158,6 +158,13 @@ class JSONDataNode(DataNode, _FileDataNodeMixin):
         with open(self._path, "w", encoding=self.properties[self.__ENCODING_KEY]) as f:  # type: ignore
             json.dump(data, f, indent=4, cls=self._encoder)
 
+    def _duplicate_data(self):
+        new_data_path = self._duplicate_data_file(self.id)
+        if hasattr(self._properties, "_entity_owner"):
+            del self._properties._entity_owner
+        self._properties[self._PATH_KEY] = new_data_path
+        return new_data_path
+
 
 class _DefaultJSONEncoder(json.JSONEncoder):
     def default(self, o):

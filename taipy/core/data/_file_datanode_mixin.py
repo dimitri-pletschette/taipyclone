@@ -42,6 +42,7 @@ class _FileDataNodeMixin:
     _PATH_KEY = "path"
     _DEFAULT_PATH_KEY = "default_path"
     _IS_GENERATED_KEY = "is_generated"
+    __TAIPY_CLONED_PREFIX = "TAIPY_CLONED"
 
     __logger = _TaipyLogger._get_logger()
 
@@ -109,12 +110,14 @@ class _FileDataNodeMixin:
 
         return ""
 
-    def _upload(self,
-                path: str,
-                upload_checker: Optional[Callable[[str, Any], bool]] = None,
-                editor_id: Optional[str] = None,
-                comment: Optional[str] = None,
-                **kwargs: Any) -> ReasonCollection:
+    def _upload(
+        self,
+        path: str,
+        upload_checker: Optional[Callable[[str, Any], bool]] = None,
+        editor_id: Optional[str] = None,
+        comment: Optional[str] = None,
+        **kwargs: Any,
+    ) -> ReasonCollection:
         """Upload a file data to the data node.
 
         Arguments:
@@ -136,11 +139,15 @@ class _FileDataNodeMixin:
         from ._data_manager_factory import _DataManagerFactory
 
         reasons = ReasonCollection()
-        if (editor_id
-            and self.edit_in_progress # type: ignore[attr-defined]
-            and self.editor_id != editor_id # type: ignore[attr-defined]
-            and (not self.editor_expiration_date # type: ignore[attr-defined]
-                 or self.editor_expiration_date > datetime.now())):  # type: ignore[attr-defined]
+        if (
+            editor_id
+            and self.edit_in_progress  # type: ignore[attr-defined]
+            and self.editor_id != editor_id  # type: ignore[attr-defined]
+            and (
+                not self.editor_expiration_date  # type: ignore[attr-defined]
+                or self.editor_expiration_date > datetime.now()
+            )
+        ):  # type: ignore[attr-defined]
             reasons._add_reason(self.id, DataNodeEditInProgress(self.id))  # type: ignore[attr-defined]
             return reasons
 
@@ -148,8 +155,7 @@ class _FileDataNodeMixin:
         try:
             upload_data = self._read_from_path(str(up_path))
         except Exception as err:
-            self.__logger.error(f"Error uploading `{up_path.name}` to data "
-                                f"node `{self.id}`:")  # type: ignore[attr-defined]
+            self.__logger.error(f"Error uploading `{up_path.name}` to data " f"node `{self.id}`:")  # type: ignore[attr-defined]
             self.__logger.error(f"Error: {err}")
             reasons._add_reason(self.id, UploadFileCanNotBeRead(up_path.name, self.id))  # type: ignore[attr-defined]
             return reasons
@@ -161,7 +167,8 @@ class _FileDataNodeMixin:
                 self.__logger.error(
                     f"Error with the upload checker `{upload_checker.__name__}` "
                     f"while checking `{up_path.name}` file for upload to the data "
-                    f"node `{self.id}`:") # type: ignore[attr-defined]
+                    f"node `{self.id}`:"
+                )  # type: ignore[attr-defined]
                 self.__logger.error(f"Error: {err}")
                 can_upload = False
 
@@ -171,9 +178,12 @@ class _FileDataNodeMixin:
 
         shutil.copy(up_path, self.path)
 
-        self.track_edit(timestamp=datetime.now(),  # type: ignore[attr-defined]
-                        editor_id=editor_id,
-                        comment=comment, **kwargs)
+        self.track_edit(
+            timestamp=datetime.now(),  # type: ignore[attr-defined]
+            editor_id=editor_id,
+            comment=comment,
+            **kwargs,
+        )
         self.unlock_edit()  # type: ignore[attr-defined]
 
         _DataManagerFactory._build_manager()._set(self)  # type: ignore[arg-type]
@@ -212,3 +222,16 @@ class _FileDataNodeMixin:
         if os.path.exists(old_path):
             shutil.move(old_path, new_path)
         return new_path
+
+    def _duplicate_data_file(self, id: str) -> Optional[str]:
+        if os.path.exists(self.path):
+            folder_path, base_name = os.path.split(self.path)
+            if base_name.startswith(self.__TAIPY_CLONED_PREFIX):
+                base_name = "".join(base_name.split("_")[5:])
+            new_base_path = os.path.join(folder_path, f"{self.__TAIPY_CLONED_PREFIX}_{id}_{base_name}")
+            if os.path.isdir(self.path):
+                shutil.copytree(self.path, new_base_path)
+            else:
+                shutil.copy(self.path, new_base_path)
+            return new_base_path
+        return ""

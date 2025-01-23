@@ -24,7 +24,7 @@ from taipy.core.data.data_node_id import DataNodeId
 from taipy.core.data.in_memory import InMemoryDataNode
 from taipy.core.data.pickle import PickleDataNode
 from taipy.core.exceptions.exceptions import InvalidDataNodeType, ModelNotFound
-from taipy.core.reason import NotGlobalScope, WrongConfigType
+from taipy.core.reason import EntityDoesNotExist, NotGlobalScope, WrongConfigType
 from tests.core.utils.named_temporary_file import NamedTemporaryFile
 
 
@@ -731,3 +731,48 @@ class TestDataManager:
 
         assert len(_DataManager._get_by_config_id(dn_config_1.id)) == 3
         assert len(_DataManager._get_by_config_id(dn_config_2.id)) == 2
+
+    def test_clone_data_node_with_differnt_owner_id(self):
+        csv_path_inp = os.path.join(pathlib.Path(__file__).parent.resolve(), "data_sample/example.csv")
+        dn_config = Config.configure_csv_data_node("dn_csv_in_1", default_path=csv_path_inp)
+        dn = _DataManager._create_and_set(dn_config, None, None)
+
+        assert len(_DataManager._get_all()) == 1
+
+        new_dn = _DataManager._duplicate(dn, scenario_id="new_scenario_owner_id")
+
+        assert dn.id != new_dn.id
+        assert len(_DataManager._get_all()) == 2
+        assert dn.properties["path"] != new_dn.properties["path"]
+        assert os.path.exists(str(new_dn.properties["path"]))
+        os.remove(str(new_dn.properties["path"]))
+
+    def test_clone_data_node_with_same_owner_id(self):
+        csv_path_inp = os.path.join(pathlib.Path(__file__).parent.resolve(), "data_sample/example.csv")
+        dn_config = Config.configure_csv_data_node("dn_csv_in_1", default_path=csv_path_inp)
+        dn = _DataManager._create_and_set(dn_config, None, None)
+
+        old_dn_id = dn.id
+
+        assert len(_DataManager._get_all()) == 1
+
+        new_dn = _DataManager._duplicate(dn)
+        old_dn = _DataManager._get(old_dn_id)
+
+        assert old_dn.id == new_dn.id
+        assert len(_DataManager._get_all()) == 1
+
+    def test_duplicate_data_node(self):
+        dn_config = Config.configure_pickle_data_node("dn", scope=Scope.SCENARIO)
+        data = _DataManager._create_and_set(dn_config, None, None)
+
+        reasons = _DataManager._can_duplicate(data)
+        assert bool(reasons)
+        assert reasons._reasons == {}
+
+        reasons = _DataManager._can_duplicate("1")
+        assert not bool(reasons)
+        assert reasons._reasons["1"] == {EntityDoesNotExist(1)}
+        assert str(list(reasons._reasons["1"])[0]) == "Entity 1 does not exist in the repository"
+        with pytest.raises(AttributeError):
+            _DataManager._duplicate("1")
