@@ -10,7 +10,7 @@ import { TaipyWsAdapter, WsAdapter } from "./wsAdapter";
 import { WsMessageType } from "../../src/context/wsUtils";
 import { getBase } from "./utils";
 import { CookieHandler } from "./cookieHandler";
-import { Element, ElementManager } from "./renderer/elementManager";
+import { ElementManager } from "./renderer/elementManager";
 
 export type OnInitHandler = (taipyApp: TaipyApp) => void;
 export type OnChangeHandler = (taipyApp: TaipyApp, encodedName: string, value: unknown, dataEventKey?: string) => void;
@@ -305,11 +305,11 @@ export class TaipyApp {
 
     addElement2Canvas(
         type: string,
-        bindingEncodedVarName: string | undefined = undefined,
+        properties: Record<string, string> | undefined = undefined,
         wrapperHtml: [string, string] | undefined = undefined,
         id: string | undefined = undefined,
     ) {
-        this.elementManager.addElement({ id, type, bindingEncodedVarName, wrapperHtml });
+        this.elementManager.addElement({ id, type, properties, wrapperHtml });
     }
 }
 

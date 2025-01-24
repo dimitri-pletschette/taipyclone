@@ -2579,7 +2579,11 @@ class Gui:
             with self._set_locals_context(context):
                 self._call_on_page_load(nav_page)
             return self._server._render(
-                page._rendered_jsx, page._script_paths if page._script_paths is not None else [], page._style if page._style is not None else "", page._head, context # noqa: E501
+                page._rendered_jsx,
+                page._script_paths if page._script_paths is not None else [],
+                page._style if page._style is not None else "",
+                page._head,
+                context,  # noqa: E501
             )
         else:
             return ("No page template", 404)
@@ -2593,6 +2597,17 @@ class Gui:
                 "blockUI": self._is_ui_blocked(),
             }
         )
+
+    def __render_element(self) -> t.Any:
+        self.__set_client_id_in_context()
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No element data provided"}), 400
+        with self._set_locals_context(data.get("context")):
+            el = _Factory.call_builder(self, data.get("type"), data.get("properties"), True)
+        if el is None:
+            return jsonify({"error": f"Failed to generate element of type '{data.type}'"}), 400
+        return {"jsx": _Server._render_jsx_fragment(f"{el[0]}</{el[1]}>")}
 
     def get_flask_app(self) -> Flask:
         """Get the internal Flask application.
@@ -2809,6 +2824,8 @@ class Gui:
 
         # server URL Rule for flask rendered react-router
         pages_bp.add_url_rule(f"/{Gui.__INIT_URL}", view_func=self.__init_route)
+
+        pages_bp.add_url_rule("/taipy-element-jsx", view_func=self.__render_element, methods=["POST"])
 
         _Hooks()._add_external_blueprint(self, __name__)
 
