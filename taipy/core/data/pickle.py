@@ -39,7 +39,7 @@ class PickleDataNode(DataNode, _FileDataNodeMixin):
         objects, object references, even circular) can usually be pickled by default.
 
         Things that are usually not pickle-able are, for example, sockets, file(handler)s, database
-        connections, custom objects using runtime ids or references, and so on.
+        connections, custom data structure using in-memory references to Python IDs, and so on.
 
         Please refer to the
         [pickle documentation](https://docs.python.org/3/library/pickle.html) for more information.
