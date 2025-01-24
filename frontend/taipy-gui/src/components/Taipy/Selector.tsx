@@ -180,7 +180,7 @@ const Selector = (props: SelectorProps) => {
     );
     const heightSx = useMemo(() => {
         if (!height) {
-            return {};
+            return undefined;
         }
         return {
             maxHeight: height,
