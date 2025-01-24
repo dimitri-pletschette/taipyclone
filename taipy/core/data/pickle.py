@@ -32,7 +32,7 @@ class PickleDataNode(DataNode, _FileDataNodeMixin):
     - *default_data*: The default data of the data node. It is used at the data node instantiation
         to write the data to the Pickle file.
 
-    ???warning "To use with pickle-able data only"
+    ??? warning "To use with pickle-able data only"
         PickleDataNode should be used only for "pickle-able" data.
 
         Everything that's build up (recursively) from basic python types (dicts, lists, primitives,
