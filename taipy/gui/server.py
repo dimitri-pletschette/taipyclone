@@ -239,12 +239,17 @@ class _Server:
 
         return taipy_bp
 
-    # Update to render as JSX
-    def _render(self, html_fragment, script_paths, style, head, context):
+    @staticmethod
+    def _render_jsx_fragment(html_fragment):
         template_str = _Server.__RE_OPENING_CURLY.sub(_Server.__OPENING_CURLY, html_fragment)
         template_str = _Server.__RE_CLOSING_CURLY.sub(_Server.__CLOSING_CURLY, template_str)
         template_str = template_str.replace('"{!', "{")
         template_str = template_str.replace('!}"', "}")
+        return template_str
+
+    # Update to render as JSX
+    def _render(self, html_fragment, script_paths, style, head, context):
+        template_str = _Server._render_jsx_fragment(html_fragment)
         style = get_style(style)
         return self._direct_render_json(
             {
@@ -252,7 +257,7 @@ class _Server:
                 "style": (style + os.linesep) if style else "",
                 "head": head or [],
                 "context": context or self._gui._get_default_module_name(),
-                "scriptPaths": script_paths
+                "scriptPaths": script_paths,
             }
         )
 

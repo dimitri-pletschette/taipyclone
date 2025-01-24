@@ -99,6 +99,30 @@ declare class CookieHandler {
     addBeforeUnloadListener(): void;
     deleteCookie(): Promise<void>;
 }
+declare class TaipyCanvas {
+    taipyApp: TaipyApp;
+    constructor(taipyApp: TaipyApp);
+    init(domElement: HTMLElement): void;
+    updateContent(jsx: string): void;
+}
+export interface TaipyRenderer {
+    render(elements: Element[]): string;
+}
+export interface Element {
+    id: string | undefined;
+    type: string;
+    bindingEncodedVarName: string | undefined;
+    wrapperHtml: [string, string] | undefined;
+}
+declare class ElementManager {
+    _elements: Element[];
+    _renderer: TaipyRenderer;
+    _canvas: TaipyCanvas;
+    taipyApp: TaipyApp;
+    constructor(taipyApp: TaipyApp);
+    init(domElement: HTMLElement): void;
+    addElement(element: Element): void;
+}
 export type OnInitHandler = (taipyApp: TaipyApp) => void;
 export type OnChangeHandler = (taipyApp: TaipyApp, encodedName: string, value: unknown, dataEventKey?: string) => void;
 export type OnNotifyHandler = (taipyApp: TaipyApp, type: string, message: string) => void;
@@ -132,6 +156,7 @@ export declare class TaipyApp {
     path: string | undefined;
     routes: Route[] | undefined;
     wsAdapters: WsAdapter[];
+    elementManager: ElementManager;
     constructor(
         onInit?: OnInitHandler | undefined,
         onChange?: OnChangeHandler | undefined,
@@ -179,6 +204,13 @@ export declare class TaipyApp {
     getPageMetadata(): Record<string, unknown>;
     getWsStatus(): string[];
     getBaseUrl(): string;
+    createCanvas(domElement: HTMLElement): void;
+    addElement2Canvas(
+        type: string,
+        bindingEncodedVarName?: string | undefined,
+        wrapperHtml?: [string, string] | undefined,
+        id?: string | undefined,
+    ): void;
 }
 export declare const createApp: (
     onInit?: OnInitHandler,
@@ -189,3 +221,5 @@ export declare const createApp: (
 ) => TaipyApp;
 
 export { TaipyApp as default };
+
+export {};
