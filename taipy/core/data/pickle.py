@@ -35,11 +35,12 @@ class PickleDataNode(DataNode, _FileDataNodeMixin):
     ??? warning "To use with pickle-able data only"
         PickleDataNode should be used only for "pickle-able" data.
 
-        Everything that's build up (recursively) from basic python types (dicts, lists, primitives,
-        objects, object references, even circular) can usually be pickled by default.
+        Everything that's build up (recursively) from basic python types (dicts, lists,
+        primitives, objects, object references, even circular) can usually be pickled by default.
 
-        Things that are usually not pickle-able are, for example, sockets, file(handler)s, database
-        connections, custom data structure using in-memory references to Python IDs, and so on.
+        Things that are usually not pickle-able are, for example, sockets, file(handler)s,
+        database connections, custom data structure using in-memory references to Python IDs,
+        and so on.
 
         Please refer to the
         [pickle documentation](https://docs.python.org/3/library/pickle.html) for more information.
